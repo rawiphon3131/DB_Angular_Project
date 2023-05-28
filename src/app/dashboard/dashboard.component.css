@@ -1,0 +1,29 @@
+body{
+    width: 100%;
+    height: 100%;
+    font-family: 'Noto Sans Thai';
+}
+.container-dashboard-item{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.box-select-menu{
+    width: 25%;
+    height: 50%;
+    border: 1px solid black;
+    border-radius: 30px;
+    margin: 20px;
+    background: #001A53;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-select-menu a{
+    font-size: 18px;
+    color: white;
+    
+}
