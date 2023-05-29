@@ -17,9 +17,6 @@ body{
 .title-addorder table{
     width: 100%;
 }
-/* pickup-product.component.css */
-.blur-background {
-    filter: blur(4px); /* Adjust the blur radius as desired */
-    pointer-events: none; /* Prevent interaction with the background */
-  }
-  
+.add_list{
+    display: flex;
+}

@@ -1,5 +1,5 @@
 {
-  "name": "db-angular-project",
+  "name": "project-database",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -18,13 +18,21 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "admin-lte": "3.0",
+    "bootstrap": "^5.2.3",
+    "jquery": "^3.7.0",
+    "mysql": "^2.18.1",
+    "ng-select2-component": "^11.1.0",
+    "ngx-webstorage-service": "^5.0.0",
+    "primeng": "^16.0.0-rc.2",
     "rxjs": "~7.8.0",
+    "select2": "^4.1.0-rc.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.0.2",
-    "@angular/cli": "~16.0.2",
+    "@angular-devkit/build-angular": "^16.0.0",
+    "@angular/cli": "~16.0.0",
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",

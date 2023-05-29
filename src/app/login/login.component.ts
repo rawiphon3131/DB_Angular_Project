@@ -1,30 +1,46 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  message: string = '';
+  username: string = ''; // Initialize with an empty string
+  password: string = ''; // Initialize with an empty string
+  loginMessage: string = ''; // Initialize the login message
 
-  constructor(private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
-  login() {
-    if (this.username === 'user' && this.password === '1234') {
-      this.message = 'Login successful!';
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.message = 'รหัสผิดจ้า';
-    }
-    this.resetForm();
-  }
+  login(): void {
+    const url = 'http://localhost/backend/login.php';
 
-  resetForm() {
-    this.username = '';
-    this.password = '';
+    const data = { username: this.username, password: this.password };
+  
+    // Make the HTTP request to the PHP server
+    this.http.post(url, data).subscribe(
+      (response: any) => {
+        sessionStorage.setItem('username', this.username);
+        sessionStorage.setItem('user_fname', response.user_fname);
+        sessionStorage.setItem('user_lname', response.user_lname);
+        console.log(response); // You can customize the actions here 
+        // Redirect to the dashboard
+        sessionStorage.setItem('username', this.username); // Store the username in session storage
+        this.router.navigate(['/dashboard']);
+      
+      },
+      (error) => {
+        // Handle login error
+
+          this.loginMessage = 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด'; // Set the login message
+
+        
+      }
+    );
   }
 }

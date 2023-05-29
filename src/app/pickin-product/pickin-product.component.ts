@@ -6,5 +6,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./pickin-product.component.css']
 })
 export class PickinProductComponent {
+  showAddOrderPopup: boolean = false;
+  // Your table data and other variables
 
+  openAddOrderPopup() {
+    this.showAddOrderPopup = true;
+  }
+
+  onOrderAdded(newOrder: any) {
+
+    this.showAddOrderPopup = false;
+  }
 }

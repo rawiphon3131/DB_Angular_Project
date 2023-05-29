@@ -1,0 +1,72 @@
+<form (ngSubmit)="add_products()">
+<div class="popup-container">
+    <div class="border-popup">
+      <div class="cosspop">
+        <a href="/pickin_products">X</a>
+      </div>  
+      <div class="set-margin-popup">
+        <table>
+          <tr>
+            <td>
+                <select name="optioneiei" [(ngModel)]="optioneiei">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                
+                </select>
+            </td>
+            <td>
+                ชื่อสินค้า :
+            </td>
+            <td>
+                <input type="text" [(ngModel)]="name_pd" name="name_pd" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </td>
+            <td>
+                เพิ่มชื่อสินค้า 
+            </td>
+          </tr>
+          <tr>
+            <td>
+                รับมาจาก
+            </td>
+            <td>
+                <input type="text" [(ngModel)]="where_pick" name="where_pick"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </td>
+          </tr>
+          <tr>
+            <td>
+                จำนวน
+            </td>
+            <td>
+                <input type="text" [(ngModel)]="product_values" name="product_values"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </td>
+          </tr>
+          <tr>
+            <td>
+                วันที่
+            </td>
+            <td>
+                <input type="date" [(ngModel)]="date_pick" name="date_pick"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+           
+            <td>
+                <button type="submit" class="btn btn-success">บันทึก</button>
+            </td>
+        
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  </form>
+  

@@ -3,13 +3,9 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Db_Angular_Project": {
+    "project-database": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -17,20 +13,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/db-angular-project",
+            "outputPath": "dist/project-database",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -65,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Db_Angular_Project:build:production"
+              "browserTarget": "project-database:build:production"
             },
             "development": {
-              "browserTarget": "Db_Angular_Project:build:development"
+              "browserTarget": "project-database:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Db_Angular_Project:build"
+            "browserTarget": "project-database:build"
           }
         },
         "test": {
@@ -87,21 +83,26 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.css",
+    "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+    "node_modules/primeng/resources/primeng.min.css",
+    "node_modules/select2/dist/css/select2.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+  "node_modules/select2/dist/js/select2.min.js"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "3df66986-233a-434c-b208-788fdc57267e"
+    "analytics": "c02d4d0c-c7f5-499c-a0a0-4ff478a5774a"
   }
 }
