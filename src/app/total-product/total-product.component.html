@@ -22,22 +22,29 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">ลำดับที่</th>
+                    <th scope="col" style="width: 5%;">ลำดับที่</th>
                     <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                    <th scope="col" style="text-align: center;">ประเภท</th>
                     <th scope="col" style="text-align: center;">ขนาด</th>
+                    <th scope="col" style="text-align: center;">สำหรับ</th>
                     <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
                     <th scope="col" style="text-align: center;">ราคาขาย/ชิ้น</th>
                 </tr>
             </thead>
             <!-- รอการ Queryจากฐานข้อมูล -->
             <tbody>
-                <tr>
-                    <th scope="row">N/A</th>
-                    <td style="text-align: center;">N/A</td>
-                    <td style="text-align: center;">N/A</td>
-                    <td style="text-align: center;">N/A</td>
-                    <td style="text-align: center;">N/A</td>
-                </tr>
+
+                    <tr *ngFor="let total of value_pd; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td style="text-align: center;">{{ total.prd_name }}</td>
+                        <td style="text-align: center;">{{ total.type_prd_name }}</td>
+                        <td style="text-align: center;">{{ total.size_name }}</td>
+                        <td style="text-align: center;">{{ total.type_name }}</td>
+                        <td style="text-align: center;">{{ total.prd_value }} ชิ้น</td>
+                        <td style="text-align: center;">{{ total.prd_sell }} บาท</td>
+                    
+                    </tr>
+
 
             </tbody>
         </table>

@@ -11,7 +11,7 @@
                             <h4>คำสั่งซื้อทั้งหมด</h4>
                         </td>
                         <td style="text-align: right">
-                            <a href="/add_order_list" class="btn btn-primary rounded-pill">เพิ่มคำสั่งซื้อ+</a>
+                            <a href="/add-order-new" class="btn btn-primary rounded-pill">เพิ่มคำสั่งซื้อ+</a>
                         </td>
                     </tr>
                 </table>
@@ -20,25 +20,28 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">ลำดับที่</th>
-                    <th scope="col">ชื่อผู้สั่งซื้อ</th>
-                    <th scope="col">ชื่อสินค้า</th>
-                    <th scope="col">จำนวน</th>
-                    <th scope="col">ประเภทจ่าย</th>
-                    <th scope="col">ราคารวม</th>
-                    <th scope="col">วันที่</th>
+                    <th scope="col" style="text-align: center;">ลำดับที่</th>
+                    <th scope="col" style="text-align: center;">ชื่อผู้สั่งซื้อ</th>
+                    <th scope="col" style="text-align: center;">เจ้าหน้าที่</th>
+                    <th scope="col" style="text-align: center;">ประเภทจ่าย</th>
+                    <th scope="col" style="text-align: center;">สถานะ</th>
+                    <th scope="col" style="text-align: center;">วันที่</th>
+                    <th scope="col" style="text-align: center;">ACTION</th>
                 </tr>
             </thead>
             <!-- รอการ Queryจากฐานข้อมูล -->
-            <tbody>
+            <tbody *ngFor="let order of orderList;let i = index">
                 <tr>
-                    <th scope="row">N/A</th>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
+                    <td style="text-align: center;">{{ i + 1 }}</td>
+                    <td style="text-align: center;">{{order.cus_name}}</td>
+                    <td style="text-align: center;">{{order.order_type_name}}</td>
+                    <td style="text-align: center;">{{order.user_name}}</td>
+                    <td style="text-align: center;">{{order.state_name}}</td>
+                    <td style="text-align: center;">{{order.order_date}}</td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-outline-info">รายระเอียด</button>
+                        <button type="button" class="btn btn-outline-success">ออกใบเสร็จ</button>
+                    </td>
                 </tr>
 
             </tbody>

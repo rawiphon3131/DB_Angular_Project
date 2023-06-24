@@ -1,0 +1,107 @@
+<app-nav-bar></app-nav-bar>
+<form>
+  <div class="popup-container">
+    <div class="border-popup">
+      <div class="set-margin-popup">
+        <td >
+          <button type="submit" class="btn btn-outline-primary">เพิ่มชื่อลูกค้าใหม่+</button> <!-- Submit button -->
+        </td>
+        <tr style="width: 100%;">
+          <td>
+            รายชื่อลูกค้า
+          </td>
+          <td>
+            <section>
+              <select [(ngModel)]="selectedOption" [ngModelOptions]="{ standalone: true }" class="form-control"
+                (change)="updateCustomerAddress()">
+                <option value="">โปรดเลือก...</option>
+                <option *ngFor="let option of customer" [value]="option.cus_id">{{ option.cus_name }}</option>
+              </select>
+            </section>
+          </td>
+          
+          <td *ngIf="selectedOption">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+              [value]="getCustomerCredit(selectedOption)" readonly>
+          </td>
+          
+          <td *ngIf="selectedOption">
+            ที่อยู่
+          </td>
+          <td *ngIf="selectedOption">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+              [value]="getCustomerAddress(selectedOption)" readonly>
+          </td>
+          
+          <td *ngIf="selectedOption">
+            เบอร์โทร
+          </td>
+          <td *ngIf="selectedOption">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+            [value]="getCustomerNumphone(selectedOption)" readonly>
+          </td>
+        
+          <td *ngIf="selectedOption">ประเภทจ่าย</td>
+          <td *ngIf="selectedOption">
+            <section>
+              <select [(ngModel)]="type_sell" name="type_sell" class="form-control">
+                <option value="1">เงินสด</option>
+                <option value="2">เครดิต</option>
+              </select>
+             
+            </section>
+          </td>
+        </tr>
+           
+        <br>
+        <table style="width: 100%;">
+          <tr>
+            <td style="text-align: right;">
+              <button class="btn btn-outline-success" *ngIf="selectedOption" (click)="openAddPrdtoOrder()">บันทึก</button>
+            </td>
+          </tr>
+        </table>
+        <table class="table" *ngIf="selectedOption">
+          <thead class="thead-dark sticky-top">
+            <th scope="col" style="text-align: center;">ลำดับที่</th>
+            <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+            <th scope="col" style="text-align: center;">ขนาด</th>
+           
+            <th scope="col" style="text-align: center;">ราคาขาย</th>
+            <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+            <th scope="col" style="text-align: center;">จำนวนขาย</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productIds;let i = index">
+              <td style="text-align: center;">{{ i + 1 }}</td>
+              <td style="text-align: center;">{{ product.prd_name }}</td>
+              <td style="text-align: center;">{{ product.size_name }}</td>
+              <td style="text-align: center;">{{ product.prd_sell }}</td>
+              <td style="text-align: center;" [ngClass]="{'red-color': parseNumber(product.prd_value) <= 20, 'out-of-stock': parseNumber(product.prd_value) === 0, 'havein-of-stock': parseNumber(product.prd_value) > 20}">
+                {{ product.prd_value }} ชิ้น
+              </td>
+              
+              
+              
+              <td>
+                <input type="text"
+                [(ngModel)]="product_values[product.prd_id]"
+                name="where_pick"
+                class="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm"
+                *ngIf="parseNumber(product.prd_value) !== 0"
+                [disabled]="parseNumber(product.prd_value) === 0"
+                (input)="checkExceeded(product)">
+         <div *ngIf="exceeded[product.prd_id]" class="exceeded-message">จำนวนเกินของที่มีในสต๊อก</div>
+         
+         
+              </td>
+            </tr>         
+            <div *ngIf="response" class="success-message">{{ response }}</div>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

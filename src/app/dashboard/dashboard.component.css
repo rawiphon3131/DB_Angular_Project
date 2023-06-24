@@ -1,17 +1,18 @@
-body{
+body {
     width: 100%;
     height: 100%;
     font-family: 'Noto Sans Thai';
-}
-.container-dashboard-item{
+  }
+  
+  .container-dashboard-item {
     width: 100%;
     height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-}
-.box-select-menu{
+  }
+  
+  .box-select-menu {
     width: 25%;
     height: 50%;
     border: 1px solid black;
@@ -21,9 +22,38 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.box-select-menu a{
+  }
+  
+  .box-select-menu a {
     font-size: 18px;
     color: white;
+  }
+  
+  /* Responsive styles */
+  
+  @media screen and (max-width: 768px) {
+    .container-dashboard-item {
+        flex-direction: column;
+        height: 350px;
+      }
+      
+      .box-select-menu {
+        width: 80%;
+        height: 30%;
+        margin: 10px;
+      }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .container-dashboard-item {
+      flex-direction: column;
+      height: 350px;
+    }
     
-}
+    .box-select-menu {
+      width: 80%;
+      height: 30%;
+      margin: 10px;
+    }
+  }
+  

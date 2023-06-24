@@ -15,19 +15,14 @@
     height: 75%;
     border-radius: 30px;
     background: white;
-    
 }
 .set-margin-popup{
     margin: 30px;
 }
+
 .cosspop{
-    margin: 20px;
-}
-table{
-    width: 100%;
-    
-}
-.table-ng-eiei{
-    height: 400px;
-    overflow: auto;
+    width: 97%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
 }

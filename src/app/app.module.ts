@@ -19,6 +19,9 @@ import { TotalProductComponent } from './total-product/total-product.component';
 import { ReportSellComponent } from './report-sell/report-sell.component';
 import { AddOrderListComponent } from './add-order-list/add-order-list.component';
 import { AddOrderPopupComponent } from './add-order-popup/add-order-popup.component';
+import { AddNamePdComponent } from './add-name-pd/add-name-pd.component';
+import { SellItemComponent } from './sell-item/sell-item.component';
+import { PopupSellItemComponent } from './popup-sell-item/popup-sell-item.component';
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
@@ -27,6 +30,8 @@ const routes: Routes = [
   { path: 'total_item', component: TotalProductComponent },
   { path: 'report_sell', component: ReportSellComponent },
   { path: 'add_order_list', component: AddOrderListComponent },
+  { path: 'add-name-pd', component: AddNamePdComponent },
+  { path: 'add-order-new', component: SellItemComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 @NgModule({
@@ -43,6 +48,9 @@ const routes: Routes = [
     ReportSellComponent,
     AddOrderListComponent,
     AddOrderPopupComponent,
+    AddNamePdComponent,
+    SellItemComponent,
+    PopupSellItemComponent,
   ],
   imports: [
     

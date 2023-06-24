@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -6,22 +7,18 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './add-order.component.html',
   styleUrls: ['./add-order.component.css']
 })
-export class AddOrderComponent {
-  showPopup: boolean = false;
+export class AddOrderComponent implements OnInit{
+  orderList:any;
+constructor(private http:HttpClient){
 
-  handleOrderSubmitted(order: any): void {
-    // Perform the necessary actions with the submitted order
-    console.log('Submitted Order:', order);
-
-    // Close the pop-up
-    this.showPopup = false;
+}
+  ngOnInit() {
+    this.fetchOrder();
   }
-
-  handlePopupCancelled(): void {
-    // Handle the cancellation of the pop-up
-    console.log('Pop-up Cancelled');
-
-    // Close the pop-up
-    this.showPopup = false;
+  fetchOrder(){
+    this.http.get<any[]>('http://localhost/backend/select_order_show.php')
+      .subscribe(response => {
+        this.orderList = response;
+      });
   }
 }

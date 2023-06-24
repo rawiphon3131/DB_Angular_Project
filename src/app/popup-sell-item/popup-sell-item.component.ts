@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-
-
 interface Product {
   prd_id: number;
   prd_name: string;
   size_name: string;
+  prd_sell:string;
+  prd_value:string;
   // Add other properties as needed
 }
 
 @Component({
-  selector: 'app-add-order-popup',
-  templateUrl: './add-order-popup.component.html',
-  styleUrls: ['./add-order-popup.component.css']
+  selector: 'app-popup-sell-item',
+  templateUrl: './popup-sell-item.component.html',
+  styleUrls: ['./popup-sell-item.component.css']
 })
-export class AddOrderPopupComponent implements OnInit {
+export class PopupSellItemComponent implements OnInit {
   showAddNamePd: boolean = false;
   where_pick: any[];
   product_values: any[];
@@ -86,7 +86,7 @@ export class AddOrderPopupComponent implements OnInit {
   
 
   fetchProductIds() {
-    this.http.get<any[]>('http://localhost/backend/select2.php')
+    this.http.get<any[]>('http://localhost/backend/select_sell_item.php')
       .subscribe(response => {
         this.productIds = response;
       });
