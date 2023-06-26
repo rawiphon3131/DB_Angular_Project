@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Select2Module } from 'ng-select2-component';
 
@@ -24,6 +24,9 @@ import { SellItemComponent } from './sell-item/sell-item.component';
 import { PopupSellItemComponent } from './popup-sell-item/popup-sell-item.component';
 import { PopupAddCusNewComponent } from './popup-add-cus-new/popup-add-cus-new.component';
 import { PopupDetailOrderComponent } from './popup-detail-order/popup-detail-order.component';
+
+
+
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
@@ -71,3 +74,4 @@ const routes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

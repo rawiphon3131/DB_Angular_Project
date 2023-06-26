@@ -45,11 +45,11 @@
                             <div style="display: flex;">
                                 <div style="margin: 1px;">
                                     <button type="button" class="btn btn-info"
-                                        (click)="showInfo(order.order_id)">INFO</button>
+                                        (click)="showInfo(order.order_id,order.cus_name)">รายละเอียด</button>
                                     <app-popup-detail-order *ngIf="infoOrder[order.order_id]"></app-popup-detail-order>
                                 </div>
                                 <div style="margin: 1px;">
-                                    <button type="button" class="btn btn-success">ออกใบเสร็จ</button>
+                                    <button class="btn btn-success btn-block" (click)="openPDF(order.order_id)">ออกใบเสร็จ</button>
                                 </div>
                                 <div style="margin: 1px;">
                                     <button type="button" class="btn btn-warning"
@@ -59,6 +59,10 @@
                         </td>
                     </tr>
                 </tbody>
+                <tbody id="pdfContent">
+                    <tr *ngFor="let order of orderList; let i = index">
+                    </tr>
+                  </tbody>
             </table>
         </div>
     </div>

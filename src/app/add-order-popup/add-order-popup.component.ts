@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
-
 interface Product {
   prd_id: number;
   prd_name: string;
@@ -22,21 +21,17 @@ export class AddOrderPopupComponent implements OnInit {
   userId: string | null = null;
   successMessage: string | null = null;
   response: any[];
-  
   productIds: Product[] = []; // Update with your actual product data
-  searchKeyword: string = '';
-  filteredProducts: Product[] = [];
-
-  
 
   constructor(private http: HttpClient) {
     this.where_pick = [];
     this.product_values = [];
     this.userId = sessionStorage.getItem('user_id');
     this.response = [];
+
   }
 
-  ngOnInit() {
+  ngOnInit():void {
     this.fetchProductIds();
   }
 
@@ -92,10 +87,5 @@ export class AddOrderPopupComponent implements OnInit {
       });
   }
 
-  searchProducts() {
-    this.filteredProducts = this.productIds.filter(
-      (product) =>
-        product.prd_name.toLowerCase().includes(this.searchKeyword.toLowerCase())
-    );
-  }
+  
 }

@@ -12,12 +12,15 @@
                 </th>
                 <th>ชื่อสินค้า</th>
                 <th>จำนวน</th>
+                <th>ราคาขาย</th>
                 <th>ราคารวม</th>
                </thead>
                <tbody *ngFor="let orderdetail of orderDetails;let i =index;">
                 <td>{{i+1}}</td>
                 <td>{{orderdetail.prd_name}}</td>
                 <td>{{orderdetail.order_values}}</td>
+                <td *ngFor="let prdsell of price_prd_id;">
+                    <p *ngIf=""></p>{{ prdsell.prd_sell }}</td>
                 <td>{{orderdetail.order_sum}}</td>     
                </tbody>
             </table>
