@@ -1,66 +1,57 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link
-  href="https://fonts.googleapis.com/css?family=Noto Sans Thai"
-  rel="stylesheet"
-/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='https://fonts.googleapis.com/css?family=Noto Sans Thai' rel='stylesheet'>
 
 <body>
-  <form (ngSubmit)="login()">
-    <div class="container-login">
-      <div class="border-login">
-        <div class="tital-login">
-          <div class="img-login">
-            <img src="../../assets/asdasdsd.PNG" alt="logo" width="100px" />
-          </div>
-          <div class="text-login">
-            <p style="font-size: 16px">
-              ระบบสารสนเทศงานบริหารทรัพสินธ์ุและจัดหา
-            </p>
-          </div>
-        </div>
-        <div class="input-login">
-          <div class="box-login-u-p">
-            <label for="username">
-              <div class="username">
-                <div class="username-text" style="font-size: 20px">
-                  เลขบัตรประชาชน
+
+    <form (ngSubmit)="login()">
+        <div class="container-login">
+
+            <div class="border-login">
+                <div class="tital-login">
+                    <div class="img-login">
+                        <img src="../../assets/asdasdsd.PNG" alt="logo" width="100px">
+                    </div>
+                    <div class="text-login">
+                        <p style="font-size:16px">ระบบสารสนเทศงานบริหารทรัพสินธ์ุและจัดหา</p>
+                    </div>
                 </div>
-                <div>
-                  <input
-                    type="text"
-                    [(ngModel)]="username"
-                    name="username"
-                    id="username"
-                  />
+                <div class="input-login">
+                    <div class="box-login-u-p">
+                        <label for="username">
+                            <div class="username">
+                                <div class="username-text" style="font-size: 20px;">
+                                    เลขบัตรประชาชน
+                                </div>
+                                <div>
+                                    <input type="text" [(ngModel)]="username" name="username" id="username">
+
+
+                                </div>
+                            </div>
+                        </label>
+                        <br>
+                        <label for="username">
+                            <div class="username">
+                                <div class="username-text" style="font-size: 20px;">
+                                    รหัสผ่าน
+                                </div>
+                                <div>
+                                    <input type="password" [(ngModel)]="password" name="password" id="password">
+
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
-              </div>
-            </label>
-            <br />
-            <label for="username">
-              <div class="username">
-                <div class="username-text" style="font-size: 20px">
-                  รหัสผ่าน
+                <div class="btn-login-box">
+                    <button type="submit" class="btn-submit-login">เข้าสู่ระบบ</button>
                 </div>
-                <div>
-                  <input
-                    type="password"
-                    [(ngModel)]="password"
-                    name="password"
-                    id="password"
-                  />
-                </div>
-              </div>
-            </label>
-          </div>
+                  <div class="text-login-alert" *ngIf="loginMessage">{{ loginMessage }}</div> <!-- Display the login message -->
+                
+            </div>
+            
         </div>
-        <div class="btn-login-box">
-          <button type="submit" class="btn-submit-login">เข้าสู่ระบบ</button>
-        </div>
-        <div class="text-login-alert" *ngIf="loginMessage">
-          {{ loginMessage }}
-        </div>
-        <!-- Display the login message -->
-      </div>
-    </div>
-  </form>
+    </form>
 </body>
+

@@ -17,36 +17,49 @@
                 </table>
             </div>
         </div>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" style="text-align: center;">ลำดับที่</th>
-                    <th scope="col" style="text-align: center;">ชื่อผู้สั่งซื้อ</th>
-                    <th scope="col" style="text-align: center;">เจ้าหน้าที่</th>
-                    <th scope="col" style="text-align: center;">ประเภทจ่าย</th>
-                    <th scope="col" style="text-align: center;">สถานะ</th>
-                    <th scope="col" style="text-align: center;">วันที่</th>
-                    <th scope="col" style="text-align: center;">ACTION</th>
-                </tr>
-            </thead>
-            <!-- รอการ Queryจากฐานข้อมูล -->
-            <tbody *ngFor="let order of orderList;let i = index">
-                <tr>
-                    <td style="text-align: center;">{{ i + 1 }}</td>
-                    <td style="text-align: center;">{{order.cus_name}}</td>
-                    <td style="text-align: center;">{{order.order_type_name}}</td>
-                    <td style="text-align: center;">{{order.user_name}}</td>
-                    <td style="text-align: center;">{{order.state_name}}</td>
-                    <td style="text-align: center;">{{order.order_date}}</td>
-                    <td style="text-align: center;">
-                        <button type="button" class="btn btn-outline-info">รายระเอียด</button>
-                        <button type="button" class="btn btn-outline-success">ออกใบเสร็จ</button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <div style="height: 90%;overflow: auto;">
+            <table class="table">
+                <thead class="thead-dark sticky-top">
+                    <tr>
+                        <th scope="col" style="text-align: center;">Order ID</th>
+                        <th scope="col" style="text-align: center;">ชื่อผู้สั่งซื้อ</th>
+                        <th scope="col" style="text-align: center;">เจ้าหน้าที่</th>
+                        <th scope="col" style="text-align: center;">ประเภทจ่าย</th>
+                        <th scope="col" style="text-align: center;">สถานะ</th>
+                        <th scope="col" style="text-align: center;">วันที่</th>
+                        <th scope="col" style="text-align: center;">ACTION</th>
+                    </tr>
+                </thead>
+                <!-- รอการ Queryจากฐานข้อมูล -->
+                <tbody *ngFor="let order of orderList;let i = index">
+                    <tr>
+                        <td style="text-align: center;">{{ order.order_id}}</td>
+                        <td style="text-align: center;">{{order.cus_name}}</td>
+                        <td style="text-align: center;">{{order.user_name}}</td>
+                        <td style="text-align: center;">{{order.order_type_name}}</td>
+                        <td style="text-align: center;"
+                            [ngClass]="{ 'green-message': order.state_name === 'ชำระเงินแล้ว', 'red-text': order.state_name === 'รอชำระเงิน' }">
+                            {{order.state_name}}</td>
+                        <td style="text-align: center;">{{ order.order_date }}</td>
+                        <td>
+                            <div style="display: flex;">
+                                <div style="margin: 1px;">
+                                    <button type="button" class="btn btn-info"
+                                        (click)="showInfo(order.order_id)">INFO</button>
+                                    <app-popup-detail-order *ngIf="infoOrder[order.order_id]"></app-popup-detail-order>
+                                </div>
+                                <div style="margin: 1px;">
+                                    <button type="button" class="btn btn-success">ออกใบเสร็จ</button>
+                                </div>
+                                <div style="margin: 1px;">
+                                    <button type="button" class="btn btn-warning"
+                                        *ngIf="order.state_name === 'รอชำระเงิน'">ชำระเงิน</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-
 </body>

@@ -37,16 +37,14 @@ export class SellItemComponent implements OnInit {
   productIds: Product[] = []; // Update with your actual product data
   searchKeyword: string = '';
   filteredProducts: Product[] = [];
-
-
   openPopupSell: boolean = false;
+  openPopcusnew:boolean = false;
 
   constructor(private http: HttpClient,private router: Router) {
     this.type_price = [];
     this.cus_numphone = [];
     this.typeoption = [];
     this.customer = [];
-
     this.userId = sessionStorage.getItem('user_id');
     this.product_values = [];
     this.response = [];
@@ -64,14 +62,12 @@ export class SellItemComponent implements OnInit {
   parseNumber(value: any): number {
     return parseFloat(value);
   }
-
   openAddPrdtoOrder() {
     if (this.type_sell === '') {
       // The field is not filled, display an error message or perform the necessary action
       return;
     }else{
       const dataArray = [];
-
       for (let productId in this.product_values) {
         const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
         const size_name = product ? product.size_name : '';
@@ -89,22 +85,12 @@ export class SellItemComponent implements OnInit {
           userId: this.userId,
           type_sell: this.type_sell,
         };
-  
         dataArray.push(data);
       }
       const jsonData = JSON.stringify(dataArray);
-  
-      // Send the jsonData to PHP using an HTTP request (e.g., using Angular's HttpClient)
-      // Make sure to adjust the URL and other request parameters according to your setup
       this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
         (response) => {
-          // Handle the response from PHP
           console.log(response);
-  
-          // Hide the calculation animation or loading indicator
-          // ...
-    
-          // Navigate to the /add_order page
           this.router.navigate(['/add_order']);
         },
         (error) => {
@@ -113,10 +99,7 @@ export class SellItemComponent implements OnInit {
           alert('เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง');
         }
       );
-    
     }
-    
-
   }
   fetchProductIds() {
     this.http.get<any[]>('http://localhost/backend/select_sell_item.php')
@@ -124,11 +107,6 @@ export class SellItemComponent implements OnInit {
         this.productIds = response;
       });
   }
-
-
-
-
-
   updateCustomerAddress() {
     // Retrieve the selected customer's address based on the cus_id
     const selectedCustomer = this.customer.find(option => option.cus_id === Number(this.selectedOption));
@@ -155,9 +133,9 @@ export class SellItemComponent implements OnInit {
     return customer ? customer.cus_numphone : '';
   }
 
-
-
-
+  addNamecus(){
+    this.openPopcusnew = true;
+  }
 
 
 

@@ -22,6 +22,8 @@ import { AddOrderPopupComponent } from './add-order-popup/add-order-popup.compon
 import { AddNamePdComponent } from './add-name-pd/add-name-pd.component';
 import { SellItemComponent } from './sell-item/sell-item.component';
 import { PopupSellItemComponent } from './popup-sell-item/popup-sell-item.component';
+import { PopupAddCusNewComponent } from './popup-add-cus-new/popup-add-cus-new.component';
+import { PopupDetailOrderComponent } from './popup-detail-order/popup-detail-order.component';
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
@@ -51,6 +53,8 @@ const routes: Routes = [
     AddNamePdComponent,
     SellItemComponent,
     PopupSellItemComponent,
+    PopupAddCusNewComponent,
+    PopupDetailOrderComponent,
   ],
   imports: [
     

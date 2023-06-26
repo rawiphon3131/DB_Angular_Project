@@ -4,7 +4,8 @@
     <div class="border-popup">
       <div class="set-margin-popup">
         <td >
-          <button type="submit" class="btn btn-outline-primary">เพิ่มชื่อลูกค้าใหม่+</button> <!-- Submit button -->
+          <button type="submit" class="btn btn-outline-primary" (click)="addNamecus()">เพิ่มชื่อลูกค้าใหม่+</button>
+          <app-popup-add-cus-new *ngIf="openPopcusnew"></app-popup-add-cus-new>
         </td>
         <tr style="width: 100%;">
           <td>
@@ -91,7 +92,7 @@
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm"
                 *ngIf="parseNumber(product.prd_value) !== 0"
-                [disabled]="parseNumber(product.prd_value) === 0"
+                [disabled]="parseNumber(product.prd_value) <=0"
                 (input)="checkExceeded(product)">
          <div *ngIf="exceeded[product.prd_id]" class="exceeded-message">จำนวนเกินของที่มีในสต๊อก</div>
          

@@ -22,6 +22,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    text-decoration: none;
+    transition-duration: 1s;
+  }
+  .box-select-menu:hover {
+    width: 25%;
+    height: 50%;
+    border: 1px solid black;
+    border-radius: 30px;
+    margin: 20px;
+    background: #0d4fdc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    transition-duration: 1s;
   }
   
   .box-select-menu a {
@@ -54,6 +71,7 @@ body {
       width: 80%;
       height: 30%;
       margin: 10px;
+     
     }
   }
   

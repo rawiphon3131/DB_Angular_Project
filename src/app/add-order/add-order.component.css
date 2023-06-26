@@ -17,3 +17,11 @@ body{
 .title-addorder table{
     width: 100%;
 }
+.green-message {
+    color: green;
+  }
+  
+  .red-text {
+    color: red;
+  }
+  
