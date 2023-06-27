@@ -78,7 +78,7 @@ if (!empty($data)) {
       $query = mysqli_query($conn, $sql);
     } else {
       $sql = "INSERT INTO product_tbl(prd_name,size_id,type_prd_id,type_id,prd_value) 
-        VALUES ('$name','$size_id_new','$type_name_id_new','$type_prd_name','$value_new')";
+        VALUES ('$name','$size_query','$type_query','$type_prd_name','$value_new')";
       $query = mysqli_query($conn, $sql);
 
       $sql = "SELECT * FROM product_tbl GROUP BY prd_id DESC LIMIT 1 ";
@@ -86,6 +86,11 @@ if (!empty($data)) {
       $rowprdname = mysqli_fetch_array($query);
       $prd_id_new = $rowprdname['prd_id'];
     }
+
+    $sql = "SELECT * FROM product_tbl WHERE prd_name = '$name' AND size_id='$size_query' AND type_prd_id ='$type_query' AND type_id ='$type_prd_name'";
+    $query = mysqli_query($conn, $sql);
+    $row_prd_id = mysqli_fetch_array($query);
+    $prd_id_q = $row_prd_id['prd_id'];
 
     //PART OF PRICE_PRD
     $sql = "SELECT * FROM product_price_tbl WHERE prd_id = '$product_id_tbl'";
@@ -95,7 +100,7 @@ if (!empty($data)) {
       $prdp_id_tbl = $row4['prdp_id'];
       $sql = "UPDATE product_price_tbl SET prd_price_pickin = '$price_in', prd_sell = '$price_sell' WHERE prdp_id = '$prdp_id_tbl'";
     } else {
-      $sql = "INSERT INTO product_price_tbl (prd_id, prd_price_pickin, prd_sell) VALUES ('$prd_id_new', '$price_in', '$price_sell')";
+      $sql = "INSERT INTO product_price_tbl (prd_id, prd_price_pickin, prd_sell) VALUES ('$prd_id_q', '$price_in', '$price_sell')";
       $query = mysqli_query($conn, $sql);
 
       $sql = "SELECT * FROM product_price_tbl ORDER BY prdp_id DESC LIMIT 1";

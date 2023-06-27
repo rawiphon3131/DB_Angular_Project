@@ -15,7 +15,7 @@ export class TotalProductComponent implements OnInit{
   ngOnInit() {
     this.fetchProductotal();
   }
-
+//PART OF SELECT DATA FROM PHP
   fetchProductotal(){
     this.http.get<any[]>('http://localhost/backend/total_poduct.php')
     .subscribe(response => {
