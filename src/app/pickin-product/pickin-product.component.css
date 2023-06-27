@@ -22,4 +22,8 @@ body{
     filter: blur(4px); /* Adjust the blur radius as desired */
     pointer-events: none; /* Prevent interaction with the background */
   }
-  
+
+.pickin-show{
+    height: 80%;
+    overflow: auto;
+}

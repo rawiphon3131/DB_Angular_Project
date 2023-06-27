@@ -1,5 +1,4 @@
 <body>
-
     <app-nav-bar></app-nav-bar>
     <div class="container-addorder-item">
         <div class="border-addorder">
@@ -13,43 +12,47 @@
                             <a href="/total_item" class="btn btn-primary rounded-pill">สินค้าทั้งหมด</a>
                         </td>
                         <td style="text-align: right">
+                            <button (click)="openAddNamePd()"class="btn btn-primary rounded-pill">รับเข้าสินค้าใหม่+</button>
+                            <app-add-name-pd *ngIf="showAddnamePDPopup"></app-add-name-pd>
+                        </td>
+                        <td style="text-align: right">
                             <!-- pickup-product.component.html -->
                             <button (click)="openAddOrderPopup()" class="btn btn-primary rounded-pill">รับเข้าสินค้า+</button>               
                             <app-add-order-popup *ngIf="showAddOrderPopup"></app-add-order-popup>
 
                         </td>
+                        
                     </tr>
                 </table>
             </div>
         </div>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ลำดับที่</th>
-                    <th scope="col">บริษัทขนส่ง</th>
-                    <th scope="col">ชื่อสินค้า</th>
-                    <th scope="col">จำนวน</th>
-                    <th scope="col">ผู้ตรวจสอบ</th>
-                    <th scope="col">ราคารับเข้า/ชิ้น</th>
-                    <th scope="col">ราคารวม</th>
-                    <th scope="col">วันที่</th>
-                </tr>
-            </thead>
-            <!-- รอการ Queryจากฐานข้อมูล -->
-            <tbody>
-                <tr>
-                    <th scope="row">N/A</th>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
-
-            </tbody>
-        </table>
+        <div class="pickin-show">
+            <table class="table">
+                <thead class="thead-dark sticky-top">
+                    <tr>
+                        <th scope="col">ลำดับที่</th>
+                        <th scope="col">ชื่อสินค้า</th>
+                        <th scope="col">ผู้รับเข้า</th>
+                        <th scope="col">รับมาจาก</th>
+                        <th scope="col">จำนวน/ชิ้น</th>
+                        <th scope="col">วันที่</th>
+                    </tr>
+                </thead>
+                <!-- รอการ Queryจากฐานข้อมูล -->
+                <tbody>
+                    <tr *ngFor="let product of products; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ product.prd_name }}</td>
+                        <td>{{ product.userPi }}</td>
+                        <td>{{ product.prdin_mk }}</td>
+                        <td>{{ product.prdin_values }}</td>
+                        <td>{{ product.prdin_date }}</td>
+                    </tr>
+    
+                </tbody>
+            </table>
+        </div>
+       
     </div>
 
 

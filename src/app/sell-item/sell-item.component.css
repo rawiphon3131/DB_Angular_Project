@@ -1,0 +1,13 @@
+.red-color {
+    color: red;
+  }
+  
+  .out-of-stock {
+    color: gray;
+  }
+  .havein-of-stock{
+    color: green;
+  }
+  .exceeded-message {
+    color: red;
+  }

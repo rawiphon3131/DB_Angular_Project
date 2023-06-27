@@ -28,10 +28,18 @@ export class LoginComponent {
         sessionStorage.setItem('username', this.username);
         sessionStorage.setItem('user_fname', response.user_fname);
         sessionStorage.setItem('user_lname', response.user_lname);
+        sessionStorage.setItem('user_id', response.user_id);
         console.log(response); // You can customize the actions here 
         // Redirect to the dashboard
         sessionStorage.setItem('username', this.username); // Store the username in session storage
-        this.router.navigate(['/dashboard']);
+        
+        if (sessionStorage.getItem('username')) {
+          // Session username available, navigate to the dashboard
+          this.router.navigate(['/dashboard']);
+        } else {
+          // Session username not available, display an error message or perform any other action
+          console.log('Please log in first.');
+        }
       
       },
       (error) => {

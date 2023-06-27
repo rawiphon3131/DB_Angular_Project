@@ -2,42 +2,90 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
+interface Product {
+  prd_id: number;
+  prd_name: string;
+  size_name: string;
+  // Add other properties as needed
+}
+
 @Component({
   selector: 'app-add-order-popup',
   templateUrl: './add-order-popup.component.html',
   styleUrls: ['./add-order-popup.component.css']
 })
-export class AddOrderPopupComponent implements OnInit{
-  name_pd: any[];
+export class AddOrderPopupComponent implements OnInit {
+  showAddNamePd: boolean = false;
   where_pick: any[];
   product_values: any[];
-  date_pick: any[];
-  optioneiei:any[];
+  userId: string | null = null;
+  successMessage: string | null = null;
+  response: any[];
+  productIds: Product[] = []; // Update with your actual product data
 
-  constructor(private http: HttpClient) { 
-    this.name_pd=[];
-    this.where_pick=[];
-    this.date_pick=[];
-    this.product_values=[];
-    this.optioneiei=[];
+  constructor(private http: HttpClient) {
+    this.where_pick = [];
+    this.product_values = [];
+    this.userId = sessionStorage.getItem('user_id');
+    this.response = [];
+
   }
 
-  ngOnInit() {
-    // Make an HTTP GET request to the PHP backend
+  ngOnInit():void {
+    this.fetchProductIds();
+  }
+
+  add_products() {
+    const url = 'http://localhost/backend/pick_in.php';
+    const url2 = 'http://localhost/backend/update_pd.php';
+  
+    for (let productId in this.where_pick) {
+      const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
+      const size_name = product ? product.size_name : '';
+      const data = {
+        prd_id: productId,
+        where_pick: this.where_pick[productId],
+        product_values: this.product_values[productId],
+        size_id: productId,
+        type_id: productId,
+        size_name: size_name,
+        userId: this.userId
+      };
+  
+      // Make the HTTP request to the PHP server
+      this.http.post(url, data, { responseType: 'text' }).subscribe(
+        (response: any) => {
+          // Handle the response as needed
+          console.log(response);
+          alert('Success! Response: ' + response); // Display an alert box with the response text
+        },
+        (error) => {
+          // Handle the error
+          console.error(error);
+        }
+      );
+  
+      this.http.post(url2, data, { responseType: 'text' }).subscribe(
+        (response: any) => {
+          // Handle the response as needed
+          console.log(response);
+         
+        },
+        (error) => {
+          // Handle the error
+          console.error(error);
+        }
+      );
+    }
+  }
+  
+
+  fetchProductIds() {
     this.http.get<any[]>('http://localhost/backend/select2.php')
       .subscribe(response => {
-        
+        this.productIds = response;
       });
   }
 
-  add_products(){
-    if (this.name_pd) {
-      const data = { name_pd:this.name_pd,where_pick:this.where_pick,product_values:this.product_values,date_pick:this.date_pick,optioneiei:this.optioneiei };
-      this.http.post('http://localhost/backend/insert.php', JSON.stringify(data))
-      .subscribe(response => {
-        // Handle the response from the PHP backend
-        console.log(response);
-      });
-  }
-}
+  
 }

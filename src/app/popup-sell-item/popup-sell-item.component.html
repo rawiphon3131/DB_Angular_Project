@@ -1,0 +1,52 @@
+<form (ngSubmit)="add_products()">
+    <div class="popup-container">
+      <div class="border-popup">
+        <div class="cosspop">
+          <a href="/pickin_products">X</a>
+        </div>
+        <div class="set-margin-popup">
+          <table>
+            <tr>
+              <td style="text-align: left;">
+                <input type="text" [(ngModel)]="searchKeyword" placeholder="Search by product name" class="form-control">
+              </td>
+              <td style="text-align: center;">
+                
+              </td>
+              <td style="text-align: right;">
+                <button type="submit" class="btn btn-success">บันทึก</button>
+              </td>
+            </tr>
+          </table>
+          <div class="table-ng-eiei">
+            <table class="table">
+              <thead class="thead-dark sticky-top">
+                <th scope="col" style="text-align: center;">ลำดับที่</th>
+                <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                <th scope="col" style="text-align: center;">ขนาด</th>
+               
+                <th scope="col" style="text-align: center;">ราคาขาย</th>
+                <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+                <th scope="col" style="text-align: center;">จำนวนขาย</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productIds;let i = index">
+                  <td style="text-align: center;">{{ i + 1 }}</td>
+                  <td style="text-align: center;">{{ product.prd_name }}</td>
+                  <td style="text-align: center;">{{ product.size_name }}</td>
+                  <td style="text-align: center;">{{ product.prd_sell }}</td>
+                  <td style="text-align: center;">{{ product.prd_value }}</td>
+                  <td>
+                    <input type="text" [(ngModel)]="where_pick[product.prd_id]" name="where_pick" class="form-control"
+                      aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                  </td>
+                </tr>         
+                <div *ngIf="response" class="success-message">{{ response }}</div>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    
