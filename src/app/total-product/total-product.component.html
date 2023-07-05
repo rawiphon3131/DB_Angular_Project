@@ -33,19 +33,16 @@
             </thead>
             <!-- รอการ Queryจากฐานข้อมูล -->
             <tbody>
+                <tr *ngFor="let total of value_pd; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td style="text-align: center;">{{ total.prd_name }}</td>
+                    <td style="text-align: center;">{{ total.type_prd_name }}</td>
+                    <td style="text-align: center;">{{ total.size_name }}</td>
+                    <td style="text-align: center;">{{ total.type_name }}</td>
+                    <td style="text-align: center;">{{ total.prd_value }} ชิ้น</td>
+                    <td style="text-align: center;">{{ total.prd_sell }} บาท</td>
 
-                    <tr *ngFor="let total of value_pd; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td style="text-align: center;">{{ total.prd_name }}</td>
-                        <td style="text-align: center;">{{ total.type_prd_name }}</td>
-                        <td style="text-align: center;">{{ total.size_name }}</td>
-                        <td style="text-align: center;">{{ total.type_name }}</td>
-                        <td style="text-align: center;">{{ total.prd_value }} ชิ้น</td>
-                        <td style="text-align: center;">{{ total.prd_sell }} บาท</td>
-                    
-                    </tr>
-
-
+                </tr>
             </tbody>
         </table>
     </div>

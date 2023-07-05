@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 
 interface Product {
   prd_id: number;
@@ -91,7 +91,15 @@ export class SellItemComponent implements OnInit {
       this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
         (response) => {
           console.log(response);
-          this.router.navigate(['/add_order']);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'เพิ่มข้อมูลเสร็จสิ้น',
+            
+          }).then(() => {
+            this.router.navigate(['/add_order']);
+          });
+          
         },
         (error) => {
           // Handle any errors that occur during the HTTP request

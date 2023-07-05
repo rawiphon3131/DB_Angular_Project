@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 interface Product {
   name: string;
@@ -33,7 +34,6 @@ export class AddNamePdComponent implements OnInit {
   products: Product[] = [];
   type_prd:any[];
   typeoption:any[];
-
   userId: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -82,13 +82,23 @@ export class AddNamePdComponent implements OnInit {
         .subscribe(response => {
           console.log(response);
           // Handle the response from the PHP backend as needed
-          alert('Success! Response: ');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'เพิ่มข้อมูลเสร็จสิ้น',
+            
+          }).then(() => {
+            location.reload();
+          });
+          
         });
     } else {
       console.log('No products to send');
     }
   }
-
+  parseNumber(value: any): number {
+    return parseFloat(value);
+  }
   fetchProductotal(){
     this.http.get<any[]>('http://localhost/backend/select_option.php')
     .subscribe(response => {

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -14,40 +16,43 @@ export class LoginComponent {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   login(): void {
     const url = 'http://localhost/backend/login.php';
 
     const data = { username: this.username, password: this.password };
-  
+
     // Make the HTTP request to the PHP server
     this.http.post(url, data).subscribe(
       (response: any) => {
+        // GET SESSION FROM PHP
         sessionStorage.setItem('username', this.username);
         sessionStorage.setItem('user_fname', response.user_fname);
         sessionStorage.setItem('user_lname', response.user_lname);
         sessionStorage.setItem('user_id', response.user_id);
-        console.log(response); // You can customize the actions here 
-        // Redirect to the dashboard
-        sessionStorage.setItem('username', this.username); // Store the username in session storage
-        
-        if (sessionStorage.getItem('username')) {
-          // Session username available, navigate to the dashboard
+        //
+
+        console.log(response);
+
+        // Redirect to the dashboard if logged in
+        if (this.authService.isLoggedIn()) {
           this.router.navigate(['/dashboard']);
         } else {
-          // Session username not available, display an error message or perform any other action
           console.log('Please log in first.');
         }
-      
       },
       (error) => {
         // Handle login error
-
-          this.loginMessage = 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด'; // Set the login message
-
-        
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง',
+          
+        });
       }
     );
   }

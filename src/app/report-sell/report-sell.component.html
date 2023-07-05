@@ -44,12 +44,12 @@
       </thead>
       <!-- รอการ Queryจากฐานข้อมูล -->
       <tbody>
-        <tr>
-          <th scope="row">N/A</th>
+        <tr *ngFor="let Report of dataReport;let i = index;">
+          <th scope="row">{{i +1}}</th>
+          <td>{{Report.prd_name}}</td>
+          <td>{{Report.order_values}}</td>
           <td>N/A</td>
-          <td>N/A</td>
-          <td>N/A</td>
-          <td>N/A</td>
+          <td>{{Report.order_sum}}</td>
           <td>N/A</td>
           <td>N/A</td>
         </tr>

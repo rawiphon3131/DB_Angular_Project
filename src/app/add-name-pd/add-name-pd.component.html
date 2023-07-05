@@ -92,7 +92,12 @@
           <td style="text-align: center;">{{i+1}}</td>
           <td style="text-align: center;">{{ product.name }}</td>
           <td style="text-align: center;">{{ product.size }}</td>
-          <td style="text-align: center;">{{product.type_prd_name}}</td>
+          <td style="text-align: center;">
+            <ng-container *ngIf="product.type_prd_name === '1'">นักศึกษา</ng-container>
+            <ng-container *ngIf="product.type_prd_name === '2'">บุคลากร</ng-container>
+          </td>
+          
+          
           <td style="text-align: center;">{{product.type_name}}</td>
           <td style="text-align: center;">{{product.where}}</td>
           <td style="text-align: center;">{{product.value_new}}</td>

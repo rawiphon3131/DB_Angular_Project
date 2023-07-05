@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-popup-add-cus-new',
@@ -23,8 +24,13 @@ send_data_succ(){
   this.http.post('http://localhost/backend/add_new_cus.php', data).subscribe(
     (response: any) => {
       console.log(response); 
-      alert('เพิ่มข้อมูลเสร็จสิ้น');
-      location.reload();
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'เพิ่มข้อมูลเสร็จสิ้น',
+      }).then(() => {
+        location.reload();
+      });
     },
     (error) => {
       // Handle any errors that occur during the HTTP request
