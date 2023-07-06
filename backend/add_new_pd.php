@@ -108,31 +108,31 @@ if (!empty($data)) {
       $rowprdsell = mysqli_fetch_array($query);
       $prdprice_id_new = $rowprdsell['prdp_id'];
     }
-
+    $sql = "SELECT a.prd_id, a.prd_name, a.size_id, b.size_name, a.type_prd_id, d.type_prd_name, a.type_id, c.type_name
+    FROM product_tbl AS a
+    INNER JOIN size_tbl AS b ON a.size_id = b.size_id
+    INNER JOIN type_prd_tbl AS d ON a.type_prd_id = d.type_prd_id
+    INNER JOIN type_tbl AS c ON a.type_id = c.type_id
+    WHERE a.prd_name = '$name' AND b.size_name = '$size' AND d.type_prd_name = '$type_name' AND a.type_id = '$type_prd_name'";
+  $query = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($query) > 0) {
+  $row5 = mysqli_fetch_array($query);
+  $prd_id_pinkin = $row5['prd_id'];
+  
+  $sql = "INSERT INTO pickin_tbl (prd_id, user_id, prdin_mk, prdin_values, prdin_date)
+      VALUES ('$prd_id_pinkin', '$userId', '$where', '$value_new', '$date')";
+  $query = mysqli_query($conn, $sql);
+  if ($query) {
+  $response = array('status' => 'Data inserted successfully');
+  } else {
+  $response = array('status' => 'error', 'message' => 'Failed to insert into pickin_tbl');
+  }
+  } else {
+  $response = array('status' => 'error', 'message' => 'Product not found');
+  }
   }
 
-  $sql = "SELECT a.prd_id, a.prd_name, a.size_id, b.size_name, a.type_prd_id, d.type_prd_name, a.type_id, c.type_name
-  FROM product_tbl AS a
-  INNER JOIN size_tbl AS b ON a.size_id = b.size_id
-  INNER JOIN type_prd_tbl AS d ON a.type_prd_id = d.type_prd_id
-  INNER JOIN type_tbl AS c ON a.type_id = c.type_id
-  WHERE a.prd_name = '$name' AND b.size_name = '$size' AND d.type_prd_name = '$type_name' AND a.type_id = '$type_prd_name'";
-$query = mysqli_query($conn, $sql);
-if (mysqli_num_rows($query) > 0) {
-$row5 = mysqli_fetch_array($query);
-$prd_id_pinkin = $row5['prd_id'];
 
-$sql = "INSERT INTO pickin_tbl (prd_id, user_id, prdin_mk, prdin_values, prdin_date)
-    VALUES ('$prd_id_pinkin', '$userId', '$where', '$value_new', '$date')";
-$query = mysqli_query($conn, $sql);
-if ($query) {
-$response = array('status' => 'Data inserted successfully');
-} else {
-$response = array('status' => 'error', 'message' => 'Failed to insert into pickin_tbl');
-}
-} else {
-$response = array('status' => 'error', 'message' => 'Product not found');
-}
 
 
 
@@ -144,4 +144,3 @@ $response = array('status' => 'error', 'message' => 'Product not found');
   $response = array('status' => 'error', 'message' => 'No data received');
   echo json_encode($response);
 }
-?>
