@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { AuthGuard } from './auth.guard';
+
 
 import { Routes, RouterModule } from '@angular/router';
 import { AddOrderComponent } from './add-order/add-order.component';
@@ -27,18 +29,20 @@ import { PopupDetailOrderComponent } from './popup-detail-order/popup-detail-ord
 
 
 
+
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'add_order', component: AddOrderComponent },
-  { path: 'pickin_products', component: PickinProductComponent },
-  { path: 'total_item', component: TotalProductComponent },
-  { path: 'report_sell', component: ReportSellComponent },
-  { path: 'add_order_list', component: AddOrderListComponent },
-  { path: 'add-name-pd', component: AddNamePdComponent },
-  { path: 'add-order-new', component: SellItemComponent },
+  { path: 'add_order', component: AddOrderComponent, canActivate: [AuthGuard] },
+  { path: 'pickin_products', component: PickinProductComponent, canActivate: [AuthGuard] },
+  { path: 'total_item', component: TotalProductComponent, canActivate: [AuthGuard] },
+  { path: 'report_sell', component: ReportSellComponent, canActivate: [AuthGuard] },
+  { path: 'add_order_list', component: AddOrderListComponent, canActivate: [AuthGuard] },
+  { path: 'add-name-pd', component: AddNamePdComponent, canActivate: [AuthGuard] },
+  { path: 'add-order-new', component: SellItemComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
+
 @NgModule({
 
   declarations: [
@@ -70,7 +74,7 @@ const routes: Routes = [
     Select2Module,
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

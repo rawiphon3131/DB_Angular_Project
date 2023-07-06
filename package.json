@@ -32,10 +32,12 @@
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "ng-select2-component": "^11.1.0",
+    "ngx-pagination": "^6.0.3",
     "ngx-webstorage-service": "^5.0.0",
     "primeng": "^16.0.0-rc.2",
     "rxjs": "~7.8.0",
     "select2": "^4.1.0-rc.0",
+    "sweetalert2": "^11.7.12",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
     "zone.js": "~0.13.0"

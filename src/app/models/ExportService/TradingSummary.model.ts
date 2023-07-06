@@ -1,9 +1,10 @@
 export interface ColumName {
-  No: string;
-  Name: string;
-  Quantity: string;
-  Price: string;
-  Total_Price: string;
-  Total_Cost: string;
-  Net_Profit: string;
+  order_id: string;
+  customer_name: string;
+  date: string;
+  product_name: string;
+  price: string;
+  state: string;
+  officer: string;
 }
+

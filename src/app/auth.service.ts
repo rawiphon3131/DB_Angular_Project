@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor() { }
+  isLoggedIn(): boolean {
+    // Check if the user is logged in
+    return sessionStorage.getItem('user_id') !== null;
+  }
 }

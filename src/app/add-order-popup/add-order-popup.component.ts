@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 
 interface Product {
@@ -40,6 +41,9 @@ export class AddOrderPopupComponent implements OnInit {
     const url2 = 'http://localhost/backend/update_pd.php';
   
     for (let productId in this.where_pick) {
+      
+
+      
       const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
       const size_name = product ? product.size_name : '';
       const data = {
@@ -57,11 +61,24 @@ export class AddOrderPopupComponent implements OnInit {
         (response: any) => {
           // Handle the response as needed
           console.log(response);
-          alert('Success! Response: ' + response); // Display an alert box with the response text
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'เพิ่มข้อมูลเสร็จสิ้น',
+            
+          }).then(() => {
+            location.reload();
+          });
         },
         (error) => {
           // Handle the error
-          console.error(error);
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'error',
+            text: 'เกิดข้อผิดพลาด',
+            
+          });
         }
       );
   
