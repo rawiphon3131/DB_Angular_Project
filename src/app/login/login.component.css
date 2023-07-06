@@ -41,6 +41,7 @@ input[type=password] {
 
 .username-text {
     width: 150px;
+    font-size: 20px;
 }
 
 body {
@@ -84,18 +85,32 @@ body {
     width: 25%;
 }
 
-@media screen and (max-width: 800px) {
-
-    .container-login,
-    .border-login,
-    .tital-login,
-    .text-login {
-        width: 100%;
-        /* The width is 100%, when the viewport is 800px or smaller */
-    }
-}.text-login-alert{
+.text-login-alert{
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
+}
+@media only screen and (max-width: 800px) {
+    .container-login{
+        width: 100%;
+        border: 1px solid red;
+    }
+    .border-login{
+        width: 100%;
+        border: 1px solid red;
+    }
+    .username-text {
+        display: flex;
+        width: 20%;
+        font-size: 14px;
+        
+        align-items: center;
+    }
+    input[type=text]{
+        width: 80%;
+    }
+    input[type=password]{
+        width: 80%;
+    } 
 }

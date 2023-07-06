@@ -17,6 +17,15 @@
                 </table>
             </div>
         </div>
+        <div>
+            <label for="filter">เลือกรูปแบบการชำระเงินที่ต้องการแสดง:</label>
+            <select id="filter" [(ngModel)]="selectedState" (change)="filterOrders()" >
+                <option value="">ทั้งหมด</option>
+                <option value="ชำระเงินแล้ว">จ่ายด้วยเงินสด</option>
+                <option value="รอชำระเงิน">จ่ายด้วยเครดิต</option>
+            </select>
+        </div>
+        
         <div style="height: 90%;overflow: auto;">
             <table class="table">
                 <thead class="thead-dark sticky-top">
@@ -31,7 +40,7 @@
                     </tr>
                 </thead>
                 <!-- รอการ Queryจากฐานข้อมูล -->
-                <tbody *ngFor="let order of orderList;let i = index">
+                <tbody *ngFor="let order of filteredOrders; let i = index">
                     <tr>
                         <td style="text-align: center;">{{ order.order_id}}</td>
                         <td style="text-align: center;">{{order.cus_name}}</td>
@@ -46,14 +55,13 @@
                                 <div style="margin: 1px;">
                                     <button type="button" class="btn btn-info"
                                         (click)="showInfo(order.order_id,order.cus_name)">รายละเอียด</button>
-                                    <app-popup-detail-order *ngIf="infoOrder[order.order_id]"></app-popup-detail-order>
                                 </div>
                                 <div style="margin: 1px;">
                                     <button class="btn btn-success btn-block" (click)="openPDF(order.order_id)">ออกใบเสร็จ</button>
                                 </div>
                                 <div style="margin: 1px;">
                                     <button type="button" class="btn btn-warning"
-                                        *ngIf="order.state_name === 'รอชำระเงิน'">ชำระเงิน</button>
+                                        *ngIf="order.state_name === 'รอชำระเงิน'" (click)="pay(order.order_id,order.cus_id,order.cus_name)" >ชำระเงิน</button>
                                 </div>
                             </div>
                         </td>

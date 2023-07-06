@@ -1,33 +1,31 @@
 <div class="popup-container">
     <div class="border-popup">
-        <div class="set-margin-popup">
-            <div class="cosspop">
-                <a href="/add_order">X</a>
-            </div>
-            <h1>รายระเอียดรายการสั่งซื้อ</h1>
-            <table style="width: 100%;">
-               <thead>
-                <th>
-                    ลำดับที่
-                </th>
-                <th>ชื่อสินค้า</th>
-                <th>จำนวน</th>
-                <th>ราคาขาย</th>
-                <th>ราคารวม</th>
-               </thead>
-               <tbody *ngFor="let orderdetail of orderDetails;let i =index;">
-                <td>{{i+1}}</td>
-                <td>{{orderdetail.prd_name}}</td>
-                <td>{{orderdetail.order_values}}</td>
-                <td>{{orderdetail.prd_sell }}</td>
-                <td>{{orderdetail.order_sum}}</td>     
-               </tbody>
-            </table>
-            
-            <div *ngFor="let orderSumde of OrderSum">
-                รวมทั้งหมด {{orderSumde.order_sum_sum}} บาท
-            </div>
-            
+      <div class="set-margin-popup">
+        <div class="cosspop">
+          <a href="/add_order">X</a>
         </div>
+        <h1>รายระเอียดรายการสั่งซื้อ</h1>
+        <table style="width: 100%;">
+          <thead>
+            <th>ลำดับที่</th>
+            <th>ชื่อสินค้า</th>
+            <th>จำนวน</th>
+            <th>ราคาขาย</th>
+            <th>ราคารวม</th>
+          </thead>
+          <tbody *ngFor="let orderdetail of orderDetails; let i = index;">
+            <td>{{ i + 1 }}</td>
+            <td>{{ orderdetail.prd_name }}</td>
+            <td>{{ orderdetail.order_values }}</td>
+            <td>{{ orderdetail.prd_sell }}</td>
+            <td>{{ orderdetail.order_sum }}</td>
+          </tbody>
+        </table>
+  
+        <div *ngFor="let orderSumde of OrderSum">
+          รวมทั้งหมด {{ orderSumde.order_sum_sum }} บาท
+        </div>
+  
+      </div>
     </div>
-</div>
+  </div>

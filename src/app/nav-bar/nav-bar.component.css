@@ -1,0 +1,18 @@
+@media only screen and (max-width: 800px) {
+    .navbar{
+        border: 1px solid red;
+        height: 50px;
+    }
+    .navbar-brand{
+        font-size: 10px;
+    }
+    .btn{
+        border: 1px solid red;
+        width: 10px;
+        height: 10px;
+        font-size: 10px;
+    }
+    .user_name_e{
+        font-size: 10px;
+    }
+}

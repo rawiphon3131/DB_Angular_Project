@@ -38,9 +38,9 @@ export class SellItemComponent implements OnInit {
   searchKeyword: string = '';
   filteredProducts: Product[] = [];
   openPopupSell: boolean = false;
-  openPopcusnew:boolean = false;
+  openPopcusnew: boolean = false;
 
-  constructor(private http: HttpClient,private router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
     this.type_price = [];
     this.cus_numphone = [];
     this.typeoption = [];
@@ -66,7 +66,7 @@ export class SellItemComponent implements OnInit {
     if (this.type_sell === '') {
       // The field is not filled, display an error message or perform the necessary action
       return;
-    }else{
+    } else {
       const dataArray = [];
       for (let productId in this.product_values) {
         const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
@@ -92,19 +92,29 @@ export class SellItemComponent implements OnInit {
         (response) => {
           console.log(response);
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'เพิ่มข้อมูลเสร็จสิ้น',
-            
-          }).then(() => {
-            this.router.navigate(['/add_order']);
+            title: 'คุณต้องการบันทึกข้อมูลหรือไม่',
+            showCancelButton: true,
+            confirmButtonText: 'บันทึก',
+
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire('Saved!', '', 'success')
+              this.router.navigate(['/add_order']);
+            }
+
           });
-          
+
         },
         (error) => {
           // Handle any errors that occur during the HTTP request
           console.error(error);
-          alert('เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง');
+          Swal.fire({
+            icon: 'error',
+            title: 'error',
+            text: 'เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง',
+            
+          });
         }
       );
     }
@@ -141,7 +151,7 @@ export class SellItemComponent implements OnInit {
     return customer ? customer.cus_numphone : '';
   }
 
-  addNamecus(){
+  addNamecus() {
     this.openPopcusnew = true;
   }
 
