@@ -88,35 +88,35 @@ export class SellItemComponent implements OnInit {
         dataArray.push(data);
       }
       const jsonData = JSON.stringify(dataArray);
-      this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
-        (response) => {
-          console.log(response);
-          Swal.fire({
-            title: 'คุณต้องการบันทึกข้อมูลหรือไม่',
-            showCancelButton: true,
-            confirmButtonText: 'บันทึก',
-
-
-          }).then((result) => {
-            if (result.isConfirmed) {
+      Swal.fire({
+        title: 'คุณต้องการบันทึกข้อมูลหรือไม่',
+        showCancelButton: true,
+        confirmButtonText: 'บันทึก',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
+            (response) => {
+              console.log(response);
               Swal.fire('Saved!', '', 'success')
-              this.router.navigate(['/add_order']);
+          this.router.navigate(['/add_order']);
+            },
+            (error) => {
+              // Handle any errors that occur during the HTTP request
+              console.error(error);
+              Swal.fire({
+                icon: 'error',
+                title: 'error',
+                text: 'เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง',
+                
+              });
             }
-
-          });
-
-        },
-        (error) => {
-          // Handle any errors that occur during the HTTP request
-          console.error(error);
-          Swal.fire({
-            icon: 'error',
-            title: 'error',
-            text: 'เกิดข้อผิดพลาดโปรดตรวจสอบข้อมูลให้ถูกต้อง',
-            
-          });
+          );
+          
         }
-      );
+
+      });  
+      const data2 = {userId: this.userId,
+        type_sell: this.type_sell,}
     }
   }
   fetchProductIds() {
