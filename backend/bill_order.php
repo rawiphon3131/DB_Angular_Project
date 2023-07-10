@@ -26,6 +26,8 @@ $query = mysqli_query($conn, $sql);
 // Get the inserted order_id
 $order_id_tbl = mysqli_insert_id($conn);
 
+
+
 foreach ($data as $item) {
     $prd_id = $item['prd_id'];
     $prd_sell = $item['prd_sell'];
@@ -53,28 +55,54 @@ foreach ($data as $item) {
     $sql = "INSERT INTO order_detail_tbl (order_id, prdp_id, order_values, order_sum) VALUES ('$order_id_tbl', '$prdp_id_table', '$product_values', '$order_sumerly')";
     $query = mysqli_query($conn, $sql);
 
-    if ($type_sell == 1) {
-        $sql = "UPDATE order_tbl SET state_id = 4 WHERE order_id = '$order_id_tbl'";
-        $query = mysqli_query($conn, $sql);
-    } else if ($type_sell == 2) {
-        $sql = "UPDATE order_tbl SET state_id = 3 WHERE order_id = '$order_id_tbl'";
-        $query = mysqli_query($conn, $sql);
-
-        $sql = "SELECT cus_id,cus_adddress,a.cus_name_id,cus_name,cus_credit,cus_numtel FROM customer_tbl as a
-        INNER JOIN customer_name_tbl as b
-        ON a.cus_name_id = b.cus_name_id WHERE cus_id = '$cusId'";
-        $query = mysqli_query($conn, $sql);
-        if(mysqli_num_rows($query) > 0){
-            $row = mysqli_fetch_array($query);
-            $cus_name_id_q = $row['cus_name_id'];
-            $sql = "UPDATE customer_name_tbl SET cus_credit = cus_credit-$order_sumerly WHERE cus_name_id = '$cus_name_id_q'";
+    
+    switch ($type_sell){
+        case 1 :
+            $sql = "UPDATE order_tbl SET state_id = 4 WHERE order_id = '$order_id_tbl'";
             $query = mysqli_query($conn, $sql);
-        }
-    }
+            break;
+        case 2 :
+            $sql = "UPDATE order_tbl SET state_id = 3 WHERE order_id = '$order_id_tbl'";
+            $query = mysqli_query($conn, $sql);
 
+           
+            
+    }
+   
     $sql = "UPDATE product_tbl SET prd_value=prd_value-$product_values WHERE prd_id = '$prd_id'";
     $query = mysqli_query($conn, $sql);
 }
+if($type_sell == 2){
+    
+        $sql = "SELECT order_id,SUM(order_sum) FROM order_detail_tbl WHERE order_id = '$order_id_tbl'";
+        $query = mysqli_query($conn, $sql);
+        
+        if(mysqli_num_rows($query) > 0){
+            $row = mysqli_fetch_array($query);
+            $order_id_ods = $row['order_id'];
+            $sum_ods = $row['SUM(order_sum)'];
+            $sql = "SELECT * FROM ods_tbl WHERE cus_id = '$cusId'";
+            $query = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($query) > 0){
+                $sql = "UPDATE ods_tbl SET ods_values = ods_values+$sum_ods WHERE cus_id = '$cusId'";
+                $query = mysqli_query($conn, $sql);
+            }else{
+                $sql = "INSERT INTO ods_tbl(cus_id,ods_values,state_id) VALUES ('$cusId','$sum_ods',3)";
+                $query = mysqli_query($conn, $sql);
+            }
+                 
+        }
+        $sql = "SELECT cus_id,a.cus_name_id FROM customer_tbl as a 
+        INNER JOIN customer_name_tbl as b
+        ON a.cus_name_id = b.cus_name_id WHERE cus_id = '$userId'";
+        $query = mysqli_query($conn,$sql);
+        if(mysqli_num_rows($query) > 0){
+            $row = mysqli_fetch_array($query);
+            $cus_name_id_tbl = $row['cus_name_id'];
+            $sql = "UPDATE customer_name_tbl SET cus_credit=cus_credit-$sum_ods";
+            $query = mysqli_query($conn,$sql);
+        }
+    }
 
 $conn->close();
 

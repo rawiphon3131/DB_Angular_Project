@@ -103,6 +103,15 @@ CREATE TABLE IF NOT EXISTS pickin_tbl(
     FOREIGN KEY(user_id) REFERENCES user_tbl(user_id)
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
+CREATE TABLE IF NOT EXISTS ods_tbl(
+    ods_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cus_id INT NOT NULL,
+    ods_values FLOAT (10,3),
+    state_id INT,
+    FOREIGN KEY(cus_id) REFERENCES customer_tbl(cus_id),
+    FOREIGN KEY(state_id) REFERENCES state_tbl(state_id)
+)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
 INSERT INTO user_tbl(card_id,user_password,user_fname,user_lname) VALUES
 ('1909802556165','2544','นายวงศธร','นามผล');
 
@@ -127,6 +136,6 @@ INSERT INTO product_price_tbl(prd_id,prd_price_pickin,prd_sell) VALUES
 (1,150,250),(2,155,260),(3,170,290);
 
 INSERT INTO state_tbl(state_name) VALUES
-('รับเข้า'),('สร้างคำสั่งซื้อ'),('รอชำระเงิน'),('ชำระเงินแล้ว');
+('รับเข้า'),('สร้างคำสั่งซื้อ'),('ค้างชำระ'),('ชำระเงินแล้ว');
 
 INSERT INTO order_type_tbl(order_type_name) VALUES ('จ่ายสด'),('เครดิต');
