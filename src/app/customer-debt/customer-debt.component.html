@@ -24,6 +24,7 @@
                         <th scope="col" style="text-align: center;">ชื่อลูกค้า</th>
                         <th scope="col" style="text-align: center;">เครดิตคงเหลือ</th>
                         <th scope="col" style="text-align: center;">ยอดค้างชำระ</th>
+                        <th scope="col" style="text-align: center;">สถานะ</th>
                         <th scope="col" style="text-align: center;">ACTION</th>
                     </tr>
                 </thead>
@@ -33,7 +34,12 @@
                         <td>{{cusdb.cus_name}}</td>
                         <td style="color: green;">{{cusdb.cus_credit}} เครดิต</td>
                         <td style="color: red;">{{cusdb.ods_values}} บาท</td>
-                        <td><button type="button" class="btn btn-primary">ชำระเงิน</button></td>
+                        <td [ngClass]="{ 'green-message': cusdb.state_name === 'ชำระเงินแล้ว', 'red-text': cusdb.state_name === 'ค้างชำระ' }">{{cusdb.state_name}}</td>
+                        <td>
+                            <button type="button" class="btn btn-success" *ngIf="cusdb.state_id == 4">ชำระเงินแล้ว</button>
+                            <button type="button" class="btn btn-primary" (click)="showInfo(cusdb.ods_id,cusdb.cus_id)" *ngIf="cusdb.state_id == 3">ชำระเงิน</button>
+                        </td>
+                        
 
                     </tr>
                 </tbody>
