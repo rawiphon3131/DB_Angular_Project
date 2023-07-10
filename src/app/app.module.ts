@@ -26,6 +26,7 @@ import { SellItemComponent } from './sell-item/sell-item.component';
 import { PopupSellItemComponent } from './popup-sell-item/popup-sell-item.component';
 import { PopupAddCusNewComponent } from './popup-add-cus-new/popup-add-cus-new.component';
 import { PopupDetailOrderComponent } from './popup-detail-order/popup-detail-order.component';
+import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
 
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'add_order_list', component: AddOrderListComponent, canActivate: [AuthGuard] },
   { path: 'add-name-pd', component: AddNamePdComponent, canActivate: [AuthGuard] },
   { path: 'add-order-new', component: SellItemComponent, canActivate: [AuthGuard] },
+  { path: 'dbt', component: CustomerDebtComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
@@ -62,6 +64,7 @@ const routes: Routes = [
     PopupSellItemComponent,
     PopupAddCusNewComponent,
     PopupDetailOrderComponent,
+    CustomerDebtComponent,
   ],
   imports: [
     

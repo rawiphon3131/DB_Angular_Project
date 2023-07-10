@@ -23,6 +23,7 @@ export class AddOrderComponent implements OnInit {
   orderDetails: any; // Property to store the retrieved order details
   OrderSum: any;
   price_prd_id: any;
+  paymentarry:any;
 
   constructor(private http: HttpClient) {
 
@@ -66,11 +67,13 @@ export class AddOrderComponent implements OnInit {
   }
   pay(order_id: number, cus_id: string, cus_name: string) {
     const data = { order_id: order_id, cus_name: cus_name };
+    
     this.http.post<any>('http://localhost/backend/select_blpay.php', data).subscribe(
       (response) => {
         console.log(response);
         // Handle the response from PHP and display the information
         sessionStorage.setItem('OrderSums', JSON.stringify(response));
+        this.paymentarry = response;
         const orderSum = response[0].order_sum; // Access the order_sum value from the first item in the response array
         if (orderSum !== undefined) {
           Swal.fire({
@@ -82,29 +85,80 @@ export class AddOrderComponent implements OnInit {
             },
             showCancelButton: true,
             confirmButtonText: 'ยืนยัน',
-            
+            inputValidator: (value: string): Promise<string | null> => {
+              return new Promise((resolve) => {
+                if (!value || Number(value) > orderSum) {
+                  resolve('กรอกจำนวนไม่ถูกต้อง หรือ เกินจำนวนกรุณาตรวจสอบอีกครั้ง');
+                } else {
+                  resolve(null);
+                }
+              });
+            }
           }).then((result) => {
             if (result.isConfirmed) {
               const paymentAmount = result.value; // Get the payment amount from the Swal input
           
-              // Send the payment amount to PHP
-              const data = { order_id: order_id,cus_id:cus_id, cus_name: cus_name, payment_amount: paymentAmount };
-              this.http.post('http://localhost/backend/payment.php', data).subscribe(
-                (response) => {
-                  console.log(response);
-                  // Handle the response from PHP
-                },
-                (error) => {
-                  console.error(error);
-                  // Handle any errors that occur during the HTTP request
-                }
-              );
-          
-              Swal.fire({
-                title: 'Payment Successful',
-                text: `Payment of ${paymentAmount} successfully made.`,
-                icon: 'success'
-              });
+              // Check if paymentAmount is valid
+              if (!paymentAmount || Number(paymentAmount) > orderSum) {
+                Swal.fire({
+                  title: 'กรอกจำนวนไม่ถูกต้อง หรือ เกินจำนวนกรุณาตรวจสอบอีกครั้ง',
+                  text: 'โปรดกรอกข้อมูล.',
+                  icon: 'error'
+                });
+                return;
+              }
+              if (Number(paymentAmount) != orderSum) {
+                const data = { order_id: order_id,
+                  cus_id:cus_id, 
+                  cus_name: cus_name, 
+                  payment_amount: paymentAmount,
+                box_arryforpayment:this.paymentarry };
+                let playment_total = orderSum-paymentAmount;
+                this.http.post('http://localhost/backend/payment.php', data).subscribe(
+                  (response) => {
+                    console.log(response);
+                    // Handle the response from PHP
+                  },
+                  (error) => {
+                    console.error(error);
+                    // Handle any errors that occur during the HTTP request
+                  }
+                );
+            
+                Swal.fire({
+                  title: 'ชำระเงินเสร็จสิ้น',
+                  html : `ชำระเงินจำนวน <span style="color:green;">${paymentAmount}</span> บาท เสร็จสมบูรณ์ ยอดค้างชำระคงเหลือ <span style="color:red;">${playment_total}</span> บาท.`,
+                  icon: 'success'
+                });
+              }
+              if (Number(paymentAmount) == orderSum) {
+                const data = { order_id: order_id,
+                  cus_id:cus_id, 
+                  cus_name: cus_name, 
+                  payment_amount: paymentAmount,
+                box_arryforpayment:this.paymentarry };
+                let playment_total = orderSum-paymentAmount;
+                this.http.post('http://localhost/backend/payment2.php', data).subscribe(
+                  (response) => {
+                    console.log(response);
+                    // Handle the response from PHP
+
+                    
+                  },
+                  (error) => {
+                    console.error(error);
+                    // Handle any errors that occur during the HTTP request
+                  }
+                );
+            
+                Swal.fire({
+                  title: 'ชำระเงินเสร็จสิ้น',
+                  html : `ชำระเงินจำนวน <span style="color:green;">${paymentAmount}</span> บาท เสร็จสมบูรณ์ ยอดค้างชำระคงเหลือ <span style="color:red;">${playment_total}</span> บาท.`,
+                  icon: 'success'
+                }).then(() => {
+                  location.reload();
+                });
+              }
             }
           });
           
@@ -167,20 +221,21 @@ export class AddOrderComponent implements OnInit {
     </thead>
     <tbody>`;
         let totalSum = 0;
+        
         for (let i = 0; i < orderDetails.length; i++) {
           const orderDetail = orderDetails[i];
           const orderSum = parseFloat(orderDetail.order_sum); // Parse the order_sum value as a float
+          let valuse_sum = orderDetail.prd_sell*orderDetail.order_values;
           html += `
     <tr>
       <td>${i + 1}</td>
       <td>${orderDetail.prd_name}</td>
       <td>${orderDetail.order_values}</td>
       <td>${orderDetail.prd_sell}</td>
-      <td>${orderDetail.order_sum}</td>
+      <td>${valuse_sum}</td>
     </tr>
     </tbody>`;
-    totalSum += orderSum;
-    orderDetail.order_sum = Number(totalSum).toFixed(3);
+    totalSum += valuse_sum;
         }
         
         html += `
