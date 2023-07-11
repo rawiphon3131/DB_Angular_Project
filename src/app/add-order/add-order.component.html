@@ -1,6 +1,5 @@
 <body>
-
-
+    <p-toast></p-toast>
     <app-nav-bar></app-nav-bar>
     <div class="container-addorder-item">
         <div class="border-addorder">
@@ -11,16 +10,157 @@
                             <h4>คำสั่งซื้อทั้งหมด</h4>
                         </td>
                         <td style="text-align: right">
-                            <a href="/add-order-new" class="btn btn-primary rounded-pill">เพิ่มคำสั่งซื้อ+</a>
+
+
+                            <p-button (click)="showDialog()" styleClass="p-button-rounded">
+                                <span>เพิ่มคำสั่งซื้อ+</span>
+                            </p-button>
+                            <p-dialog header="Header" [(visible)]="visible" [style]="{ width: '80vw' }"
+                                [draggable]="false" [resizable]="false">
+                                <ng-template pTemplate="header">
+                                    <span class="text-xl font-bold">เพิ่มคำสั่งซื้อ</span>
+                                </ng-template>
+                                <table style="width: 100%;text-align: left;">
+                                    <tr>
+                                        <td>
+                                            <p-button (click)="showDialog2()" icon="pi pi-user"
+                                                styleClass="p-button-info" label="เพิ่มรายชื่อลูกค้า">+</p-button>
+                                            <p-dialog header="Header" [(visible)]="visible2" [style]="{ width: '50vw' }"
+                                                [draggable]="false" [resizable]="false">
+                                                <ng-template pTemplate="header">
+                                                    <span class="text-xl font-bold">เพิ่มรายชื่อลูกค้าใหม่</span>
+                                                </ng-template>
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" pInputText [(ngModel)]="name_cus_new"
+                                                                name="name_cus_new" placeholder="ชื่อ-สกุล">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" pInputText [(ngModel)]="address_cus_new"
+                                                                name="name_cus_new" placeholder="ที่อยู่">
+                                                        </td>
+                                                        <td>
+                                                            <input pInputText pKeyFilter="int" placeholder="เบอร์โทร"
+                                                                [(ngModel)]="phone_cus_new" name="name_cus_new" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <ng-template pTemplate="footer">
+
+                                                    <p-confirmPopup></p-confirmPopup>
+                                                    <p-button (click)="send_data_succ($event)" icon="pi pi-check"
+                                                        label="บันทึก"></p-button>
+
+                                                </ng-template>
+                                            </p-dialog>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 20%;">
+                                            รายชื่อลูกค้า
+                                        </td>
+                                        <td>
+                                            <section>
+                                                <select [(ngModel)]="selectedOption"
+                                                    [ngModelOptions]="{ standalone: true }" class="form-control"
+                                                    (change)="updateCustomerAddress()" icon="pi-angle-down">
+                                                    <option value="">โปรดเลือก...</option>
+                                                    <option *ngFor="let option of customer" [value]="option.cus_id">
+                                                        {{ option.cus_name
+                                                        }}</option>
+                                                </select>
+                                            </section>
+                                        </td>
+                                        <td *ngIf="selectedOption" style="width: 10%;"
+                                        >
+                                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm"
+                                                [value]="getCustomerCredit(selectedOption)" readonly>
+                                        </td>
+
+                                        <td *ngIf="selectedOption">
+                                            ที่อยู่
+                                        </td>
+                                        <td *ngIf="selectedOption" style="width: 10%">
+                                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm"
+                                                [value]="getCustomerAddress(selectedOption)" readonly>
+                                        </td>
+
+                                        <td *ngIf="selectedOption">
+                                            เบอร์โทร
+                                        </td>
+                                        <td *ngIf="selectedOption" style="width: 10%">
+                                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm"
+                                                [value]="getCustomerNumphone(selectedOption)" readonly>
+                                        </td>
+
+                                        <td *ngIf="selectedOption">ประเภทจ่าย</td>
+                                        <td *ngIf="selectedOption">
+
+
+                                            <section>
+                                                <select [(ngModel)]="type_sell" name="type_sell" class="form-control">
+                                                    <option value="">โปรดเลือก...</option>
+                                                    <option value="1">เงินสด</option>
+                                                    <option value="2">เครดิต</option>
+                                                </select>
+                                            </section>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table" *ngIf="selectedOption">
+                                    <thead class="thead-dark sticky-top">
+                                        <th scope="col" style="text-align: center;">ลำดับที่</th>
+                                        <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                                        <th scope="col" style="text-align: center;">ขนาด</th>
+
+                                        <th scope="col" style="text-align: center;">ราคาขาย</th>
+                                        <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+                                        <th scope="col" style="text-align: center;">จำนวนขาย</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product of productIds;let i = index">
+                                            <td style="text-align: center;">{{ i + 1 }}</td>
+                                            <td style="text-align: center;">{{ product.prd_name }}</td>
+                                            <td style="text-align: center;">{{ product.size_name }}</td>
+                                            <td style="text-align: center;">{{ product.prd_sell }}</td>
+                                            <td style="text-align: center;"
+                                                [ngClass]="{'red-color': parseNumber(product.prd_value) <= 20, 'out-of-stock': parseNumber(product.prd_value) === 0, 'havein-of-stock': parseNumber(product.prd_value) > 20}">
+                                                {{ product.prd_value }} ชิ้น
+                                            </td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="product_values[product.prd_id]"
+                                                    name="where_pick" class="form-control"
+                                                    aria-label="Sizing example input"
+                                                    aria-describedby="inputGroup-sizing-sm"
+                                                    *ngIf="parseNumber(product.prd_value) !== 0"
+                                                    [disabled]="parseNumber(product.prd_value) <=0"
+                                                    (input)="checkExceeded(product)">
+                                                <div *ngIf="exceeded[product.prd_id]" class="exceeded-message">
+                                                    จำนวนเกินของที่มีในสต๊อก</div>
+                                            </td>
+                                        </tr>
+                                        <div *ngIf="response" class="success-message">{{ response }}</div>
+                                    </tbody>
+                                </table>
+                                <ng-template pTemplate="footer">
+                                    <p-confirmPopup></p-confirmPopup>
+                                    <p-button (click)="openAddPrdtoOrder($event)" icon="pi pi-check"
+                                        label="Confirm"></p-button>
+                                </ng-template>
+                            </p-dialog>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <div style="height: 90%;overflow: auto;">
-            <table class="table">
-                <thead class="thead-dark sticky-top">
+        <div style="height: 90%; overflow: auto;">
+            <p-table [value]="orderList" [rows]="5" [paginator]="true">
+                <ng-template pTemplate="header">
                     <tr>
                         <th scope="col" style="text-align: center;">Order ID</th>
                         <th scope="col" style="text-align: center;">ชื่อผู้สั่งซื้อ</th>
@@ -29,37 +169,33 @@
                         <th scope="col" style="text-align: center;">วันที่</th>
                         <th scope="col" style="text-align: center;">ACTION</th>
                     </tr>
-                </thead>
-                <!-- รอการ Queryจากฐานข้อมูล -->
-                <tbody *ngFor="let order of orderList; let i = index">
+                </ng-template>
+                <ng-template pTemplate="body" let-order let-i="rowIndex">
                     <tr>
-                        <td style="text-align: center;">{{ order.order_id}}</td>
-                        <td style="text-align: center;">{{order.cus_name}}</td>
-                        <td style="text-align: center;">{{order.user_name}}</td>
+                        <td style="text-align: center;">{{ order.order_id }}</td>
+                        <td style="text-align: center;">{{ order.cus_name }}</td>
+                        <td style="text-align: center;">{{ order.user_name }}</td>
                         <td style="text-align: center;"
                             [ngClass]="{ 'green-message': order.order_type_name === 'จ่ายสด', 'red-text': order.order_type_name === 'เครดิต' }">
-                            {{order.order_type_name}}</td>
+                            {{ order.order_type_name }}</td>
                         <td style="text-align: center;">{{ order.order_date }}</td>
                         <td>
-                            <div style="display: flex;">
+                            <div style="display: flex;justify-content: center;">
                                 <div style="margin: 1px;">
                                     <button type="button" class="btn btn-info"
-                                        (click)="showInfo(order.order_id,order.cus_name)">รายละเอียด</button>
+                                        (click)="showInfo(order.order_id, order.cus_name)">รายละเอียด
+                                    </button>
                                 </div>
                                 <div style="margin: 1px;">
                                     <button class="btn btn-success btn-block"
                                         (click)="openPDF(order.order_id)">ออกใบเสร็จ</button>
                                 </div>
-
                             </div>
                         </td>
                     </tr>
-                </tbody>
-                <tbody id="pdfContent">
-                    <tr *ngFor="let order of orderList; let i = index">
-                    </tr>
-                </tbody>
-            </table>
+                </ng-template>
+            </p-table>
         </div>
+
     </div>
 </body>

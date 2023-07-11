@@ -9,51 +9,276 @@
                             <h4>รายการสินค้ารับเข้า</h4>
                         </td>
                         <td style="text-align: right">
-                            <a href="/total_item" class="btn btn-primary rounded-pill">สินค้าทั้งหมด</a>
-                        </td>
-                        <td style="text-align: right">
-                            <button (click)="openAddNamePd()"class="btn btn-primary rounded-pill">รับเข้าสินค้าใหม่+</button>
-                            <app-add-name-pd *ngIf="showAddnamePDPopup"></app-add-name-pd>
-                        </td>
-                        <td style="text-align: right">
-                            <!-- pickup-product.component.html -->
-                            <button (click)="openAddOrderPopup()" class="btn btn-primary rounded-pill">รับเข้าสินค้า+</button>               
-                            <app-add-order-popup *ngIf="showAddOrderPopup"></app-add-order-popup>
+                            <p-button (click)="showDialog()" icon="pi pi-box" label="สินค้าทั้งหมด"></p-button>
+                            <p-dialog header="รายการสินค้าทั้งหมด" [(visible)]="visible" [modal]="true"
+                                [style]="{ width: '80vw' }" [draggable]="false" [resizable]="false">
 
-                        </td>
-                        
+                                <table>
+                                    <tr>
+                                        <td style="align-items: right;">
+                                            <form action="">
+                                                <input class="form-control mr-sm-2" type="search"
+                                                    placeholder="ค้นหาสินค้า" aria-label="ค้นหาสินค้า">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                                <p-table [value]="value_pd" [rows]="5" [paginator]="true"
+                                    [style]="{ 'min-width': '50rem' }">
+                                    <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" style="width: 10%;">ลำดับที่</th>
+                        <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                        <th scope="col" style="text-align: center;">ประเภท</th>
+                        <th scope="col" style="text-align: center;">ขนาด</th>
+                        <th scope="col" style="text-align: center;">สำหรับ</th>
+                        <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+                        <th scope="col" style="text-align: center;">ราคาขาย/ชิ้น</th>
+                    </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-total let-i="rowIndex">
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td style="text-align: center;">{{ total.prd_name }}</td>
+                            <td style="text-align: center;">{{ total.type_prd_name }}</td>
+                            <td style="text-align: center;">{{ total.size_name }}</td>
+                            <td style="text-align: center;">{{ total.type_name }}</td>
+                            <td style="text-align: center;">{{ total.prd_value }} ชิ้น</td>
+                            <td style="text-align: center;">{{ total.prd_sell }} บาท</td>
+                        </tr>
+                    </ng-template>
+                    </p-table>
+
+
+
+                    </p-dialog>
+                    </td>
+                    <td style="text-align: right">
+                        <p-button (click)="showDialog3()" icon="pi pi-box" label="รับเข้าสินค้าใหม่">+</p-button>
+                        <p-dialog [(visible)]="visible3" [modal]="true" [style]="{ width: '90vw',height:'90vw' }"
+                            [draggable]="false" [resizable]="false">
+                            <form (ngSubmit)="add_new_products()">
+                                <table>
+                                    <tr>
+                                        <td style="width: 10%;">
+                                            ชื่อสินค้า
+                                        </td>
+                                        <td>
+                                            <input type="text" [(ngModel)]="name_new_pd" name="name_new_pd"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+                                        <td style="width: 10%;">
+                                            ขนาด
+                                        </td>
+                                        <td>
+                                            <input type="text" [(ngModel)]="size_name_new" name="size_name_new"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm">
+                                        </td>
+                                        <td style="width: 10%;">
+                                            สำหรับ
+                                        </td>
+                                        <td>
+                                            <section>
+                                                <select [(ngModel)]="selectedOption"
+                                                    [ngModelOptions]="{ standalone: true }" class="form-control">
+                                                    <option value="">โปรดเลือก...</option>
+                                                    <option *ngFor="let option of type_prd"
+                                                        [value]="option.type_prd_id">{{ option.type_prd_name }}
+                                                    </option>
+                                                </select>
+                                            </section>
+                                        </td>
+                                        <td style="width: 10%;">ประเภทสินค้า</td>
+                                        <td>
+                                            <input type="text" [(ngModel)]="type_name" name="value_new"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%;">รับมาจาก</td>
+                                        <td><input type="text" [(ngModel)]="where_pick_pd" name="where_pick_pd"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+                                        <td style="width: 10%;">จำนวน</td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="value_new" name="value_new"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+                                        <td>
+                                            ราคาทุน
+                                        </td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="price_in" name="price_in"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+                                        <td>ราคาขาย</td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="price_sell" name="price_sell"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-lg">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            รับเข้าวันที่
+                                        </td>
+                                        <td>
+                                            <p-calendar [(ngModel)]="date" name="date" dateFormat="yy-mm-dd" [showButtonBar]="true" (ngModelChange)="onDateChange2($event)"></p-calendar>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <p-button icon="pi pi-plus" label="เพิ่ม" styleClass="p-button-outlined" type="submit"></p-button>
+                                            <!-- Submit button -->
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>
+<p-button (click)="send_data($event)" icon="pi pi-check" label="Submit" styleClass="p-button-outlined p-button-success"></p-button>
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <p-table [value]="productss">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="text-align: center;">ลำดับที่</th>
+                                            <th style="text-align: center;">ชื่อสินค้า</th>
+                                            <th style="text-align: center;">ขนาด</th>
+                                            <th style="text-align: center;">สำหรับ</th>
+                                            <th style="text-align: center;">ประเภท</th>
+                                            <th style="text-align: center;">รับมาจาก</th>
+                                            <th style="text-align: center;">จำนวน</th>
+                                            <th style="text-align: center;">ราคารับเข้า</th>
+                                            <th style="text-align: center;">ราคาขาย</th>
+                                            <th style="text-align: center;">รับเข้าวันที่</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-product let-i="rowIndex">
+                                        <tr>
+                                            <td style="text-align: center;">{{ i + 1 }}</td>
+                                            <td style="text-align: center;">{{ product.name }}</td>
+                                            <td style="text-align: center;">{{ product.size }}</td>
+                                            <td style="text-align: center;">
+                                                <ng-container
+                                                    *ngIf="product.type_prd_name === '1'">นักศึกษา</ng-container>
+                                                <ng-container
+                                                    *ngIf="product.type_prd_name === '2'">บุคลากร</ng-container>
+                                            </td>
+                                            <td style="text-align: center;">{{ product.type_name }}</td>
+                                            <td style="text-align: center;">{{ product.where }}</td>
+                                            <td style="text-align: center;">{{ product.value_new }}</td>
+                                            <td style="text-align: center;">{{ product.price_in }}</td>
+                                            <td style="text-align: center;">{{ product.price_sell }}</td>
+                                            <td style="text-align: center;">{{ product.formattedDatePcc }}</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </form>
+                        </p-dialog>
+                    </td>
+                    <td style="text-align: right">
+                        <!-- pickup-product.component.html -->
+                        <p-button (click)="openAddOrderPopup()" icon="pi pi-box" label="รับเข้าสินค้า">+</p-button>
+                        <p-dialog header="รับเข้าสินค้า" [(visible)]="visible2" [modal]="true"
+                            [style]="{ width: '70vw' }" [draggable]="false" [resizable]="false">
+                            <form (ngSubmit)="add_products()">
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td style="text-align: left;"></td>
+                                            <td style="text-align: center;"></td>
+                                            <td style="text-align: right;">
+                                                <button type="submit" class="btn btn-success">บันทึก</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="table-ng-eiei">
+                                        <p-table [value]="productIds" [rows]="5" [paginator]="true">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th scope="col" style="text-align: center;">ลำดับที่</th>
+                                                    <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                                                    <th scope="col" style="text-align: center;">ขนาด</th>
+                                                    <th scope="col" style="text-align: center;">ราคารับเข้า</th>
+                                                    <th scope="col" style="text-align: center;">ราคารับเข้าเท่าเดิม</th>
+                                                    <th scope="col" style="text-align: center;">ราคารับเข้าเปลี่ยนแปลง
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-product let-i="rowIndex">
+                                                <tr>
+                                                    <td style="text-align: center;">{{ i + 1 }}</td>
+                                                    <td style="text-align: center;">{{ product.prd_name }}</td>
+                                                    <td style="text-align: center;">{{ product.size_name }}</td>
+                                                    <td style="text-align: center;">{{ product.prd_price_pickin }}</td>
+                                                    <td style="text-align: center;">
+                                                        <p-button type="button"
+                                                            (click)="showInfo(product.prd_id, product.size_name)"
+                                                            label="รับเข้า">
+                                                        </p-button>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <p-button type="button"
+                                                            (click)="showInfo(product.prd_id, product.size_name)"
+                                                            label="รับเข้า">
+                                                        </p-button>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+
+                                </div>
+                            </form>
+
+
+                        </p-dialog>
+
+
+                    </td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="pickin-show">
-            <table class="table">
-                <thead class="thead-dark">
+            <p-table [value]="products" [rows]="7" [paginator]="true">
+                <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col">ลำดับที่</th>
-                        <th scope="col">ชื่อสินค้า</th>
-                        <th scope="col">ผู้รับเข้า</th>
-                        <th scope="col">รับมาจาก</th>
-                        <th scope="col">จำนวน/ชิ้น</th>
-                        <th scope="col">วันที่</th>
+                        <th scope="col" style="text-align: center;">ลำดับที่</th>
+                        <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                        <th scope="col" style="text-align: center;">ผู้รับเข้า</th>
+                        <th scope="col" style="text-align: center;">รับมาจาก</th>
+                        <th scope="col" style="text-align: center;">จำนวน/ชิ้น</th>
+                        <th scope="col" style="text-align: center;">วันที่</th>
                     </tr>
-                </thead>
-                <!-- รอการ Queryจากฐานข้อมูล -->
-                <tbody>
-                    <tr *ngFor="let product of products; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ product.prd_name }}</td>
-                        <td>{{ product.userPi }}</td>
-                        <td>{{ product.prdin_mk }}</td>
-                        <td>{{ product.prdin_values }}</td>
-                        <td>{{ product.prdin_date }}</td>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-i="rowIndex">
+                    <tr>
+                        <td style="text-align: center;">{{ i + 1 }}</td>
+                        <td style="text-align: center;">{{ product.prd_name }}</td>
+                        <td style="text-align: center;">{{ product.userPi }}</td>
+                        <td style="text-align: center;">{{ product.prdin_mk }}</td>
+                        <td style="text-align: center;">{{ product.prdin_values }}</td>
+                        <td style="text-align: center;">{{ product.prdin_date }}</td>
                     </tr>
-    
-                </tbody>
-            </table>
+                </ng-template>
+            </p-table>
+
         </div>
-       
     </div>
-
-
 </body>

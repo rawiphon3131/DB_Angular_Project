@@ -10,7 +10,21 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { CalendarModule } from 'primeng/calendar';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { TableModule } from 'primeng/table';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { PaginatorModule } from 'primeng/paginator';
+
 import { AuthGuard } from './auth.guard';
+
 
 
 import { Routes, RouterModule } from '@angular/router';
@@ -19,13 +33,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PickinProductComponent } from './pickin-product/pickin-product.component';
 import { TotalProductComponent } from './total-product/total-product.component';
 import { ReportSellComponent } from './report-sell/report-sell.component';
-import { AddOrderListComponent } from './add-order-list/add-order-list.component';
-import { AddOrderPopupComponent } from './add-order-popup/add-order-popup.component';
-import { AddNamePdComponent } from './add-name-pd/add-name-pd.component';
-import { SellItemComponent } from './sell-item/sell-item.component';
-import { PopupSellItemComponent } from './popup-sell-item/popup-sell-item.component';
-import { PopupAddCusNewComponent } from './popup-add-cus-new/popup-add-cus-new.component';
-import { PopupDetailOrderComponent } from './popup-detail-order/popup-detail-order.component';
 import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
 
 
@@ -38,9 +45,6 @@ const routes: Routes = [
   { path: 'pickin_products', component: PickinProductComponent, canActivate: [AuthGuard] },
   { path: 'total_item', component: TotalProductComponent, canActivate: [AuthGuard] },
   { path: 'report_sell', component: ReportSellComponent, canActivate: [AuthGuard] },
-  { path: 'add_order_list', component: AddOrderListComponent, canActivate: [AuthGuard] },
-  { path: 'add-name-pd', component: AddNamePdComponent, canActivate: [AuthGuard] },
-  { path: 'add-order-new', component: SellItemComponent, canActivate: [AuthGuard] },
   { path: 'dbt', component: CustomerDebtComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
@@ -57,14 +61,8 @@ const routes: Routes = [
     PickinProductComponent,
     TotalProductComponent,
     ReportSellComponent,
-    AddOrderListComponent,
-    AddOrderPopupComponent,
-    AddNamePdComponent,
-    SellItemComponent,
-    PopupSellItemComponent,
-    PopupAddCusNewComponent,
-    PopupDetailOrderComponent,
     CustomerDebtComponent,
+    
   ],
   imports: [
     
@@ -75,6 +73,18 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     Select2Module,
+    CalendarModule,
+    SidebarModule,
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    DropdownModule,
+    ConfirmPopupModule,
+    ToastModule,
+    DynamicDialogModule,
+    TableModule,
+    SpeedDialModule,
+    PaginatorModule,
   ],
   exports: [RouterModule],
   providers: [AuthGuard],
