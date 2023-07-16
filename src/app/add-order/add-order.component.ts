@@ -1,13 +1,21 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import * as jsPDF from 'jspdf';
+import { Component, OnInit} from '@angular/core';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { DynamicDialogRef, DynamicDialogConfig,DialogService  } from 'primeng/dynamicdialog';
+import { ProductPopupComponent } from '../product-popup/product-popup.component';
+
+
+declare var pdfMake: any;
 
 
 import { ConfirmationService, MessageService } from 'primeng/api';
+
+
 interface Product {
   prd_id: number;
   prd_name: string;
@@ -16,6 +24,18 @@ interface Product {
   prd_value: string;
   // Add other properties as needed
 }
+interface OrderData {
+  ordd_id: number;
+  prd_name: string;
+  size_name: string;
+  order_values: number;
+  order_sum: number;
+  prd_sell: number;
+  cus_name: string;
+  cus_adddress: string;
+  cus_numtel: string;
+}
+
 
 
 
@@ -23,9 +43,22 @@ interface Product {
   selector: 'app-add-order',
   templateUrl: './add-order.component.html',
   styleUrls: ['./add-order.component.css'],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService,DynamicDialogRef, DynamicDialogConfig,DialogService ]
 })
 export class AddOrderComponent implements OnInit {
+  selectedProducts: any[] = [];
+  totalSum: number = 0;
+
+  handleProductSelected(product: any) {
+    this.selectedProducts.push(product);
+  }
+  calculateTotalSum(): number {
+    this.totalSum = this.selectedProducts.reduce((sum, product) => {
+      return sum + (product.prd_sell * product.inputValue);
+    }, 0);
+    return this.totalSum;
+  }
+  cols: any[] = [];
   orderList: any;
   paybl: any;
   infoOrder: { [order_id: string]: boolean } = {};
@@ -36,11 +69,11 @@ export class AddOrderComponent implements OnInit {
   OrderSum: any;
   price_prd_id: any;
   paymentarry: any;
+  
 
   name_cus_new: string = '';
   address_cus_new: string = '';
   phone_cus_new: string = '';
-
   visible: boolean = false;
   visible2: boolean = false;
   showDialog() {
@@ -71,11 +104,11 @@ export class AddOrderComponent implements OnInit {
   filteredProducts: Product[] = [];
   openPopupSell: boolean = false;
   openPopcusnew: boolean = false;
+  pdfexCus: OrderData[] = [];
 
+  product: any; 
 
-
-
-  constructor(private http: HttpClient, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService) {
+  constructor(private http: HttpClient, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService,private dialogService: DialogService,public  dynamicDialogRef: DynamicDialogRef, public  dynamicDialogConfig: DynamicDialogConfig) {
     this.type_price = [];
     this.cus_numphone = [];
     this.typeoptions = [];
@@ -83,6 +116,20 @@ export class AddOrderComponent implements OnInit {
     this.userId = sessionStorage.getItem('user_id');
     this.product_values = [];
     this.response = [];
+    
+  }
+  openDialog() {
+    const ref = this.dialogService.open(ProductPopupComponent, {
+      header: 'Product Popup',
+      width: '70%',
+      data: { products: this.selectedProducts }
+    });
+
+    ref.onClose.subscribe((product: any) => {
+      if (product) {
+        this.selectedProducts.push(product);
+      }
+    });
   }
   checkExceeded(product: any) {
     const enteredValue = this.parseNumber(this.product_values[product.prd_id]);
@@ -112,8 +159,13 @@ export class AddOrderComponent implements OnInit {
       this.price_prd_id = JSON.parse(storedData3);
       console.log(this.price_prd_id); // Display the retrieved order details
     }
-  }
 
+    this.cols = [
+      { field: "firstname", header: "First Name" },
+      { field: "lastname", header: "Last Name" },
+      { field: "age", header: "Age" },
+    ];
+  }
 
   fetchOrder() {
     this.http.get<any[]>('http://localhost/backend/select_order_show.php')
@@ -218,49 +270,11 @@ export class AddOrderComponent implements OnInit {
     );
   }
 
-  openPDF(orderId: number): void {
-    const url = 'http://localhost/backend/get_order_details.php';
-    const body = { order_id: orderId };
-
-    this.http.post<any>(url, body).subscribe(
-      (orderData) => {
-        // Generate the PDF using jsPDF
-        const pdf = new jsPDF.default();
-        const currentDate = new Date().toLocaleDateString();
-        pdf.addFont('assets/THSarabunNew.ttf', 'THSarabunNew', 'normal');
-        pdf.setFont('THSarabunNew');
-
-        // Customize the PDF layout and content based on the orderData
-        let yOffset = 10;
-        for (const order of orderData) {
-          const { ordd_id, prd_name, order_values, order_sum } = order;
-          pdf.text(`Order ID: ${ordd_id}`, 10, yOffset);
-          pdf.text(`Product: ${prd_name}`, 10, yOffset + 10);
-          pdf.text(`Order Values: ${order_values}`, 10, yOffset + 20);
-          pdf.text(`Order Sum: ${order_sum}`, 10, yOffset + 30);
-          pdf.text(`Date: ${currentDate}`, 10, yOffset + 40);
-          yOffset += 50;
-        }
-
-        // Open the PDF in a new tab
-        const pdfDataUri = pdf.output('datauristring');
-        const targetWindow = window.open();
-        if (targetWindow) {
-          targetWindow.document.write('<iframe src="' + pdfDataUri + '" style="width:100%; height:100%;" frameborder="0"></iframe>');
-        } else {
-          console.error('Failed to open PDF in a new window.');
-        }
-      },
-      (error) => {
-        // Handle error response
-        console.log(error);
-      }
-    );
-  }
   parseNumber(value: any): number {
     return parseFloat(value);
   }
   
+
   fetchProductIds() {
     this.http.get<any[]>('http://localhost/backend/select_sell_item.php')
       .subscribe(response => {
@@ -310,84 +324,336 @@ export class AddOrderComponent implements OnInit {
       });
   }
   send_data_succ(event: Event) {
-    if(this.name_cus_new === '' || this.address_cus_new === '' || this.phone_cus_new == ''){
+    if (this.name_cus_new === '' || this.address_cus_new === '' || this.phone_cus_new == '') {
       this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
-    }else{
+    } else {
 
-   
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'คุณต้องการเพิ่มชื่อลูกค้าหรือไม่',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new };
-        this.http.post('http://localhost/backend/add_new_cus.php', data).subscribe(
-          (response: any) => {
-            console.log(response);
-          });
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายชื่อลูกค้าเสร็จสมบูรณ์' });
-        const timeout = 2000;
-        setTimeout(() => {
-          location.reload();
-        }, timeout);
-       
-      },
-      reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกการเพิ่มชื่อลูกค้า' });
-      }
-    });
 
-  }
-}
-openAddPrdtoOrder(event: Event) {
-  if (this.type_sell === '') {
-    this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
-  } else {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'คุณต้องการเพิ่มรายการสั่งซื้อหรือไม่',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        const dataArray = [];
-        for (let productId in this.product_values) {
-          const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
-          const size_name = product ? product.size_name : '';
-          const prd_sell = product && product.prd_sell ? product.prd_sell : '';
-          const data = {
-            prd_id: productId,
-            prd_sell: prd_sell,
-            product_values: this.product_values[productId],
-            size_name: size_name,
-            cusId: this.selectedOption,
-            selectedOption: this.selectedOption,
-            customerCredit: this.getCustomerCredit(this.selectedOption),
-            customerAddress: this.getCustomerAddress(this.selectedOption),
-            customerNumphone: this.getCustomerNumphone(this.selectedOption),
-            userId: this.userId,
-            type_sell: this.type_sell,
-          };
-          dataArray.push(data);
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'คุณต้องการเพิ่มชื่อลูกค้าหรือไม่',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new };
+          this.http.post('http://localhost/backend/add_new_cus.php', data).subscribe(
+            (response: any) => {
+              console.log(response);
+            });
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายชื่อลูกค้าเสร็จสมบูรณ์' });
+          const timeout = 2000;
+          setTimeout(() => {
+            location.reload();
+          }, timeout);
+
+        },
+        reject: () => {
+          this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกการเพิ่มชื่อลูกค้า' });
         }
-        const jsonData = JSON.stringify(dataArray);
-        this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
-          (response) => {
-            console.log(response);
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายการสั่งซื้อเสร็จสมบูรณ์' });
-            const timeout = 2000;
-        setTimeout(() => {
-          location.reload();
-        }, timeout);
-          },
-          (error)=>{
-            console.log(error);
-            this.messageService.add({ severity: 'error', summary: 'Warring', detail: 'เกิดข้อผิดพลาดกรุณาตรวจสอบข้อมูลให้ครบถ้วน' });
-          });
-      },reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกรายการสั่งซื้อ' });
-      }
-    
-    });
+      });
+
+    }
   }
-}
+  openAddPrdtoOrder(event: Event) {
+    if (this.type_sell === '') {
+      this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+    } else {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'คุณต้องการเพิ่มรายการสั่งซื้อหรือไม่',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          const dataArray = [];
+          for (let productId in this.product_values) {
+            const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
+            const size_name = product ? product.size_name : '';
+            const prd_sell = product && product.prd_sell ? product.prd_sell : '';
+            const data = {
+              prd_id: productId,
+              prd_sell: prd_sell,
+              product_values: this.product_values[productId],
+              size_name: size_name,
+              cusId: this.selectedOption,
+              selectedOption: this.selectedOption,
+              customerCredit: this.getCustomerCredit(this.selectedOption),
+              customerAddress: this.getCustomerAddress(this.selectedOption),
+              customerNumphone: this.getCustomerNumphone(this.selectedOption),
+              userId: this.userId,
+              type_sell: this.type_sell,
+            };
+            dataArray.push(data);
+          }
+          const jsonData = JSON.stringify(dataArray);
+          this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
+            (response) => {
+              console.log(response);
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายการสั่งซื้อเสร็จสมบูรณ์' });
+              const timeout = 2000;
+              setTimeout(() => {
+                location.reload();
+              }, timeout);
+            },
+            (error) => {
+              console.log(error);
+              this.messageService.add({ severity: 'error', summary: 'Warring', detail: 'เกิดข้อผิดพลาดกรุณาตรวจสอบข้อมูลให้ครบถ้วน' });
+            });
+        }, reject: () => {
+          this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกรายการสั่งซื้อ' });
+        }
+
+      });
+    }
+  }
+  generateInvoice(orderId: number): void {
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    const fonts = {
+      THSarabunNew: {
+        normal: 'THSarabunNew.ttf',
+        bold: 'THSarabunNew-Bold.ttf',
+        italics: 'THSarabunNew-Italic.ttf',
+        bolditalics: 'THSarabunNew-BoldItalic.ttf'
+      },
+      Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf'
+      },
+      Noto: {
+        normal: 'NotoSansThai-Regular.ttf',
+        bold: 'NotoSansThai-Medium.ttf',
+        italics: 'NotoSansThai-SemiBold.ttf',
+        bolditalics: 'NotoSansThai-Thin.ttf'
+      }
+    };
+    
+    pdfMake.fonts = fonts;
+    
+    const url = `http://localhost/backend/get_order_details.php`;
+    const body = { order_id: orderId };
+    const url2 = `http://localhost/backend/export_pdf_data.php`;
+    const body2 = { order_id: orderId };
+    this.http.post<OrderData[]>(url2, body2).subscribe(
+      (orderData) => {
+        console.log(orderData);
+        const row = orderData[0]; // Assuming you have a single row of data
+        invoiceContent.customer.name = row.cus_name;
+        invoiceContent.customer.address = row.cus_adddress;
+        invoiceContent.customer.phone = row.cus_numtel;
+        // Rest of the code...
+      }
+    );
+    const invoiceContent = {
+      cashBillHeader: 'บิลเงินสด',
+      customer: {
+        name: 'Customer Name',
+        address: 'Customer Address',
+        phone: 'Customer Phone'
+      },
+      products: [] as any[],
+      payee: {
+        name: 'Payee Name',
+        address: 'Payee Address',
+        email: 'payee@example.com',
+        phone: 'Payee Phone'
+      },
+      total: 0
+    };
+
+
+    this.http.post<OrderData[]>(url,body).subscribe(
+      (orderData) => {
+        console.log(orderData);
+        this.pdfexCus = orderData;
+        orderData.forEach((row) => {
+          const product = {
+            description: getDescription(row),
+            quantity: row.order_values,
+            price: row.prd_sell,
+            congratsValue: row.order_values * row.prd_sell
+          };
+          invoiceContent.products.push(product);
+
+        });
+        function getDescription(row: any): string {
+          const prdName = row.prd_name || '';
+          const sizeName = row.size_name || '';
+          return `${prdName} ${sizeName}`;
+        }
+        const totalSum = orderData.reduce((sum, row) => sum + parseFloat(row.order_sum.toString()), 0);
+        const totalSumFormatted = `${formatNumber(totalSum)}`;
+        function formatNumber(number: number): string {
+          const digits = [
+            '', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า', 'สิบ'
+          ];
+          const tens = ['', 'สิบ', 'ยี่สิบ', 'สามสิบ', 'สี่สิบ', 'ห้าสิบ', 'หกสิบ', 'เจ็ดสิบ', 'แปดสิบ', 'เก้าสิบ'];
+        
+          let baht = '';
+          let satang = '';
+        
+          const roundedNumber = Math.round(number);
+          const bahtValue = Math.floor(roundedNumber);
+          const satangValue = Math.round((roundedNumber - bahtValue) * 100);
+        
+          if (bahtValue > 0) {
+            const bahtText = convertToText(bahtValue);
+            baht = `${bahtText}ร้อยบาท`;
+          }
+        
+          if (satangValue > 0) {
+            const satangText = convertToText(satangValue);
+            satang = `${satangText}สตางค์`;
+          }
+        
+          return `${baht}${satang || 'ถ้วน'}`;
+        
+          function convertToText(num: number): string {
+            if (num === 0) {
+              return '';
+            }
+          
+            if (num < 10) {
+              return digits[num];
+            }
+          
+            if (num === 10) {
+              return 'สิบ';
+            }
+          
+            if (num < 100) {
+              const digit = num % 10;
+              const ten = Math.floor(num / 10);
+          
+              if (ten === 1) {
+                if (digit === 1) {
+                  return 'เอ็ด';
+                } else if (digit === 2) {
+                  return 'ยี่';
+                }
+              }
+          
+              return `${tens[ten]}${digits[digit]}`;
+            }
+          
+            if (num < 1000) {
+              const hundred = Math.floor(num / 100);
+              const remainder = num % 100;
+          
+              return `${digits[hundred]}ร้อย${convertToText(remainder)}`;
+            }
+          
+            if (num < 10000) {
+              const thousand = Math.floor(num / 1000);
+              const remainder = num % 1000;
+          
+              return `${digits[thousand]}พัน${convertToText(remainder)}`;
+            }
+          
+            if (num < 100000) {
+              const tenThousand = Math.floor(num / 10000);
+              const remainder = num % 10000;
+          
+              return `${digits[tenThousand]}หมื่น${convertToText(remainder)}`;
+            }
+          
+            if (num < 1000000) {
+              const hundredThousand = Math.floor(num / 100000);
+              const remainder = num % 100000;
+          
+              return `${digits[hundredThousand]}แสน${convertToText(remainder)}`;
+            }
+          
+            if (num < 10000000) {
+              const million = Math.floor(num / 1000000);
+              const remainder = num % 1000000;
+          
+              return `${digits[million]}ล้าน${convertToText(remainder)}`;
+            }
+          
+            return ''; // Return empty string for numbers beyond 7 digits
+          }
+          
+        }
+        
+
+        const documentDefinition = {
+          content: [
+           
+            { text: invoiceContent.cashBillHeader, style: 'header' },
+            {columns: [
+              [
+                { text: `ลูกค้า / customrt : ${invoiceContent.customer.name}`, style: 'tableStyle' },
+                { text: `เลขที่ใบเสร็จ / Bill No. :`, style: 'tableStyle' } // Replace "XYZ123" with the actual bill number
+              ],
+              [
+                { text:` ที่อยู่ / Address : ${invoiceContent.customer.address}`, style: 'tableStyle' },
+                { text: `วันที่ / Date: ${new Date().toLocaleDateString()}`, style: 'tableStyle' }
+              ]
+            ]},
+            {
+              
+              table: {
+                headerRows: 1,
+                widths: ['auto', '*', 'auto','auto'],
+                body: [
+                  [
+                    { text: 'จำนวน', style: 'tableHeader' },
+                    { text: 'รายการสินค้า', style: 'tableHeader' },
+                    { text: 'หน่วยละ', style: 'tableHeader' },
+                    { text: 'จำนวนเงิน', style: 'tableHeader' }
+                  ],
+                  ...invoiceContent.products.map(item => [
+                    { text: item.quantity, style: 'tableCell' },
+                    { text: item.description, style: 'tableCell' },
+                    { text: item.price, style: 'tableCell' },
+                    { text: item.congratsValue , style: 'tableCell' }
+                  ]),
+                  ['',{ text:totalSumFormatted,style: 'currency'}, { text: 'รวมเงิน:', style: 'tableHeader' }, { text: totalSum.toFixed(2), style: 'tableCell' }]
+                ],
+                style: 'tableStyle'
+              }
+              
+            },
+            { text: 'Payee Details', style: 'subheader' },
+            { text: `Name: ${invoiceContent.payee.name}`, style: 'subheader' },
+            { text: `Address: ${invoiceContent.payee.address}`, style: 'subheader' },
+            { text: `Email: ${invoiceContent.payee.email}`, style: 'subheader' },
+            { text: `Phone: ${invoiceContent.payee.phone}`, style: 'subheader' }
+          ],
+          styles: {
+            header: {
+              fontSize: 20,
+              alignment: 'center',
+              margin: [0, 0, 0, 10],
+              font: 'THSarabunNew'
+            },
+            subheader: {
+              fontSize: 16,
+              margin: [0, 10, 0, 5],
+              font: 'THSarabunNew'
+            },
+            tableStyle: {
+              font: 'THSarabunNew',
+              fontSize: 12
+            },
+            tableHeader: {
+              font: 'THSarabunNew'
+            },
+            tableCell: {
+              font: 'THSarabunNew'
+            },
+            currency:{
+              font: 'THSarabunNew'
+            }
+          }
+        };
+
+        pdfMake.createPdf(documentDefinition).download('invoice.pdf');
+      },
+      (error) => {
+        console.error(error);
+        // Handle any errors that occur during the HTTP request
+      }
+    );
+  }
 }
 

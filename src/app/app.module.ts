@@ -22,6 +22,9 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { PaginatorModule } from 'primeng/paginator';
+import { TreeTableModule } from 'primeng/treetable';
+
+
 
 import { AuthGuard } from './auth.guard';
 
@@ -34,6 +37,8 @@ import { PickinProductComponent } from './pickin-product/pickin-product.componen
 import { TotalProductComponent } from './total-product/total-product.component';
 import { ReportSellComponent } from './report-sell/report-sell.component';
 import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
+import { ProductPopupComponent } from './product-popup/product-popup.component';
+import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 
 
 
@@ -62,6 +67,8 @@ const routes: Routes = [
     TotalProductComponent,
     ReportSellComponent,
     CustomerDebtComponent,
+    ProductPopupComponent,
+    ProductDialogComponent,
     
   ],
   imports: [
@@ -85,6 +92,7 @@ const routes: Routes = [
     TableModule,
     SpeedDialModule,
     PaginatorModule,
+    TreeTableModule,
   ],
   exports: [RouterModule],
   providers: [AuthGuard],

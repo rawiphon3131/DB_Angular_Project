@@ -1,0 +1,39 @@
+<p-table [value]="productIds" [rows]="5" [paginator]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th scope="col" style="text-align: center;">ลำดับที่</th>
+            <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+            <th scope="col" style="text-align: center;">ขนาด</th>
+
+            <th scope="col" style="text-align: center;">ราคาขาย</th>
+            <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+            <th scope="col" style="text-align: center;">จำนวนขาย</th>
+            <th scope="col" style="text-align: center;">เพิ่มสินค้าชิ้นนี้</th>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-i="rowIndex">
+        <tr>
+            <td style="text-align: center;">{{ i + 1 }}</td>
+            <td style="text-align: center;">{{ product.prd_name }}</td>
+            <td style="text-align: center;">{{ product.size_name }}</td>
+            <td style="text-align: center;">{{ product.prd_sell }}</td>
+            <td style="text-align: center;"
+                [ngClass]="{'red-color': parseNumber(product.prd_value) <= 20, 'out-of-stock': parseNumber(product.prd_value) === 0, 'havein-of-stock': parseNumber(product.prd_value) > 20}">
+                {{ product.prd_value }} ชิ้น
+            </td>
+            <td>
+                <input type="number" [(ngModel)]="product_values[product.prd_id]" name="where_pick" class="form-control"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    *ngIf="parseNumber(product.prd_value) !== 0" [disabled]="parseNumber(product.prd_value) <=0"
+                    (input)="checkExceeded(product)">
+                <div *ngIf="exceeded[product.prd_id]" class="exceeded-message">
+                    จำนวนเกินของที่มีในสต๊อก</div>
+            </td>
+            <td>
+                <p-button label="เพิ่ม" (click)="selectProduct(product)">+</p-button>
+                
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
