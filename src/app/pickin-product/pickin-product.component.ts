@@ -23,6 +23,7 @@ interface Products {
   price_sell: string;
   userId: any;
   formattedDatePcc: any;
+  name_new_id_id:string;
 }
 @Component({
   selector: 'app-pickin-product',
@@ -57,7 +58,8 @@ export class PickinProductComponent implements OnInit {
   type_name!: string;
   price_in!: string;
   price_sell!: string;
-
+  name_market:string='';
+  name_new_id_id!: string;
   productss: Products[] = [];
   type_prd: any[];
   typeoption: any[];
@@ -72,11 +74,15 @@ export class PickinProductComponent implements OnInit {
   visible: boolean = false;
   visible2: boolean = false;
   visible3: boolean = false;
+  addMarketp:boolean = false;
   showDialog() {
     this.visible = true;
   }
   showDialog3() {
     this.visible3 = true;
+  }
+  addMarket() {
+    this.addMarketp = true;
   }
   constructor(private http: HttpClient, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService) {
     this.where_pick = [];
@@ -110,7 +116,8 @@ export class PickinProductComponent implements OnInit {
         price_in: this.price_in,
         price_sell: this.price_sell,
         userId: this.userId,
-        formattedDatePcc: this.formattedDate2
+        formattedDatePcc: this.formattedDate2,
+        name_new_id_id:this.name_new_id_id
       };
 
       // Store the product in the products array
@@ -125,6 +132,7 @@ export class PickinProductComponent implements OnInit {
       this.price_in = '';
       this.price_sell = '';
       this.formattedDate = '';
+      this.name_new_id_id='';
 
     }
   }

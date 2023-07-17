@@ -2,6 +2,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th scope="col" style="text-align: center;">ลำดับที่</th>
+            <th scope="col" style="text-align: center;">รหัสสินค้า/th>
             <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
             <th scope="col" style="text-align: center;">ขนาด</th>
 
@@ -15,6 +16,7 @@
     <ng-template pTemplate="body" let-product let-i="rowIndex">
         <tr>
             <td style="text-align: center;">{{ i + 1 }}</td>
+            <td style="text-align: center;">{{ product.prd_name_id }}</td>
             <td style="text-align: center;">{{ product.prd_name }}</td>
             <td style="text-align: center;">{{ product.size_name }}</td>
             <td style="text-align: center;">{{ product.prd_sell }}</td>

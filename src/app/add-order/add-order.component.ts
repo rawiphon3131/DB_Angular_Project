@@ -2,12 +2,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit} from '@angular/core';
 import 'jspdf-autotable';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { DynamicDialogRef, DynamicDialogConfig,DialogService  } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { ProductPopupComponent } from '../product-popup/product-popup.component';
+import { DetailsDialogComponent } from '../details-dialog/details-dialog.component';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 
 declare var pdfMake: any;
@@ -34,6 +37,7 @@ interface OrderData {
   cus_name: string;
   cus_adddress: string;
   cus_numtel: string;
+  user_name: string;
 }
 
 
@@ -43,9 +47,13 @@ interface OrderData {
   selector: 'app-add-order',
   templateUrl: './add-order.component.html',
   styleUrls: ['./add-order.component.css'],
-  providers: [ConfirmationService, MessageService,DynamicDialogRef, DynamicDialogConfig,DialogService ]
+  providers: [ConfirmationService, MessageService, DynamicDialogRef, DynamicDialogConfig, DialogService]
 })
 export class AddOrderComponent implements OnInit {
+ 
+
+
+
   selectedProducts: any[] = [];
   totalSum: number = 0;
 
@@ -58,6 +66,7 @@ export class AddOrderComponent implements OnInit {
     }, 0);
     return this.totalSum;
   }
+  
   cols: any[] = [];
   orderList: any;
   paybl: any;
@@ -69,9 +78,10 @@ export class AddOrderComponent implements OnInit {
   OrderSum: any;
   price_prd_id: any;
   paymentarry: any;
-  
+
 
   name_cus_new: string = '';
+  credit_new:string = '';
   address_cus_new: string = '';
   phone_cus_new: string = '';
   visible: boolean = false;
@@ -106,9 +116,16 @@ export class AddOrderComponent implements OnInit {
   openPopcusnew: boolean = false;
   pdfexCus: OrderData[] = [];
 
-  product: any; 
+  product: any;
+  typeSellOptions: any[] = [
+    { label: '', value: '' },
+    { label: 'เงินสด', value: '1' },
+    { label: 'เครดิต', value: '2' }
+  ];
 
-  constructor(private http: HttpClient, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService,private dialogService: DialogService,public  dynamicDialogRef: DynamicDialogRef, public  dynamicDialogConfig: DynamicDialogConfig) {
+
+
+  constructor(private http: HttpClient, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService, private dialogService: DialogService, public dynamicDialogRef: DynamicDialogRef, public dynamicDialogConfig: DynamicDialogConfig) {
     this.type_price = [];
     this.cus_numphone = [];
     this.typeoptions = [];
@@ -116,7 +133,7 @@ export class AddOrderComponent implements OnInit {
     this.userId = sessionStorage.getItem('user_id');
     this.product_values = [];
     this.response = [];
-    
+
   }
   openDialog() {
     const ref = this.dialogService.open(ProductPopupComponent, {
@@ -181,8 +198,97 @@ export class AddOrderComponent implements OnInit {
     }
   }
 
+  //   showInfo(order_id: number, cus_name: string) {
+  //     const data = { order_id: order_id, cus_name: cus_name };
+  //     this.http.post('http://localhost/backend/select_sum_order.php', data).subscribe(
+  //       (response) => {
+  //         console.log(response);
+  //         // Handle the response from PHP and display the information
+  //         sessionStorage.setItem('OrderSum', JSON.stringify(response));
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         // Handle any errors that occur during the HTTP request
+  //       }
+  //     );
+  //     this.http.post('http://localhost/backend/select_price_prd.php', data).subscribe(
+  //       (response) => {
+  //         console.log(response);
+  //         // Handle the response from PHP and display the information
+  //         sessionStorage.setItem('price_prd_id', JSON.stringify(response));
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         // Handle any errors that occur during the HTTP request
+  //       }
+  //     );
+  //     this.http.post('http://localhost/backend/get_order_details.php', data).subscribe(
+  //       (response) => {
+  //         console.log(response);
+  //         // Handle the response from PHP and display the information
+  //         const orderDetails = Array.isArray(response) ? response : [response]; // Ensure orderDetails is an array
+  //         let html = `
+  //   <h1>รายระเอียดรายการสั่งซื้อ</h1>
+  //   <table style="width: 100%;">
+  //     <thead>
+  //       <th>ลำดับที่</th>
+  //       <th>ชื่อสินค้า</th>
+  //       <th>จำนวน</th>
+  //       <th>ราคาขาย/ชิ้น</th>
+  //       <th>ราคารวม</th>
+  //     </thead>
+  //     <tbody>`;
+  //         let totalSum = 0;
+
+  //         for (let i = 0; i < orderDetails.length; i++) {
+  //           const orderDetail = orderDetails[i];
+  //           const orderSum = parseFloat(orderDetail.order_sum); // Parse the order_sum value as a float
+  //           let valuse_sum = orderDetail.prd_sell * orderDetail.order_values;
+  //           html += `
+  //     <tr>
+  //       <td>${i + 1}</td>
+  //       <td>${orderDetail.prd_name}</td>
+  //       <td>${orderDetail.order_values}</td>
+  //       <td>${orderDetail.prd_sell}</td>
+  //       <td>${valuse_sum}</td>
+  //     </tr>
+  //     </tbody>`;
+  //           totalSum += valuse_sum;
+  //         }
+
+  //         html += `
+  //         </br>
+  //     <table>
+  //     <tr>
+  //       <td></td>
+  //       <td></td>
+  //       <td></td>
+  //       <td><strong>ราคารวมทั้งหมด:</strong></td>
+  //       <td><strong>${formatNumber(totalSum)} บาท</strong></td>
+  //     </table>
+  //   </tbody>
+  // </table>`;
+  //         function formatNumber(number: number): string {
+  //           return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  //         }
+  //         Swal.fire({
+  //           html: html,
+  //           width: '800px',
+  //           showCloseButton: true,
+  //           showCancelButton: false,
+  //           focusConfirm: false,
+  //           confirmButtonText: 'OK'
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         // Handle any errors that occur during the HTTP request
+  //       }
+  //     );
+  //   }
   showInfo(order_id: number, cus_name: string) {
     const data = { order_id: order_id, cus_name: cus_name };
+
     this.http.post('http://localhost/backend/select_sum_order.php', data).subscribe(
       (response) => {
         console.log(response);
@@ -194,6 +300,7 @@ export class AddOrderComponent implements OnInit {
         // Handle any errors that occur during the HTTP request
       }
     );
+
     this.http.post('http://localhost/backend/select_price_prd.php', data).subscribe(
       (response) => {
         console.log(response);
@@ -205,63 +312,27 @@ export class AddOrderComponent implements OnInit {
         // Handle any errors that occur during the HTTP request
       }
     );
+
     this.http.post('http://localhost/backend/get_order_details.php', data).subscribe(
       (response) => {
         console.log(response);
         // Handle the response from PHP and display the information
         const orderDetails = Array.isArray(response) ? response : [response]; // Ensure orderDetails is an array
-        let html = `
-  <h1>รายระเอียดรายการสั่งซื้อ</h1>
-  <table style="width: 100%;">
-    <thead>
-      <th>ลำดับที่</th>
-      <th>ชื่อสินค้า</th>
-      <th>จำนวน</th>
-      <th>ราคาขาย/ชิ้น</th>
-      <th>ราคารวม</th>
-    </thead>
-    <tbody>`;
-        let totalSum = 0;
 
-        for (let i = 0; i < orderDetails.length; i++) {
-          const orderDetail = orderDetails[i];
-          const orderSum = parseFloat(orderDetail.order_sum); // Parse the order_sum value as a float
-          let valuse_sum = orderDetail.prd_sell * orderDetail.order_values;
-          html += `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${orderDetail.prd_name}</td>
-      <td>${orderDetail.order_values}</td>
-      <td>${orderDetail.prd_sell}</td>
-      <td>${valuse_sum}</td>
-    </tr>
-    </tbody>`;
-          totalSum += valuse_sum;
-        }
+        const dialogConfig: DynamicDialogConfig = {
+          data: {
+            orderDetails: orderDetails
+          },
+          header: 'รายระเอียดรายการสั่งซื้อ',
+          width: '70vw',
+          contentStyle: {
+            'max-height': '500px',
+            overflow: 'auto'
+          },
+          baseZIndex: 10000
+        };
 
-        html += `
-        </br>
-    <table>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><strong>ราคารวมทั้งหมด:</strong></td>
-      <td><strong>${formatNumber(totalSum)} บาท</strong></td>
-    </table>
-  </tbody>
-</table>`;
-        function formatNumber(number: number): string {
-          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        Swal.fire({
-          html: html,
-          width: '800px',
-          showCloseButton: true,
-          showCancelButton: false,
-          focusConfirm: false,
-          confirmButtonText: 'OK'
-        });
+        const dialogRef: DynamicDialogRef = this.dialogService.open(DetailsDialogComponent, dialogConfig);
       },
       (error) => {
         console.error(error);
@@ -269,11 +340,10 @@ export class AddOrderComponent implements OnInit {
       }
     );
   }
-
   parseNumber(value: any): number {
     return parseFloat(value);
   }
-  
+
 
   fetchProductIds() {
     this.http.get<any[]>('http://localhost/backend/select_sell_item.php')
@@ -324,7 +394,7 @@ export class AddOrderComponent implements OnInit {
       });
   }
   send_data_succ(event: Event) {
-    if (this.name_cus_new === '' || this.address_cus_new === '' || this.phone_cus_new == '') {
+    if (this.name_cus_new === '' || this.address_cus_new === '' || this.phone_cus_new == '' || this.credit_new == '') {
       this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     } else {
 
@@ -334,7 +404,7 @@ export class AddOrderComponent implements OnInit {
         message: 'คุณต้องการเพิ่มชื่อลูกค้าหรือไม่',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new };
+          const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new,credit_new:this.credit_new };
           this.http.post('http://localhost/backend/add_new_cus.php', data).subscribe(
             (response: any) => {
               console.log(response);
@@ -354,6 +424,8 @@ export class AddOrderComponent implements OnInit {
     }
   }
   openAddPrdtoOrder(event: Event) {
+    const data = { selectedProducts: this.selectedProducts };
+    console.log(data);
     if (this.type_sell === '') {
       this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     } else {
@@ -363,15 +435,14 @@ export class AddOrderComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           const dataArray = [];
-          for (let productId in this.product_values) {
-            const product = this.productIds.find((p) => p.prd_id === parseInt(productId));
-            const size_name = product ? product.size_name : '';
-            const prd_sell = product && product.prd_sell ? product.prd_sell : '';
+          for (const product of this.selectedProducts) {
+            const { prd_id, prd_sell, inputValue } = product;
+            const size_name = product.size_name;
             const data = {
-              prd_id: productId,
-              prd_sell: prd_sell,
-              product_values: this.product_values[productId],
-              size_name: size_name,
+              prd_id,
+              prd_sell,
+              product_values: inputValue,
+              size_name,
               cusId: this.selectedOption,
               selectedOption: this.selectedOption,
               customerCredit: this.getCustomerCredit(this.selectedOption),
@@ -381,6 +452,7 @@ export class AddOrderComponent implements OnInit {
               type_sell: this.type_sell,
             };
             dataArray.push(data);
+
           }
           const jsonData = JSON.stringify(dataArray);
           this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
@@ -396,6 +468,7 @@ export class AddOrderComponent implements OnInit {
               console.log(error);
               this.messageService.add({ severity: 'error', summary: 'Warring', detail: 'เกิดข้อผิดพลาดกรุณาตรวจสอบข้อมูลให้ครบถ้วน' });
             });
+          console.log(dataArray);
         }, reject: () => {
           this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกรายการสั่งซื้อ' });
         }
@@ -404,67 +477,72 @@ export class AddOrderComponent implements OnInit {
     }
   }
   generateInvoice(orderId: number): void {
-    pdfMake.vfs = pdfFonts.pdfMake.vfs;
-    const fonts = {
-      THSarabunNew: {
-        normal: 'THSarabunNew.ttf',
-        bold: 'THSarabunNew-Bold.ttf',
-        italics: 'THSarabunNew-Italic.ttf',
-        bolditalics: 'THSarabunNew-BoldItalic.ttf'
-      },
-      Roboto: {
-        normal: 'Roboto-Regular.ttf',
-        bold: 'Roboto-Medium.ttf',
-        italics: 'Roboto-Italic.ttf',
-        bolditalics: 'Roboto-MediumItalic.ttf'
-      },
-      Noto: {
-        normal: 'NotoSansThai-Regular.ttf',
-        bold: 'NotoSansThai-Medium.ttf',
-        italics: 'NotoSansThai-SemiBold.ttf',
-        bolditalics: 'NotoSansThai-Thin.ttf'
-      }
-    };
-    
-    pdfMake.fonts = fonts;
-    
-    const url = `http://localhost/backend/get_order_details.php`;
-    const body = { order_id: orderId };
+
+
+
+
     const url2 = `http://localhost/backend/export_pdf_data.php`;
     const body2 = { order_id: orderId };
+
     this.http.post<OrderData[]>(url2, body2).subscribe(
       (orderData) => {
         console.log(orderData);
         const row = orderData[0]; // Assuming you have a single row of data
         invoiceContent.customer.name = row.cus_name;
-        invoiceContent.customer.address = row.cus_adddress;
-        invoiceContent.customer.phone = row.cus_numtel;
+        invoiceContent.customer.address = row.cus_adddress; // Corrected property name
+        invoiceContent.customer.phone = row.cus_numtel; // Corrected property name
+        invoiceContent.payee.userName = row.user_name;
         // Rest of the code...
       }
     );
+
     const invoiceContent = {
       cashBillHeader: 'บิลเงินสด',
       customer: {
-        name: 'Customer Name',
-        address: 'Customer Address',
-        phone: 'Customer Phone'
+        name: '',
+        address: '',
+        phone: ''
       },
       products: [] as any[],
       payee: {
-        name: 'Payee Name',
-        address: 'Payee Address',
-        email: 'payee@example.com',
-        phone: 'Payee Phone'
+        userName: '',
+        address: '',
+        email: '',
+        phone: ''
       },
       total: 0
     };
 
-
-    this.http.post<OrderData[]>(url,body).subscribe(
+    const url = `http://localhost/backend/get_order_details.php`;
+    const body = { order_id: orderId };
+    this.http.post<OrderData[]>(url, body).subscribe(
       (orderData) => {
         console.log(orderData);
         this.pdfexCus = orderData;
         orderData.forEach((row) => {
+          pdfMake.vfs = pdfFonts.pdfMake.vfs;
+          const fonts = {
+            THSarabunNew: {
+              normal: 'THSarabunNew.ttf',
+              bold: 'THSarabunNew-Bold.ttf',
+              italics: 'THSarabunNew-Italic.ttf',
+              bolditalics: 'THSarabunNew-BoldItalic.ttf'
+            },
+            Roboto: {
+              normal: 'Roboto-Regular.ttf',
+              bold: 'Roboto-Medium.ttf',
+              italics: 'Roboto-Italic.ttf',
+              bolditalics: 'Roboto-MediumItalic.ttf'
+            },
+            Noto: {
+              normal: 'NotoSansThai-Regular.ttf',
+              bold: 'NotoSansThai-Medium.ttf',
+              italics: 'NotoSansThai-SemiBold.ttf',
+              bolditalics: 'NotoSansThai-Thin.ttf'
+            }
+          };
+      
+          pdfMake.fonts = fonts;
           const product = {
             description: getDescription(row),
             quantity: row.order_values,
@@ -486,43 +564,43 @@ export class AddOrderComponent implements OnInit {
             '', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า', 'สิบ'
           ];
           const tens = ['', 'สิบ', 'ยี่สิบ', 'สามสิบ', 'สี่สิบ', 'ห้าสิบ', 'หกสิบ', 'เจ็ดสิบ', 'แปดสิบ', 'เก้าสิบ'];
-        
+
           let baht = '';
           let satang = '';
-        
+
           const roundedNumber = Math.round(number);
           const bahtValue = Math.floor(roundedNumber);
           const satangValue = Math.round((roundedNumber - bahtValue) * 100);
-        
+
           if (bahtValue > 0) {
             const bahtText = convertToText(bahtValue);
             baht = `${bahtText}ร้อยบาท`;
           }
-        
+
           if (satangValue > 0) {
             const satangText = convertToText(satangValue);
             satang = `${satangText}สตางค์`;
           }
-        
+
           return `${baht}${satang || 'ถ้วน'}`;
-        
+
           function convertToText(num: number): string {
             if (num === 0) {
               return '';
             }
-          
+
             if (num < 10) {
               return digits[num];
             }
-          
+
             if (num === 10) {
               return 'สิบ';
             }
-          
+
             if (num < 100) {
               const digit = num % 10;
               const ten = Math.floor(num / 10);
-          
+
               if (ten === 1) {
                 if (digit === 1) {
                   return 'เอ็ด';
@@ -530,70 +608,75 @@ export class AddOrderComponent implements OnInit {
                   return 'ยี่';
                 }
               }
-          
+
               return `${tens[ten]}${digits[digit]}`;
             }
-          
+
             if (num < 1000) {
               const hundred = Math.floor(num / 100);
               const remainder = num % 100;
-          
+
               return `${digits[hundred]}ร้อย${convertToText(remainder)}`;
             }
-          
+
             if (num < 10000) {
               const thousand = Math.floor(num / 1000);
               const remainder = num % 1000;
-          
+
               return `${digits[thousand]}พัน${convertToText(remainder)}`;
             }
-          
+
             if (num < 100000) {
               const tenThousand = Math.floor(num / 10000);
               const remainder = num % 10000;
-          
+
               return `${digits[tenThousand]}หมื่น${convertToText(remainder)}`;
             }
-          
+
             if (num < 1000000) {
               const hundredThousand = Math.floor(num / 100000);
               const remainder = num % 100000;
-          
+
               return `${digits[hundredThousand]}แสน${convertToText(remainder)}`;
             }
-          
+
             if (num < 10000000) {
               const million = Math.floor(num / 1000000);
               const remainder = num % 1000000;
-          
+
               return `${digits[million]}ล้าน${convertToText(remainder)}`;
             }
-          
+
             return ''; // Return empty string for numbers beyond 7 digits
           }
-          
-        }
-        
 
+        }
+
+        const VAT_PERCENTAGE = 7; // VAT percentage
+
+        const vatAmount = totalSum * (VAT_PERCENTAGE / 100);
+        const totalWithVAT = totalSum + vatAmount;
         const documentDefinition = {
           content: [
-           
+
             { text: invoiceContent.cashBillHeader, style: 'header' },
-            {columns: [
-              [
-                { text: `ลูกค้า / customrt : ${invoiceContent.customer.name}`, style: 'tableStyle' },
-                { text: `เลขที่ใบเสร็จ / Bill No. :`, style: 'tableStyle' } // Replace "XYZ123" with the actual bill number
-              ],
-              [
-                { text:` ที่อยู่ / Address : ${invoiceContent.customer.address}`, style: 'tableStyle' },
-                { text: `วันที่ / Date: ${new Date().toLocaleDateString()}`, style: 'tableStyle' }
-              ]
-            ]},
             {
-              
+              columns: [
+                [
+                  { text: `ลูกค้า / customrt : ${invoiceContent.customer.name}`, style: 'tableStyle' },
+                  { text: `เลขที่ใบเสร็จ / Bill No. :`, style: 'tableStyle' } // Replace "XYZ123" with the actual bill number
+                ],
+                [
+                  { text: ` ที่อยู่ / Address : ${invoiceContent.customer.address}`, style: 'tableStyle' },
+                  { text: `วันที่ / Date: ${new Date().toLocaleDateString()}`, style: 'tableStyle' }
+                ]
+              ]
+            },
+            {
+
               table: {
                 headerRows: 1,
-                widths: ['auto', '*', 'auto','auto'],
+                widths: ['auto', '*', 'auto', 'auto'],
                 body: [
                   [
                     { text: 'จำนวน', style: 'tableHeader' },
@@ -605,19 +688,17 @@ export class AddOrderComponent implements OnInit {
                     { text: item.quantity, style: 'tableCell' },
                     { text: item.description, style: 'tableCell' },
                     { text: item.price, style: 'tableCell' },
-                    { text: item.congratsValue , style: 'tableCell' }
+                    { text: item.congratsValue, style: 'tableCell' }
                   ]),
-                  ['',{ text:totalSumFormatted,style: 'currency'}, { text: 'รวมเงิน:', style: 'tableHeader' }, { text: totalSum.toFixed(2), style: 'tableCell' }]
+                  ['', { text: totalSumFormatted, style: 'currency' }, { text: 'รวมเงิน:', style: 'tableHeader' }, { text: totalSum.toFixed(2), style: 'tableCell' }],
+                  ['', '', { text: 'VAT (' + VAT_PERCENTAGE + '%):', style: 'tableHeader' }, { text: vatAmount.toFixed(2), style: 'currency' }],
+                  ['', '', { text: 'ราคารวมVAT', style: 'currency' }, { text: totalWithVAT.toFixed(2), style: 'tableCell' }]
                 ],
                 style: 'tableStyle'
               }
-              
             },
-            { text: 'Payee Details', style: 'subheader' },
-            { text: `Name: ${invoiceContent.payee.name}`, style: 'subheader' },
-            { text: `Address: ${invoiceContent.payee.address}`, style: 'subheader' },
-            { text: `Email: ${invoiceContent.payee.email}`, style: 'subheader' },
-            { text: `Phone: ${invoiceContent.payee.phone}`, style: 'subheader' }
+            { text: 'ผู้ดำเนินการ', style: 'subheader' },
+            { text: ` ${invoiceContent.payee.userName}`, style: 'subheader' }
           ],
           styles: {
             header: {
@@ -641,13 +722,14 @@ export class AddOrderComponent implements OnInit {
             tableCell: {
               font: 'THSarabunNew'
             },
-            currency:{
+            currency: {
               font: 'THSarabunNew'
             }
           }
         };
 
         pdfMake.createPdf(documentDefinition).download('invoice.pdf');
+
       },
       (error) => {
         console.error(error);
@@ -655,5 +737,6 @@ export class AddOrderComponent implements OnInit {
       }
     );
   }
+
 }
 

@@ -1,0 +1,29 @@
+<p-table [value]="orderDetails">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ลำดับที่</th>
+        <th>รหัสสินค้า</th>
+        <th>ชื่อสินค้า</th>
+        <th>จำนวน</th>
+        <th>ราคาขาย/ชิ้น</th>
+        <th>ราคารวม</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-orderDetail let-i="rowIndex">
+      <tr>
+        <td>{{ i + 1 }}</td>
+        <td>{{ orderDetail.prd_name_id }}</td>
+        <td>{{ orderDetail.prd_name }}</td>
+        <td>{{ orderDetail.order_values }}</td>
+        <td>{{ orderDetail.prd_sell }}</td>
+        <td>{{ orderDetail.order_values * orderDetail.prd_sell }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td colspan="5" style="text-align: right;"><strong>ราคารวมทั้งหมด:</strong></td>
+        <td><strong>{{ totalSum }} บาท</strong></td>
+      </tr>
+    </ng-template>
+  </p-table>
+  

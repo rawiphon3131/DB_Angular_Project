@@ -23,6 +23,7 @@ import { TableModule } from 'primeng/table';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { PaginatorModule } from 'primeng/paginator';
 import { TreeTableModule } from 'primeng/treetable';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 
@@ -39,6 +40,7 @@ import { ReportSellComponent } from './report-sell/report-sell.component';
 import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
 import { ProductPopupComponent } from './product-popup/product-popup.component';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { DetailsDialogComponent } from './details-dialog/details-dialog.component';
 
 
 
@@ -69,6 +71,7 @@ const routes: Routes = [
     CustomerDebtComponent,
     ProductPopupComponent,
     ProductDialogComponent,
+    DetailsDialogComponent,
     
   ],
   imports: [
@@ -93,6 +96,7 @@ const routes: Routes = [
     SpeedDialModule,
     PaginatorModule,
     TreeTableModule,
+    InputTextareaModule,
   ],
   exports: [RouterModule],
   providers: [AuthGuard],

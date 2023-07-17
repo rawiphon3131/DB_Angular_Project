@@ -24,6 +24,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th scope="col" style="width: 5%;">ลำดับที่</th>
+        <th scope="col" style="text-align: center;">รหัสสินค้า/th>
         <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
         <th scope="col" style="text-align: center;">ประเภท</th>
         <th scope="col" style="text-align: center;">ขนาด</th>
@@ -35,6 +36,7 @@
     <ng-template pTemplate="body" let-total let-i="rowIndex">
       <tr>
         <td>{{ i + 1 }}</td>
+        <td style="text-align: center;">{{ total.prd_name_id }}</td>
         <td style="text-align: center;">{{ total.prd_name }}</td>
         <td style="text-align: center;">{{ total.type_prd_name }}</td>
         <td style="text-align: center;">{{ total.size_name }}</td>
