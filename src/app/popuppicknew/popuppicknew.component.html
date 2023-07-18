@@ -1,0 +1,31 @@
+<table>
+    <tr>
+        <td>
+            <select [(ngModel)]="selectedOption"
+            [ngModelOptions]="{ standalone: true }" class="form-control"
+            icon="pi-angle-down">
+            <option value="">โปรดเลือก...</option>
+            <option *ngFor="let option of cpnNa" [value]="option.cpn_name">
+                {{ option.cpn_name}}</option>
+        </select>
+        </td>
+        <td>
+            <input pInputText pKeyFilter="int" placeholder="จำนวน"
+            [(ngModel)]="value" name="value" />
+        </td>
+        <td>
+            <input pInputText pKeyFilter="int" placeholder="ราคารับเข้าใหม่"
+            [(ngModel)]="price" name="price" />
+        </td>
+        <td>
+            <input pInputText pKeyFilter="int" placeholder="ราคาขาย"
+            [(ngModel)]="price_sell" name="price" />
+        </td>
+        <td>
+            <input type="date"  [(ngModel)]="date" name="date">
+        </td>
+        <td>
+            <p-button label="Submit" (click)="saveData()"></p-button>
+        </td>
+    </tr>
+</table>

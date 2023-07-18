@@ -41,6 +41,8 @@ import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
 import { ProductPopupComponent } from './product-popup/product-popup.component';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { DetailsDialogComponent } from './details-dialog/details-dialog.component';
+import { PopupPickinComponent } from './popup-pickin/popup-pickin.component';
+import { PopuppicknewComponent } from './popuppicknew/popuppicknew.component';
 
 
 
@@ -72,6 +74,8 @@ const routes: Routes = [
     ProductPopupComponent,
     ProductDialogComponent,
     DetailsDialogComponent,
+    PopupPickinComponent,
+    PopuppicknewComponent,
     
   ],
   imports: [

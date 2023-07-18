@@ -59,8 +59,8 @@
                     </td>
                     <td style="text-align: right">
                         <p-button (click)="showDialog3()" icon="pi pi-box" label="รับเข้าสินค้าใหม่">+</p-button>
-                        <p-dialog [(visible)]="visible3" [modal]="true"[draggable]="false" [resizable]="false" [style]="{ width: '90vw',height:'90vw' }"
-                            [draggable]="false" [resizable]="false">
+                        <p-dialog [(visible)]="visible3" [modal]="true" [draggable]="false" [resizable]="false"
+                            [style]="{ width: '90vw',height:'90vw' }" [draggable]="false" [resizable]="false">
                             <form (ngSubmit)="add_new_products()">
                                 <table>
                                     <tr>
@@ -136,7 +136,7 @@
                                                 class="form-control" aria-label="Sizing example input"
                                                 aria-describedby="inputGroup-sizing-lg">
                                         </td>
-                                    
+
                                         <td>
                                             รับเข้าวันที่
                                         </td>
@@ -219,18 +219,25 @@
                                     <div style="display: flex;width: 100%;">
                                         <div style="margin: 5px;width: 100%;">
                                             <input type="text" pInputText [(ngModel)]="name_market"
-                                                placeholder="ชื่อร้านค้า" [style]="{width:'100%'}"/>
+                                                placeholder="ชื่อร้านค้า" [style]="{width:'100%'}" />
                                         </div>
                                         <div style="margin: 5px;width: 100%;">
-                                            <input type="text" pInputText [(ngModel)]="name_market"
-                                                placeholder="เบอร์โทร"[style]="{width:'100%'}" />
+                                            <input type="text" pInputText [(ngModel)]="cpn_numtel"
+                                                placeholder="เบอร์โทร" [style]="{width:'100%'}" />
                                         </div>
-                                       
+
                                     </div>
-                                     <div style="width: 100%;margin: 5px;">
-                                            <textarea rows="5" cols="30" pInputTextarea [style]="{width:'100%'}" placeholder="ที่อยู่"></textarea>
-                                        </div>
+                                    <div style="width: 100%;margin: 5px;">
+                                        <textarea rows="5" cols="30" pInputTextarea [style]="{width:'100%'}"
+                                            placeholder="ที่อยู่" [(ngModel)]="cpn_address"></textarea>
+                                    </div>
                                 </div>
+                                <ng-template pTemplate="footer">
+                                    <p-toast></p-toast>
+                                    <p-confirmPopup></p-confirmPopup>
+                                    <p-button icon="pi pi-check" (click)="AddCpn($event)" label="บันทึก"
+                                        styleClass="p-button-text"></p-button>
+                                </ng-template>
                             </p-dialog>
                             <form (ngSubmit)="add_products()">
                                 <div>
@@ -263,13 +270,13 @@
                                                     <td style="text-align: center;">{{ product.prd_price_pickin }}</td>
                                                     <td style="text-align: center;">
                                                         <p-button type="button"
-                                                            (click)="showInfo(product.prd_id, product.size_name)"
+                                                            (click)="showInfo(product.prd_id)"
                                                             label="รับเข้า">
                                                         </p-button>
                                                     </td>
                                                     <td style="text-align: center;">
                                                         <p-button type="button"
-                                                            (click)="showInfo(product.prd_id, product.size_name)"
+                                                            (click)="showInfo2(product.prd_id)"
                                                             label="รับเข้า">
                                                         </p-button>
                                                     </td>
