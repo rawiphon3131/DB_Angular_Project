@@ -1,8 +1,10 @@
-<p-table [value]="productIds" [rows]="5" [paginator]="true">
+<input type="text" pInputText placeholder="ค้นหาเลขใบสั่งซื้อ" [(ngModel)]="orderNumberFilter">
+<p-table [value]="filterOrders()" [rows]="5" [paginator]="true">
+
     <ng-template pTemplate="header">
         <tr>
             <th scope="col" style="text-align: center;">ลำดับที่</th>
-            <th scope="col" style="text-align: center;">รหัสสินค้า/th>
+            <th scope="col" style="text-align: center;">รหัสสินค้า</th>
             <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
             <th scope="col" style="text-align: center;">ขนาด</th>
 

@@ -11,14 +11,23 @@ export class ProductPopupComponent implements OnInit {
   exceeded: { [key: string]: boolean } = {};
   products: any[];
   product_values: any[];
-  productIds:any;
-  selectedProducts:any;
+  productIds: any;
+  selectedProducts: any;
+  orderNumberFilter!: string;
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, private http: HttpClient) {
     this.products = [];
     this.product_values = [];
   }
-
+  filterOrders(): any[] {
+    if (this.orderNumberFilter) {
+      return this.productIds.filter((product: { prd_name: string; }) =>
+        product.prd_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
+      );
+    } else {
+      return this.productIds;
+    }
+  }
   addProducts() {
     // Handle the selected products and pass them back to the main component
     this.ref.close(this.selectedProducts);
@@ -31,8 +40,8 @@ export class ProductPopupComponent implements OnInit {
 
   selectProduct(product: any) {
     const inputValue = this.product_values[product.prd_id];
-  const productWithInput = { ...product, inputValue };
-  this.ref.close(productWithInput);
+    const productWithInput = { ...product, inputValue };
+    this.ref.close(productWithInput);
     console.log(productWithInput);
   }
 

@@ -8,9 +8,10 @@ include_once("db_connect.php");
 $name_cus_new = $data['name_cus_new'];
 $address_cus_new = $data['address_cus_new'];
 $phone_cus_new = $data['phone_cus_new'];
+$credit_new = $data['credit_new'];
 
 if (!empty($data)) {
-    $sql = "INSERT INTO customer_name_tbl(cus_name, cus_numtel, cus_credit) VALUES ('$name_cus_new', '$phone_cus_new', 50000)";
+    $sql = "INSERT INTO customer_name_tbl(cus_name, cus_numtel, cus_credit) VALUES ('$name_cus_new', '$phone_cus_new', '$credit_new')";
     $query = mysqli_query($conn, $sql);
 
 

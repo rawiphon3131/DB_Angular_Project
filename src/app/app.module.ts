@@ -24,7 +24,10 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { PaginatorModule } from 'primeng/paginator';
 import { TreeTableModule } from 'primeng/treetable';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-
+import { MenubarModule } from 'primeng/menubar';
+import { CardModule } from 'primeng/card';
+import { FieldsetModule } from 'primeng/fieldset';
+import { PanelModule } from 'primeng/panel';
 
 
 import { AuthGuard } from './auth.guard';
@@ -43,6 +46,21 @@ import { ProductDialogComponent } from './product-dialog/product-dialog.componen
 import { DetailsDialogComponent } from './details-dialog/details-dialog.component';
 import { PopupPickinComponent } from './popup-pickin/popup-pickin.component';
 import { PopuppicknewComponent } from './popuppicknew/popuppicknew.component';
+import { AddpreorderComponent } from './addpreorder/addpreorder.component';
+import { StatusPreorderComponent } from './status-preorder/status-preorder.component';
+import { PickinOrderPreComponent } from './pickin-order-pre/pickin-order-pre.component';
+import { PopupOrderPreComponent } from './popup-order-pre/popup-order-pre.component';
+import { DetailOrderPreComponent } from './detail-order-pre/detail-order-pre.component';
+import { AddprdtotableComponent } from './addprdtotable/addprdtotable.component';
+import { CompanyCreateComponent } from './company-create/company-create.component';
+import { EditCompanyComponent } from './edit-company/edit-company.component';
+import { ProductStockComponent } from './product-stock/product-stock.component';
+import { AddNewstockPdComponent } from './add-newstock-pd/add-newstock-pd.component';
+import { InFosizeComponent } from './in-fosize/in-fosize.component';
+import { HistoryOfpickinComponent } from './history-ofpickin/history-ofpickin.component';
+import { CustomerInfoComponent } from './customer-info/customer-info.component';
+import { AddNewsellComponent } from './add-newsell/add-newsell.component';
+
 
 
 
@@ -55,6 +73,15 @@ const routes: Routes = [
   { path: 'total_item', component: TotalProductComponent, canActivate: [AuthGuard] },
   { path: 'report_sell', component: ReportSellComponent, canActivate: [AuthGuard] },
   { path: 'dbt', component: CustomerDebtComponent, canActivate: [AuthGuard] },
+  { path: 'addpo', component: AddpreorderComponent, canActivate: [AuthGuard] },
+  { path: 'stateOrder', component: StatusPreorderComponent, canActivate: [AuthGuard] },
+  { path: 'pickinPre', component: PickinOrderPreComponent, canActivate: [AuthGuard] },
+  { path: 'cpnc', component: CompanyCreateComponent, canActivate: [AuthGuard] },
+  { path: 'pdst', component: ProductStockComponent, canActivate: [AuthGuard] },
+  { path: 'size', component: InFosizeComponent, canActivate: [AuthGuard] },
+  { path: 'hpc', component: HistoryOfpickinComponent, canActivate: [AuthGuard] },
+  { path: 'ctmif', component: CustomerInfoComponent, canActivate: [AuthGuard] },
+  { path: 'addns', component: AddNewsellComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
@@ -76,6 +103,20 @@ const routes: Routes = [
     DetailsDialogComponent,
     PopupPickinComponent,
     PopuppicknewComponent,
+    AddpreorderComponent,
+    StatusPreorderComponent,
+    PickinOrderPreComponent,
+    PopupOrderPreComponent,
+    DetailOrderPreComponent,
+    AddprdtotableComponent,
+    CompanyCreateComponent,
+    EditCompanyComponent,
+    ProductStockComponent,
+    AddNewstockPdComponent,
+    InFosizeComponent,
+    HistoryOfpickinComponent,
+    CustomerInfoComponent,
+    AddNewsellComponent,
     
   ],
   imports: [
@@ -101,6 +142,10 @@ const routes: Routes = [
     PaginatorModule,
     TreeTableModule,
     InputTextareaModule,
+    MenubarModule,
+    CardModule,
+    FieldsetModule,
+    PanelModule,
   ],
   exports: [RouterModule],
   providers: [AuthGuard],

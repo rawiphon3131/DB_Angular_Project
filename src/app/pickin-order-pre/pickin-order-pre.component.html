@@ -1,0 +1,71 @@
+<app-nav-bar></app-nav-bar> <p-toast></p-toast>
+<p-panel header="เพิ่มใบรับเข้าสินค้า">
+    <p-button label="เลือกใบสั่งซื้อ" icon="pi pi-plus" styleClass="p-button-sm" (click)="openDialog()"></p-button>
+</p-panel>
+
+<p-table [value]="selectedProducts">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>เลขที่ใบสั่งซื้อ</th>
+            <th>ผู้สั่งซื้อ</th>
+            <th>สั่งซื้อจาก</th>
+            <th>วันที่</th>
+            <th>
+                เพิ่มสินค้า
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+        <tr>
+            <td>{{ order.ordp_bill_no }}</td>
+            <td>{{ order.user_name }}</td>
+            <td>
+                {{ order.cpn_name }}
+            </td>
+            <td>{{ order.ordp_date }}</td>
+            <td>
+                <p-button label="เพิ่มสินค้าในรายการรับเข้า" icon="pi pi-plus" styleClass="p-button-sm" (click)="addpdForpick(order.ordp_id,order.cpn_name)"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+
+
+   
+</p-table>
+<p-panel header="รายการสินค้ารับเข้า">
+<table style="width: 100%;text-align: right;">
+    <tr>
+        <td>
+            <p-button label="บันทึกการรับเข้าสินค้า" icon="pi pi-save" styleClass="p-button-sm" (click)="savePic()"></p-button>
+        </td>
+    </tr>
+</table>
+<p-table [value]="selectProdus">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>รายการที่</th>
+            <th>ชื่อสินค้า</th>
+            <th>จำนวนสั่ง</th>
+            <th>
+                จำนวนรับเข้า
+            </th>
+            <th>ลบรายการ</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-orderr let-i="rowIndex">
+        <tr>
+            <td>{{i+1}}</td>
+            <td>{{ orderr.prd_name }}</td>
+            <td>{{ orderr.ordpd_valuse }}</td>
+            <td>{{ orderr.inputValue }}</td>
+            <td>
+                <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger" (click)="deleteOrder(orderr)"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+
+
+   
+</p-table>
+</p-panel>
+

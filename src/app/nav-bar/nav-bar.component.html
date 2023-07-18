@@ -1,89 +1,12 @@
-<link href='https://fonts.googleapis.com/css?family=Noto Sans Thai' rel='stylesheet'>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-  integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-  <table style="width: 100%;">
-    <tr>
-      <td  style="width: 90%;">
-        <div>
-          <a class="navbar-brand" href="/dashboard">ระบบคลังสินค้า RUTS</a>
-          <i class="pi pi-user" style="color: slateblue"> : {{userFname}} {{userLname}}</i>
-        </div>
-      </td>
-      <td>
-          <p-sidebar [(visible)]="sidebarVisible" [fullScreen]="true">
-            <td>
-              <form class="form-inline my-2 my-lg-0">
-                <p-confirmPopup></p-confirmPopup>
-                <p-button styleClass="p-button-danger" (click)="logout($event)" icon="pi pi-sign-out" label="ออกจากระบบ"></p-button>
-              </form>
-            </td>
-            <div class="container-dashboard-item">
-
-              <a href="/add_order" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-                  <div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          <img src="../../assets/Images/9177009.png" alt="logo" width="100px">
-                      </div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          รายการสั่งซื้อ และ เพิ่มคำสั่งซื้อ
-                      </div>
-                  </div>
-              </a>
-              <a href="/dbt" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-                  <div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          <img src="../../assets/Images/see.png" alt="logo" width="100px">
-                      </div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          รายชื่อลูกค้าที่มียอดค้าชำระ
-                      </div>
-                  </div>
-              </a>
-              <a href="/pickin_products" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-                  <div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          <img src="../../assets/Images/2652218.png" alt="logo" width="100px">
-                      </div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          รับเข้าสินค้า
-                      </div>
-                  </div>
-              </a>
-              <a href="/total_item" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-                  <div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          <img src="../../assets/Images/7387663.png" alt="logo" width="100px">
-                      </div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          จำนวนสินค้าคงเหลือ
-                      </div>
-                  </div>
-                  
-              </a>
-              <a href="/report_sell" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-                  <div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          <img src="../../assets/Images/2930617.png" alt="logo" width="100px">
-                      </div>
-                      <div style="display: flex;justify-content: center;align-items: center;">
-                          รายงานยอดขาย
-                      </div>
-                  </div>
-                  </a>
-          </div>
-          
-          </p-sidebar>
-          <p-button (click)="sidebarVisible = true" icon="pi pi-th-large" label="เมนู"></p-button>
-
-      </td>
-      <td>
+<div class="card">
+    <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+            ระบบคลังสินค้า RUTS
+        </ng-template>
+        <ng-template pTemplate="end">
+            ชื่อผู้ใช้: {{userFname}} {{userLname}}
+        </ng-template>
         
-      </td>
-    </tr>
-  </table>
-
-
-
-</nav>
+    </p-menubar>
+</div>

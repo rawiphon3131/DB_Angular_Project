@@ -1,0 +1,59 @@
+<app-nav-bar></app-nav-bar><p-toast></p-toast>
+<div class="card flex justify-content-center">
+    <p-panel header="เพิ่มใบสั่งซื้อสินค้า">
+        <div style="display: flex;align-items: center;">
+            <div>
+                หมายเลขใบสั่งซื้อ  
+                <input type="text" pInputText [(ngModel)]="bill_no"/>
+                สั่งซื้อจาก 
+                
+                <p-dropdown name="selectCompanyD" [(ngModel)]="selectedCompanyId" [options]="cpnNa" optionLabel="cpn_name" optionValue="cpn_id"></p-dropdown>
+
+                สั่งซื้อวันที่
+                <p-calendar dateFormat="yy/mm/dd" dataType="string"[(ngModel)]="bill_date"> </p-calendar>
+            </div>
+        </div>
+
+    </p-panel>
+</div>
+<div class="card flex justify-content-center">
+    <p-panel header="เพิ่มสินค้าลงในใบสั่งซื้อ">
+        <p-button label="เพิ่มสินค้าลงตะกร้า" icon="pi pi-check" styleClass="p-button-sm" (click)="openDialog()" icon="pi pi-plus"></p-button>
+    </p-panel>
+</div>
+<div class="card flex justify-content-center">
+    <p-panel header="รายการสินค้าในบิล">
+        <table style="width: 100%; text-align: right;">
+            <tr>
+                <td>
+                    <p-button label="บันทึกรายการสั่งซื้อ" icon="pi pi-check" styleClass="p-button-sm" (click)="saveOrderPre()" icon="pi pi-save"></p-button>
+                </td>
+            </tr>
+        </table>
+        
+        <p-table [value]="selectedProducts">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ชื่อสินค้า</th>
+                    <th>ขนาด</th>
+                    <th>ราคาขาย</th>
+                    <th>จำนวน</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>{{ product.prd_name }}</td>
+                    <td>{{ product.size_name }}</td>
+                    <td>{{ product.prd_sell }}</td>
+                    <td>{{ product.inputValue }}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <tr>
+                    <td>ราคารวมทั้งหมด: {{ calculateTotalSum() }} บาท</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </p-panel>
+</div>

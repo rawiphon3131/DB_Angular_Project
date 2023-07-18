@@ -1,0 +1,32 @@
+<app-nav-bar></app-nav-bar>
+<p-panel header="รายการไซต์">
+    <p-button label="เพิ่มไซต์" icon="pi pi-plus" styleClass="p-button-sm" (click)="showDialog()"></p-button>
+    <p-dialog header="เพิ่มชื่อไซต์" [(visible)]="visible" [modal]="true" [style]="{ width: 'auto' }"
+        [draggable]="false" [resizable]="false">
+        <input type="text" pInputText [(ngModel)]="size_name_new" placeholder="ชื่อไซต์" />
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="saveSize()" label="บันทึก" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-dialog>
+</p-panel>
+<input type="text" pInputText placeholder="ค้นหาไซต์" [(ngModel)]="orderNumberFilter">
+<p-table [value]="filterOrders()">
+    <ng-template pTemplate="header">
+      <tr>
+        <th scope="col" style="text-align: center;">ลำดับที่</th>
+        <th scope="col" style="text-align: center;">ชื่อไซต์</th>
+        <th scope="col" style="text-align: center;">ACTION</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-size let-i="rowIndex">
+      <tr>
+        <td style="text-align: center;">{{ i + 1 }}</td>
+        <td style="text-align: center;">{{ size.size_name }}</td>
+        <td style="text-align: center;">
+          <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm"></p-button>
+          &nbsp;
+          <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>

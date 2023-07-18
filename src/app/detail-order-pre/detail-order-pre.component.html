@@ -1,0 +1,23 @@
+<p-table [value]="orderDetails">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ลำดับที่</th>
+        <th>รหัสสินค้า</th>
+        <th>ชื่อสินค้า</th>
+        <th>จำนวน</th>
+        <th>ราคารับเข้า/ชิ้น</th>
+        <th>ราคารวม</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-orderDetail let-i="rowIndex">
+      <tr>
+        <td>{{ i + 1 }}</td>
+        <td>{{ orderDetail.ordp_bill_no }}</td>
+        <td>{{ orderDetail.prd_name }}</td>
+        <td>{{ orderDetail.ordpd_valuse}}</td>
+        <td>{{ orderDetail.prd_price_pickin }}</td>
+        <td>{{ orderDetail.ordpd_valuse * orderDetail.prd_price_pickin }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  

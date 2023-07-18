@@ -21,8 +21,9 @@ if (!empty($data)) {
     $price_in = $product['price_in'];
     $price_sell = $product['price_sell'];
     $userId = $product['userId'];
+    $name_new_id_id = $product['name_new_id_id'];
 
-    $date = date("Y-m-d h:i:sa");
+    $date = $product['formattedDatePcc'];
 
     //PART OF type_prd_tbl
     $sql = "SELECT * FROM type_prd_tbl WHERE type_prd_name = '$type_name'";
@@ -69,7 +70,7 @@ if (!empty($data)) {
     $type_query = $rowtype_sec['type_prd_id'];
 
 
-    $sql = "SELECT * FROM product_tbl WHERE prd_name = '$name' AND size_id='$size_query' AND type_prd_id ='$type_query' AND type_id ='$type_prd_name'";
+    $sql = "SELECT * FROM product_tbl WHERE prd_name = '$name' AND size_id='$size_query' AND type_prd_id ='$type_query' AND type_id ='$type_prd_name' AND prd_name_id ='$name_new_id_id'";
     $query = mysqli_query($conn, $sql);
     if ($row3 = mysqli_fetch_array($query)) {
       $product_id_tbl = $row3['prd_id'];
@@ -77,8 +78,8 @@ if (!empty($data)) {
       $sql = "UPDATE product_tbl SET prd_value=prd_value+$value_new WHERE prd_id = '$product_id_tbl' ";
       $query = mysqli_query($conn, $sql);
     } else {
-      $sql = "INSERT INTO product_tbl(prd_name,size_id,type_prd_id,type_id,prd_value) 
-        VALUES ('$name','$size_query','$type_query','$type_prd_name','$value_new')";
+      $sql = "INSERT INTO product_tbl(prd_name_id,prd_name,size_id,type_prd_id,type_id,prd_value) 
+        VALUES ('$name_new_id_id','$name','$size_query','$type_query','$type_prd_name','$value_new')";
       $query = mysqli_query($conn, $sql);
 
       $sql = "SELECT * FROM product_tbl GROUP BY prd_id DESC LIMIT 1 ";
@@ -100,7 +101,7 @@ if (!empty($data)) {
       $prdp_id_tbl = $row4['prdp_id'];
       $sql = "UPDATE product_price_tbl SET prd_price_pickin = '$price_in', prd_sell = '$price_sell' WHERE prdp_id = '$prdp_id_tbl'";
     } else {
-      $sql = "INSERT INTO product_price_tbl (prd_id, prd_price_pickin, prd_sell) VALUES ('$prd_id_q', '$price_in', '$price_sell')";
+      $sql = "INSERT INTO product_price_tbl (prd_id, prd_price_pickin, prd_sell,prdp_date) VALUES ('$prd_id_q', '$price_in', '$price_sell','$date')";
       $query = mysqli_query($conn, $sql);
 
       $sql = "SELECT * FROM product_price_tbl ORDER BY prdp_id DESC LIMIT 1";

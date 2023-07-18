@@ -1,0 +1,61 @@
+<app-nav-bar></app-nav-bar><p-toast></p-toast>
+<p-panel header="เพิ่มชื่อร้านค้า">
+    <p-button (click)="addMarket()" icon="pi pi-plus" label="เพิ่มร้านค้าที่งสั่งซื้อ"
+                                styleClass="p-button-sm"></p-button>
+                            <p-dialog header="เพิ่มร้านค้า" [(visible)]="addMarketp" [modal]="true" [draggable]="false"
+                                [resizable]="false" [style]="{ width: '50vw' }">
+                                <div class="flex py-2 justify-content-center">
+                                    <div style="display: flex;width: 100%;">
+                                        <div style="margin: 5px;width: 100%;">
+                                            <input type="text" pInputText [(ngModel)]="name_market"
+                                                placeholder="ชื่อร้านค้า" [style]="{width:'100%'}" />
+                                        </div>
+                                        <div style="margin: 5px;width: 100%;">
+                                            <input type="text" pInputText [(ngModel)]="cpn_numtel"
+                                                placeholder="เบอร์โทร" [style]="{width:'100%'}" />
+                                        </div>
+
+                                    </div>
+                                    <div style="width: 100%;margin: 5px;">
+                                        <textarea rows="5" cols="30" pInputTextarea [style]="{width:'100%'}"
+                                            placeholder="ที่อยู่" [(ngModel)]="cpn_address"></textarea>
+                                    </div>
+                                </div>
+                                <ng-template pTemplate="footer">
+                                    
+                                    <p-confirmPopup></p-confirmPopup>
+                                    <p-button icon="pi pi-check" (click)="AddCpn($event)" label="บันทึก"
+                                        styleClass="p-button-text"></p-button>
+                                </ng-template>
+                            </p-dialog>
+</p-panel>
+<p-panel>
+    <p-table [value]="cpnNa">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;">ลำดับที่</th>
+                <th style="text-align: center;">ชื่อร้านค้า</th>
+                <th style="text-align: center;">เบอร์โทร</th>
+                <th style="text-align: center;">ที่อยู่</th>
+                <th style="text-align: center;">ACTON</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cpn let-i="rowIndex">
+            <tr>
+                <td style="text-align: center;">{{i+1}}</td>
+                <td style="text-align: center;">{{cpn.cpn_name}}</td>
+                <td style="text-align: center;">{{cpn.cpn_numtel}}</td>
+                <td style="text-align: center;">{{cpn.cpn_address}}</td>
+                <td style="text-align: center;">
+                    <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="editCpn(cpn.cpn_id)"></p-button>
+                    
+                    &nbsp;
+
+
+                    <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm" (click)="deleteCpn(cpn.cpn_id)"></p-button>
+
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>

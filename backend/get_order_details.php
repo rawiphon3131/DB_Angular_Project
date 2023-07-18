@@ -7,7 +7,7 @@ include_once("db_connect.php");
 
 $order_id_j = $data['order_id'];
 
-$sql = "SELECT ordd_id,a.prdp_id,b.prd_id,prd_name,c.size_id,size_name,order_values,order_sum,prd_sell FROM order_detail_tbl as a
+$sql = "SELECT ordd_id,a.prdp_id,b.prd_id,prd_name_id,prd_name,c.size_id,size_name,order_values,order_sum,prd_sell FROM order_detail_tbl as a
 INNER JOIN product_price_tbl as b
 ON a.prdp_id =b.prdp_id
 INNER JOIN product_tbl as c
@@ -28,7 +28,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'prd_name' => $row['prd_name'].' '.$row['size_name'],
         'order_values' =>$row['order_values'],
         'order_sum' => $row['order_sum'],
-        'prd_sell' => $row['prd_sell']
+        'prd_sell' => $row['prd_sell'],
+        'prd_name_id' => $row['prd_name_id'],
         
     );
     $orders[] = $order;

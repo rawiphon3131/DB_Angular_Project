@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 include_once("db_connect.php");
 
-$sql = "SELECT a.prd_id, prd_name,b.size_id,size_name, a.user_id, user_fname, user_lname, prdin_mk, prdin_values, prdin_date
+$sql = "SELECT a.prd_id,prd_name_id, prd_name,b.size_id,size_name, a.user_id, user_fname, user_lname, prdin_mk, prdin_values, prdin_date
         FROM pickin_tbl AS a
         INNER JOIN product_tbl AS b ON a.prd_id = b.prd_id
         INNER JOIN user_tbl AS c ON a.user_id = c.user_id
@@ -24,7 +24,8 @@ if ($result->num_rows > 0) {
             'userPi' => $row['user_fname'] . ' ' . $row['user_lname'],
             'prdin_mk' => $row['prdin_mk'],
             'prdin_values' => $row['prdin_values'],
-            'prdin_date' => $row['prdin_date']
+            'prdin_date' => $row['prdin_date'],
+            'prd_name_id' => $row['prd_name_id'],
         );
     }
 }

@@ -1,0 +1,36 @@
+<app-nav-bar></app-nav-bar>
+<div class="card flex justify-content-center">
+    <p-panel header="สถานะใบสั่งซื้อ">
+        <input type="text" pInputText placeholder="ค้นหาเลขใบสั่งซื้อ" [(ngModel)]="orderNumberFilter">
+        <p-table [value]="filterOrders()" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th scope="col" style="text-align: center;">ลำดับที่</th>
+                    <th scope="col" style="text-align: center;">เลขที่ใบสั่งซื้อ</th>
+                    <th scope="col" style="text-align: center;">ผู้สั่งซื้อ</th>
+                    <th scope="col" style="text-align: center;">สั่งซื้อจาก</th>
+                    <th scope="col" style="text-align: center;">วันที่</th>
+                    <th scope="col" style="text-align: center;">สถานะ</th>
+                    <th scope="col" style="text-align: center;">รายละเอียด</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order let-i="rowIndex">
+                <tr>
+                    <td style="text-align: center;">{{i+1}}</td>
+                    <td style="text-align: center;">{{order.ordp_bill_no}}</td>
+                    <td style="text-align: center;">{{order.user_name}}</td>
+                    <td style="text-align: center;">{{order.cpn_name}}</td>
+                    <td style="text-align: center;">{{order.ordp_date}}</td>
+                    <td *ngIf="order.state_id == 2" style="text-align: center;">รอการตรวจรับ</td>
+                    <td *ngIf="order.state_id == 3" style="text-align: center;">ตรวจรับแล้วแต่ยังไม่สมบูรณ์</td>
+                    <td *ngIf="order.state_id == 4" style="text-align: center;">ตรวจรับสมบูรณ์แล้ว</td>
+                    <td style="text-align: center;">
+                        <p-button label="รายละเอียด" icon="pi pi-check" styleClass="p-button-sm" (click)="detailThis(order.ordp_id)"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </p-panel>
+    
+</div>

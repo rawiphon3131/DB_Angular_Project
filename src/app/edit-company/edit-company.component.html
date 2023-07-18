@@ -1,0 +1,10 @@
+<p-toast></p-toast>
+<div *ngFor="let cpn of cpnDetail" style="width: 100%;display: flex;align-items: center;justify-content: center;">
+    ชื่อร้านค้า : <input type="text" pInputText  placeholder="{{cpn.cpn_name}}" [(ngModel)]="cpn_edit_name" />
+    เบอร์โทร : <input type="text" pInputText placeholder="{{cpn.cpn_numtel}}" [(ngModel)]="cpn_edit_numtel" />
+    ที่อยู่ : <input type="text" pInputText placeholder="{{cpn.cpn_address}}" [(ngModel)]="cpn_edit_address" />
+</div>
+<br>
+<div style="width: 100%;display: flex;align-items: center;justify-content: center;">
+    <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="editCpnn()"></p-button>
+</div>

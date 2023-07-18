@@ -1,0 +1,29 @@
+<p-table [value]="orderDetails">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ลำดับที่</th>
+        <th>รหัสสินค้า</th>
+        <th>ชื่อสินค้า</th>
+        <th>จำนวนสั่ง</th>
+        <th>จำนวนรับเข้า</th>
+        <th>ราคารับเข้า/ชิ้น</th>
+        <th>ราคารวม</th>
+        <th>เพิ่ม</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-orderDetail let-i="rowIndex">
+      <tr>
+        <td>{{ i + 1 }}</td>
+        <td>{{ orderDetail.ordp_bill_no }}</td>
+        <td>{{ orderDetail.prd_name }}</td>
+        <td>{{ orderDetail.ordpd_valuse}}</td>
+        <td><input type="number" pInputText [(ngModel)]="value_pick_in[orderDetail.ordpd_id]" /></td>
+        <td>{{ orderDetail.prd_price_pickin }}</td>
+        <td>{{ orderDetail.ordpd_valuse * orderDetail.prd_price_pickin }}</td>
+        <td>
+            <p-button label="เพิ่ม" icon="pi pi-plus" styleClass="p-button-sm" (click)="addtotable(orderDetail)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  

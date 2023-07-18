@@ -1,0 +1,103 @@
+<app-nav-bar></app-nav-bar>
+<p-panel header="รายการสินค้าทั้งหมด">
+    <table>
+        <tr>
+            <td>
+                <p-button (click)="showDialog()" icon="pi pi-external-link" label="ยังไม่เสร็จกลับมาทำด้วยเหลืองหลังบ้าน"></p-button>
+<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '80vw',height:'20vw'}" [draggable]="false" [resizable]="false">
+    <table>
+        <tr>
+            <td>
+                รหัสสินค้า:
+            </td>
+            <td>
+                <input type="text" pInputText [(ngModel)]="id_product" />
+            </td>
+            <td>
+                ชื่อสินค้า:
+            </td>
+            <td>
+                <input type="text" pInputText [(ngModel)]="id_product" />
+            </td>
+            <td >
+                ขนาด:
+            </td>
+            <td>
+                <p-dropdown [(ngModel)]="selectedOptionSize" [options]="sizeLoad" optionLabel="size_name" optionValue="size_id" placeholder="เลือกขนาด"></p-dropdown>
+            </td>
+            <td>
+                สำหรับ:
+            </td>
+            <td>
+                <p-dropdown [(ngModel)]="selectedOption" [options]="type_prd" optionLabel="type_prd_name" optionValue="type_prd_id" placeholder="เลือกประเภท"></p-dropdown>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ประเภทสินค้า:
+            </td>
+            <td>
+                <p-dropdown [(ngModel)]="selectedTyped" [options]="typed" optionLabel="type_name" optionValue="type_id" placeholder="เลือกประเภท"></p-dropdown>
+            </td>
+            <td>
+                จำนวน:
+            </td>
+            <td>
+                <input type="number" pInputText [(ngModel)]="prd_values" />
+            </td>
+            <td>
+                ราคารับเข้า:
+            </td>
+            <td>
+                <input type="number" pInputText [(ngModel)]="prd_sell_in" />
+            </td>
+            <td>
+                ราคาขาย:
+            </td>
+            <td>
+                <input type="number" pInputText [(ngModel)]="prd_sell_out" />
+            </td>
+        </tr>
+    </table>
+</p-dialog>
+            </td>
+        </tr>
+    </table>
+    <input type="text" pInputText placeholder="ค้นหาชื่อสินค้า" [(ngModel)]="orderNumberFilter">
+    <p-table [value]="filterOrders()" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col" style="text-align: center;">ลำดับที่</th>
+            <th scope="col" style="text-align: center;">รหัสสินค้า</th>
+            <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+            <th scope="col" style="text-align: center;">ขนาด</th>
+            <th scope="col" style="text-align: center;">ประเภทสินค้า</th>
+            <th scope="col" style="text-align: center;">สำหรับ</th>
+            <th scope="col" style="text-align: center;">จำนวนคงเหลือ</th>
+            <th scope="col" style="text-align: center;">ราคารับเข้า</th>
+            <th scope="col" style="text-align: center;">ราคาขาย</th>
+            <th scope="col" style="text-align: center;">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-i="rowIndex">
+          <tr>
+            <td style="text-align: center;">
+              {{ i + 1 }}
+            </td>
+            <td style="text-align: center;">{{ product.prd_name_id }}</td>
+            <td style="text-align: center;">{{ product.prd_name }}</td>
+            <td style="text-align: center;">{{ product.size_name }}</td>
+            <td style="text-align: center;">{{ product.type_prd_name }}</td>
+            <td style="text-align: center;">{{ product.type_name }}</td>
+            <td style="text-align: center;">{{ product.prd_value }}</td>
+            <td style="text-align: center;">{{ product.prd_sell }}</td>
+            <td style="text-align: center;">{{ product.prd_price_pickin }}</td>
+            <td style="text-align: center;">
+                <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm"></p-button>
+                &nbsp;
+                <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm"></p-button>
+              </td>
+          </tr>
+        </ng-template>
+      </p-table>
+</p-panel>
