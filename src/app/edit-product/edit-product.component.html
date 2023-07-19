@@ -1,0 +1,68 @@
+<p-panel><p-toast></p-toast>
+
+
+    <div *ngFor="let prd of prdDet">
+        <div style="width: 100%;display: flex;">
+            <div style="width: 25%;">
+                รหัสสินค้า
+            </div>
+            <div style="width: 25%;">
+                ชื่อสินค้า
+            </div>
+            <div style="width: 25%;">
+                ขนาด
+            </div>
+            <div style="width: 25%;">
+                สำหรับ
+            </div>
+        </div>
+        <div style="width: 100%;display: flex;">
+            <div style="width: 25%;">
+                <input type="text" pInputText placeholder="{{prd.prd_name_id}}" [(ngModel)]="prd_name_id" />
+            </div>
+            <div style="width: 25%;">
+                <input type="text" pInputText placeholder="{{prd.prd_name}}" [(ngModel)]="prd_name" />
+            </div>
+            <div style="width: 25%;">
+                <p-dropdown [(ngModel)]="selectedOptionSize" [options]="sizeLoad" optionLabel="size_name"
+                optionValue="size_id" placeholder="{{prd.size_name}}"></p-dropdown>
+            </div>
+            <div style="width: 25%;">
+                <p-dropdown [(ngModel)]="selectedOption" [options]="type_prd" optionLabel="type_prd_name"
+                optionValue="type_prd_id" placeholder="{{prd.type_name}}"></p-dropdown>
+            </div>
+        </div> 
+    </div>
+    <div *ngFor="let prd of prdDet">
+        <div style="width: 100%;display: flex;">
+            <div style="width: 25%;">
+                ประเภทสินค้า
+            </div>
+            <div style="width: 25%;">
+                ราคารับเข้า
+            </div>
+            <div style="width: 25%;">
+                ราคาขาย
+            </div>
+            <div style="width: 25%;">
+            </div>
+        </div>
+        <div style="width: 100%;display: flex;">
+            <div style="width: 25%;">
+                <p-dropdown [(ngModel)]="selectedTyped" [options]="typed" optionLabel="type_name"
+                optionValue="type_id" placeholder="{{prd.type_prd_name}}"></p-dropdown>
+            </div>
+            <div style="width: 25%;">
+                <input type="number" pInputText [(ngModel)]="prd_sell_out" placeholder="{{prd.prd_price_pickin}}" />
+            </div>
+            <div style="width: 25%;">
+                <input type="number" pInputText [(ngModel)]="prd_sell_in" placeholder="{{prd.prd_sell}}"/>
+            </div>
+            <div style="width: 25%;">
+            </div>
+        </div>
+    </div>
+    <div style="display: flex;width: 100%;justify-content: right;">
+        <p-button label="บันทึกการแก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="saveEdit()"></p-button>
+    </div>
+</p-panel>

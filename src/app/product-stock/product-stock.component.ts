@@ -1,8 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AddNewstockPdComponent } from '../add-newstock-pd/add-newstock-pd.component';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
+import { EditProductComponent } from '../edit-product/edit-product.component';
 
 
 @Component({
@@ -13,6 +13,7 @@ import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dy
 })
 export class ProductStockComponent implements OnInit{
   stock:any;
+  name_product:string ='';
   sizeLoad:any;
   type_prd:any;
   visible:boolean = false;
@@ -43,8 +44,68 @@ filterOrders(): any[] {
     return this.stock;
   }
 }
+editProduct(prd_id:number){
+  console.log(prd_id);
+  const data = { prd_id: prd_id};
+    this.http.post('http://localhost/backend/edit_prd.php', data).subscribe(
+      (response) => {
+        console.log(response);
+        const prdDet = Array.isArray(response) ? response : [response];
+        const ref = this.dialogService.open(EditProductComponent, {
+          header: 'แก้ไขรายละเอียดสินค้า',
+          width: '70%',
+          height:'auto',
+          data: {prdDet }
+        });
+      });
+
+}
+delPrd(prd_id:number){
+  console.log(prd_id);
+  const data = {prd_id};
+  const url = 'http://localhost/backend/del_prd.php';
+  this.http.post(url,data).subscribe(
+    response => {
+      console.log(response);
+      this.messageService.add({ severity: 'success', summary: 'ลบสินค้าเสร็จสิ้น', detail: 'กำลังรีเฟส' });
+      const timeout = 2000;
+        setTimeout(() => {
+          location.reload();
+        }, timeout);
+    }
+  );
+}
 showDialog(){
   this.visible = true;
+}
+saveProduct_new(){
+  const data = {
+    id_product:this.id_product,
+    name_product:this.name_product,
+    size:this.selectedOptionSize,
+    type:this.selectedOption,
+    type_prd:this.selectedTyped,
+    values:this.prd_values,
+    price_in:this.prd_sell_in,
+    price_sell:this.prd_sell_out,
+  };
+  const url = 'http://localhost/backend/add_new_pd.php';
+  this.http.post(url,data).subscribe(
+    response =>{
+      console.log(response);
+      if(response == 'COMPLEAT'){
+        this.messageService.add({ severity: 'success', summary: 'เพิ่มสินค้าเสร็จสิ้น', detail: 'กำลังรีเฟส' });
+        const timeout = 2000;
+        setTimeout(() => {
+          location.reload();
+        }, timeout);
+      }
+      if(response == 'YANG MAI DAI NA'){
+        this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'มีข้อมูลนี้อยู่แล้ว' });
+      }
+    }
+  );
+  console.log(data);
 }
 loadStock(){
   this.http.get<any[]>('http://localhost/backend/total_poduct.php')

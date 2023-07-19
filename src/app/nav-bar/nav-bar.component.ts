@@ -85,6 +85,10 @@ export class NavBarComponent implements OnInit {
                       icon: 'pi pi-fw pi-file-edit',
                     }
                   ],
+              },{
+                label: 'รายการสินค้าทั้งหมด',
+                icon: 'pi pi-fw pi-box',
+                command:()=> this.navTtpd(),
               }
           ]
       },
@@ -134,6 +138,9 @@ export class NavBarComponent implements OnInit {
   }
   navCtmif(){
     this.router.navigate(['ctmif']);
+  }
+  navTtpd(){
+    this.router.navigate(['ttpd']);
   }
   addns(){
     this.router.navigate(['addns']);

@@ -37,10 +37,8 @@ import { AuthGuard } from './auth.guard';
 
 
 import { Routes, RouterModule } from '@angular/router';
-import { AddOrderComponent } from './add-order/add-order.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PickinProductComponent } from './pickin-product/pickin-product.component';
-import { TotalProductComponent } from './total-product/total-product.component';
 import { ReportSellComponent } from './report-sell/report-sell.component';
 import { CustomerDebtComponent } from './customer-debt/customer-debt.component';
 import { ProductPopupComponent } from './product-popup/product-popup.component';
@@ -63,6 +61,9 @@ import { HistoryOfpickinComponent } from './history-ofpickin/history-ofpickin.co
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { AddNewsellComponent } from './add-newsell/add-newsell.component';
 import { EditCusinfoComponent } from './edit-cusinfo/edit-cusinfo.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { EditSizeComponent } from './edit-size/edit-size.component';
+import { TotalProductINstockComponent } from './total-product-instock/total-product-instock.component';
 
 
 
@@ -71,9 +72,7 @@ import { EditCusinfoComponent } from './edit-cusinfo/edit-cusinfo.component';
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'add_order', component: AddOrderComponent, canActivate: [AuthGuard] },
   { path: 'pickin_products', component: PickinProductComponent, canActivate: [AuthGuard] },
-  { path: 'total_item', component: TotalProductComponent, canActivate: [AuthGuard] },
   { path: 'report_sell', component: ReportSellComponent, canActivate: [AuthGuard] },
   { path: 'dbt', component: CustomerDebtComponent, canActivate: [AuthGuard] },
   { path: 'addpo', component: AddpreorderComponent, canActivate: [AuthGuard] },
@@ -85,6 +84,7 @@ const routes: Routes = [
   { path: 'hpc', component: HistoryOfpickinComponent, canActivate: [AuthGuard] },
   { path: 'ctmif', component: CustomerInfoComponent, canActivate: [AuthGuard] },
   { path: 'addns', component: AddNewsellComponent, canActivate: [AuthGuard] },
+  { path: 'ttpd', component: TotalProductINstockComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
@@ -95,10 +95,8 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    AddOrderComponent,
     NavBarComponent,
     PickinProductComponent,
-    TotalProductComponent,
     ReportSellComponent,
     CustomerDebtComponent,
     ProductPopupComponent,
@@ -121,6 +119,9 @@ const routes: Routes = [
     CustomerInfoComponent,
     AddNewsellComponent,
     EditCusinfoComponent,
+    EditProductComponent,
+    EditSizeComponent,
+    TotalProductINstockComponent,
     
   ],
   imports: [

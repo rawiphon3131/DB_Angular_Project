@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import 'jspdf-autotable';
 import { Router } from '@angular/router';
 import "pdfmake/build/pdfmake";
@@ -29,6 +29,7 @@ interface OrderData {
   cus_adddress: string;
   cus_numtel: string;
   user_name: string;
+  order_idb:string;
 }
 
 
@@ -37,11 +38,11 @@ interface OrderData {
   selector: 'app-add-newsell',
   templateUrl: './add-newsell.component.html',
   styleUrls: ['./add-newsell.component.css'],
-  providers:[ConfirmationService, MessageService,DynamicDialogRef, DynamicDialogConfig, DialogService]
+  providers: [ConfirmationService, MessageService, DynamicDialogRef, DynamicDialogConfig, DialogService]
 })
-export class AddNewsellComponent implements OnInit{
+export class AddNewsellComponent implements OnInit {
 
- 
+
 
 
   selectedProducts: any[] = [];
@@ -56,7 +57,7 @@ export class AddNewsellComponent implements OnInit{
     }, 0);
     return this.totalSum;
   }
-  
+
   cols: any[] = [];
   orderList: any;
   paybl: any;
@@ -71,7 +72,7 @@ export class AddNewsellComponent implements OnInit{
 
 
   name_cus_new: string = '';
-  credit_new:string = '';
+  credit_new: string = '';
   address_cus_new: string = '';
   phone_cus_new: string = '';
   visible: boolean = false;
@@ -118,7 +119,7 @@ export class AddNewsellComponent implements OnInit{
   filterOrders(): any[] {
     if (this.orderNumberFilter) {
       return this.orderList.filter((order: { cus_name: string; }) =>
-      order.cus_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
+        order.cus_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
       );
     } else {
       return this.orderList;
@@ -399,7 +400,7 @@ export class AddNewsellComponent implements OnInit{
         message: 'คุณต้องการเพิ่มชื่อลูกค้าหรือไม่',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new,credit_new:this.credit_new };
+          const data = { name_cus_new: this.name_cus_new, address_cus_new: this.address_cus_new, phone_cus_new: this.phone_cus_new, credit_new: this.credit_new };
           this.http.post('http://localhost/backend/add_new_cus.php', data).subscribe(
             (response: any) => {
               console.log(response);
@@ -453,30 +454,26 @@ export class AddNewsellComponent implements OnInit{
           this.http.post('http://localhost/backend/bill_order.php', jsonData).subscribe(
             (response) => {
               console.log(response);
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายการสั่งซื้อเสร็จสมบูรณ์' });
-              const timeout = 2000;
-              setTimeout(() => {
-                location.reload();
-              }, timeout);
-            },
-            (error) => {
-              console.log(error);
-              this.messageService.add({ severity: 'error', summary: 'Warring', detail: 'เกิดข้อผิดพลาดกรุณาตรวจสอบข้อมูลให้ครบถ้วน' });
+
+              if (response == 'COMPLEAT') {
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'เพิ่มรายการสั่งซื้อเสร็จสมบูรณ์' });
+                const timeout = 2000;
+                setTimeout(() => {
+
+                  location.reload();
+                }, timeout);
+              }
+            }, (error) => {
+              this.messageService.add({ severity: 'error', summary: 'เกิดข้อผิดพลาด', detail: 'กรุณาตรวจสอบข้อมูล' });
             });
           console.log(dataArray);
         }, reject: () => {
           this.messageService.add({ severity: 'error', summary: 'Cancle', detail: 'ยกเลิกรายการสั่งซื้อ' });
         }
-
       });
     }
-    
   }
   generateInvoice(orderId: number): void {
-
-
-
-
     const url2 = `http://localhost/backend/export_pdf_data.php`;
     const body2 = { order_id: orderId };
 
@@ -488,6 +485,7 @@ export class AddNewsellComponent implements OnInit{
         invoiceContent.customer.address = row.cus_adddress; // Corrected property name
         invoiceContent.customer.phone = row.cus_numtel; // Corrected property name
         invoiceContent.payee.userName = row.user_name;
+        invoiceContent.customer.billNo = row.order_idb;
         // Rest of the code...
       }
     );
@@ -497,7 +495,8 @@ export class AddNewsellComponent implements OnInit{
       customer: {
         name: '',
         address: '',
-        phone: ''
+        phone: '',
+        billNo:'',
       },
       products: [] as any[],
       payee: {
@@ -537,7 +536,7 @@ export class AddNewsellComponent implements OnInit{
               bolditalics: 'NotoSansThai-Thin.ttf'
             }
           };
-      
+
           pdfMake.fonts = fonts;
           const product = {
             description: getDescription(row),
@@ -660,7 +659,7 @@ export class AddNewsellComponent implements OnInit{
               columns: [
                 [
                   { text: `ลูกค้า / customrt : ${invoiceContent.customer.name}`, style: 'tableStyle' },
-                  { text: `เลขที่ใบเสร็จ / Bill No. :`, style: 'tableStyle' } // Replace "XYZ123" with the actual bill number
+                  { text: `เลขที่ใบเสร็จ / Bill No. : ${invoiceContent.customer.billNo}`, style: 'tableStyle' } // Replace "XYZ123" with the actual bill number
                 ],
                 [
                   { text: ` ที่อยู่ / Address : ${invoiceContent.customer.address}`, style: 'tableStyle' },
