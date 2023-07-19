@@ -36,7 +36,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'cus_name' => $row['cus_name'],
         'cus_numtel' => $row['cus_numtel'],
         'cus_adddress' => $row['cus_adddress'],
-        'user_name' => $row['user_fname'].' '.$row['user_lname']
+        'user_name' => $row['user_fname'].' '.$row['user_lname'],
+        'order_idb' => $row['order_id']
 
         
     );

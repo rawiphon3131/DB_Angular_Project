@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddOrderComponent } from './add-order.component';
+import { EditSizeComponent } from './edit-size.component';
 
-describe('AddOrderComponent', () => {
-  let component: AddOrderComponent;
-  let fixture: ComponentFixture<AddOrderComponent>;
+describe('EditSizeComponent', () => {
+  let component: EditSizeComponent;
+  let fixture: ComponentFixture<EditSizeComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddOrderComponent]
+      declarations: [EditSizeComponent]
     });
-    fixture = TestBed.createComponent(AddOrderComponent);
+    fixture = TestBed.createComponent(EditSizeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

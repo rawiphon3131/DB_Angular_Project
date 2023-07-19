@@ -1,0 +1,9 @@
+<p-toast></p-toast>
+<div *ngFor="let size of sizeDetail">
+    <input type="text" pInputText [(ngModel)]="size_edit" placeholder="{{size.size_name}}" />
+</div>
+<br>
+
+<div style="display: flex;width: 100%;justify-content: center;">
+    <p-button label="บันทึกการแก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="saveEdit()"></p-button>
+</div>

@@ -5,9 +5,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 
 include_once("db_connect.php");
-$data = json_decode(file_get_contents('php://input'), true);
-$cpn_id = $data['cpn_id'];
-$sql = "SELECT * FROM company_tbl WHERE cpn_id = '$cpn_id'";
+
+$sql = "SELECT * FROM company_tbl";
 
 // Execute the query
 $result = mysqli_query($conn, $sql);

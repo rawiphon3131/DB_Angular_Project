@@ -1,4 +1,4 @@
-<app-nav-bar></app-nav-bar>
+<app-nav-bar></app-nav-bar><p-toast></p-toast>
 <p-panel header="รายการไซต์">
     <p-button label="เพิ่มไซต์" icon="pi pi-plus" styleClass="p-button-sm" (click)="showDialog()"></p-button>
     <p-dialog header="เพิ่มชื่อไซต์" [(visible)]="visible" [modal]="true" [style]="{ width: 'auto' }"
@@ -23,9 +23,9 @@
         <td style="text-align: center;">{{ i + 1 }}</td>
         <td style="text-align: center;">{{ size.size_name }}</td>
         <td style="text-align: center;">
-          <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm"></p-button>
+          <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="editSize(size.size_id)"></p-button>
           &nbsp;
-          <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm"></p-button>
+          <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm" (click)="delSize(size.size_id)"></p-button>
         </td>
       </tr>
     </ng-template>

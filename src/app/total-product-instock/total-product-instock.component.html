@@ -1,0 +1,47 @@
+<app-nav-bar></app-nav-bar>
+<p-panel header="รายการสินค้าในสต๊อกทั้งหมด">
+    <input type="text" pInputText placeholder="ค้นหาชื่อสินค้า" [(ngModel)]="orderNumberFilter">
+    <p-table [value]="filterOrders()">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ลำดับที่</th>
+                <th>รหัสสินค้า</th>
+                <th>ชื่อสินค้า</th>
+                <th>ประเภทสินค้า</th>
+                <th>สำหรับ</th>
+                <th>จำนวน</th>
+                <th>ราคารับเข้า</th>
+                <th>ราคาขาย</th>
+                <th>สถานะ</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prd let-i="rowIndex">
+            <tr>
+                <td>{{i+1}}</td>
+                <td>{{prd.prd_name_id}}</td>
+                <td>{{prd.prd_name}}</td>
+                <td>
+                    {{prd.type_prd_name}}
+                </td>
+                <td>
+                    {{prd.type_name}}
+                </td>
+                <td>
+                    {{prd.prd_value}}
+                </td>
+                <td>
+                    {{prd.prd_price_pickin}}
+                </td>
+                <td>
+                    {{prd.prd_sell}}
+                </td>
+                <td *ngIf="prd.state_id == 5" style="color: green;">
+                    พร้อมใช้งาน
+                </td>
+                <td *ngIf="prd.state_id == 6" style="color: red;">
+                    ไม่พร้อมใช้งาน
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>

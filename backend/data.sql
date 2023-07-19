@@ -4,8 +4,8 @@ USE project;
 
 CREATE TABLE IF NOT EXISTS user_tbl(
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    card_id VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
-    user_password VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    card_id VARCHAR(13) NOT NULL COLLATE utf8mb4_unicode_ci,
+    user_password VARCHAR(16) NOT NULL COLLATE utf8mb4_unicode_ci,
     user_fname VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
     user_lname VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
@@ -23,6 +23,14 @@ CREATE TABLE IF NOT EXISTS customer_tbl(
     cus_adddress VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (cus_name_id) REFERENCES customer_name_tbl(cus_name_id)
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
+CREATE TABLE IF NOT EXISTS company_tbl(
+    cpn_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cpn_name VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci,
+    cpn_numtel VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci,
+    cpn_address VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci
+)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
 
 CREATE TABLE IF NOT EXISTS state_tbl(
     state_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -44,6 +52,8 @@ CREATE TABLE IF NOT EXISTS size_tbl(
     size_name VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
+
+
 CREATE TABLE IF NOT EXISTS product_tbl(
     prd_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     prd_name_id VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
@@ -52,9 +62,11 @@ CREATE TABLE IF NOT EXISTS product_tbl(
     type_prd_id INT NOT NULL,
     type_id INT NOT NULL,
     prd_value INT,
+    state_id INT,
     FOREIGN KEY (size_id) REFERENCES size_tbl (size_id),
     FOREIGN KEY (type_prd_id) REFERENCES type_prd_tbl (type_prd_id),
-    FOREIGN KEY (type_id) REFERENCES type_tbl (type_id)
+    FOREIGN KEY (type_id) REFERENCES type_tbl (type_id),
+    FOREIGN KEY (state_id) REFERENCES state_tbl(state_id)
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
 CREATE TABLE IF NOT EXISTS product_price_tbl(
@@ -64,6 +76,27 @@ CREATE TABLE IF NOT EXISTS product_price_tbl(
     prd_sell FLOAT (10,3),
     prdp_date DATE,
     FOREIGN KEY(prd_id) REFERENCES product_tbl(prd_id)
+)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
+CREATE TABLE IF NOT EXISTS order_pre_tbl(
+    ordp_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ordp_bill_no VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
+    user_id INT NOT NULL,
+    cpn_id INT NOT NULL,
+    ordp_date DATE,
+    state_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user_tbl(user_id),
+    FOREIGN KEY (state_id) REFERENCES state_tbl(state_id),
+    FOREIGN KEY (cpn_id) REFERENCES company_tbl(cpn_id)
+)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
+CREATE TABLE IF NOT EXISTS order_pre_detail(
+    ordpd_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ordp_id INT NOT NULL,
+    ordpd_valuse VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
+    ordpd_price FLOAT (10,3),
+    prdp_id INT NOT NULL,
+    FOREIGN KEY (prdp_id) REFERENCES product_price_tbl(prdp_id)
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
 CREATE TABLE IF NOT EXISTS order_type_tbl(
@@ -97,13 +130,22 @@ CREATE TABLE IF NOT EXISTS order_detail_tbl(
 
 CREATE TABLE IF NOT EXISTS pickin_tbl(
     prdin_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prd_id INT NOT NULL,
     user_id INT NOT NULL,
     prdin_mk VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci,
-    prdin_values INT NOT NULL,
     prdin_date DATE,
-    FOREIGN KEY(prd_id) REFERENCES product_tbl(prd_id),
-    FOREIGN KEY(user_id) REFERENCES user_tbl(user_id)
+    ordp_id INT,
+    FOREIGN KEY(user_id) REFERENCES user_tbl(user_id),
+    FOREIGN KEY (ordp_id) REFERENCES order_pre_tbl(ordp_id)
+)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
+
+CREATE TABLE IF NOT EXISTS pickin_detail_tbl(
+    prdind_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prdin_id INT NOT NULL,
+    prdp_id INT NOT NULL,
+    prdin_values INT NOT NULL,
+    FOREIGN KEY(prdp_id) REFERENCES product_price_tbl(prdp_id),
+    FOREIGN KEY (prdin_id) REFERENCES pickin_tbl(prdin_id)
+
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
 CREATE TABLE IF NOT EXISTS ods_tbl(
@@ -116,12 +158,6 @@ CREATE TABLE IF NOT EXISTS ods_tbl(
     FOREIGN KEY(state_id) REFERENCES state_tbl(state_id)
 )ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
-CREATE TABLE IF NOT EXISTS company_tbl(
-    cpn_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    cpn_name VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci,
-    cpn_numtel VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci,
-    cpn_address VARCHAR(150) NOT NULL COLLATE utf8mb4_unicode_ci
-)ENGINE = INNODB DEFAULT CHARSET UTF8MB4;
 
 INSERT INTO user_tbl(card_id,user_password,user_fname,user_lname) VALUES
 ('1909802556165','2544','นายวงศธร','นามผล');
@@ -140,13 +176,8 @@ INSERT INTO size_tbl(size_name) VALUES
 INSERT INTO type_prd_tbl(type_prd_name)VALUES
 ('เสื้อ');
 
-INSERT INTO product_tbl(prd_name,size_id,type_id,type_prd_id,prd_value) VALUES
-('เสื้อแดง',1,1,1,'150'),('เสื้อแดง',2,1,1,'150'),('เสื้อแดง',3,1,1,'150');
-
-INSERT INTO product_price_tbl(prd_id,prd_price_pickin,prd_sell) VALUES
-(1,150,250),(2,155,260),(3,170,290);
 
 INSERT INTO state_tbl(state_name) VALUES
-('รับเข้า'),('สร้างคำสั่งซื้อ'),('ค้างชำระ'),('ชำระเงินแล้ว');
+('รับเข้า'),('สร้างคำสั่งซื้อ'),('ตรวจรับยังไม่สมบูรณ์'),('ตรวจรับแล้ว'),('พร้อมใช้งาน'),('ไม่ำร้อมใช้งาน'),('ชำระแล้ว'),('ยังไม่ชำระ');
 
 INSERT INTO order_type_tbl(order_type_name) VALUES ('จ่ายสด'),('เครดิต');

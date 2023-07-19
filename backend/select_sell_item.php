@@ -5,12 +5,12 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 include_once("db_connect.php");
 
-$sql = "SELECT prdp_id,a.prd_id,prd_name_id,prd_price_pickin,prd_sell,prd_name,prd_value,b.size_id,size_name
+$sql = "SELECT prdp_id,a.prd_id,prd_name_id,prd_price_pickin,prd_sell,prd_name,prd_value,b.size_id,size_name,state_id
 FROM product_price_tbl as a
 INNER JOIN product_tbl as b
 ON a.prd_id = b.prd_id
 INNER JOIN size_tbl as d
-ON b.size_id = d.size_id";
+ON b.size_id = d.size_id WHERE state_id = 5";
 
 // Execute the query
 $result = mysqli_query($conn, $sql);
@@ -27,6 +27,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         'prd_price_pickin' => $row['prd_price_pickin'],
         'prd_sell' => $row['prd_sell'],
         'prd_name_id' => $row['prd_name_id'],
+        'prdp_id' => $row['prdp_id'],
     );
     $products[] = $product;
 }

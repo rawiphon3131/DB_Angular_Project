@@ -4,6 +4,8 @@ header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 include_once("db_connect.php");
+$data = json_decode(file_get_contents('php://input'), true);
+$prd_id = $data['prd_id'];
 
 $sql = "SELECT prdp_id,prd_price_pickin,prd_sell,a.prd_id,prd_name_id,prd_name,b.size_id,size_name,b.type_id,type_name,b.type_prd_id,type_prd_name,prd_value,prd_price_pickin,state_id FROM product_price_tbl as a
 INNER JOIN product_tbl as b
@@ -13,7 +15,8 @@ ON b.size_id = d.size_id
 INNER JOIN type_tbl as e
 ON b.type_id = e.type_id
 INNER JOIN type_prd_tbl as f
-ON b.type_prd_id = f.type_prd_id WHERE state_id = 5";
+ON b.type_prd_id = f.type_prd_id
+WHERE a.prd_id = '$prd_id'";
 
 // Execute the query
 $result = mysqli_query($conn, $sql);
@@ -31,6 +34,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         'type_prd_name' => $row['type_prd_name'],
         'prd_name_id' => $row['prd_name_id'],
         'prd_price_pickin' => $row['prd_price_pickin'],
+        'prdp_id' => $row['prdp_id'],
     );
     $pd_vl[] = $value_pd;
 }

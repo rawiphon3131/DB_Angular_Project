@@ -68,7 +68,7 @@ savePic(){
       this.messageService.add({ severity: 'info', summary: 'บันทึก', detail: 'บันทึกเสร็จสิ้น' });
               const timeout = 2000;
               setTimeout(() => {
-                location.reload();
+                this.router.navigate(['hpc']);
               }, timeout);
     });
   // const dataArray = [];
