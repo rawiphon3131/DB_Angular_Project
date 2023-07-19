@@ -1,59 +1,30 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<app-nav-bar></app-nav-bar>
+<div style="display: flex;">
+    <div style="margin: 10px;">
+            <p-card header="จำนวนใบสั่งซื้อ" [style]="{ width: '360px' }">
 
-<body>
-    <app-nav-bar></app-nav-bar>
-    <div class="container-dashboard-item">
+                    <i class="pi pi-cart-plus" style="font-size: 2.5rem;color: green;"></i>
 
-        <a href="/add_order" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-            <div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    <img src="../../assets/Images/9177009.png" alt="logo" width="100px">
-                </div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    รายการสั่งซื้อ และ เพิ่มคำสั่งซื้อ
-                </div>
-            </div>
-        </a>
-        <a href="/dbt" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-            <div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    <img src="../../assets/Images/see.png" alt="logo" width="100px">
-                </div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    รายชื่อลูกค้าที่มียอดค้าชำระ
-                </div>
-            </div>
-        </a>
-        <a href="/pickin_products" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-            <div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    <img src="../../assets/Images/2652218.png" alt="logo" width="100px">
-                </div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    รับเข้าสินค้า
-                </div>
-            </div>
-        </a>
-        <a href="/total_item" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-            <div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    <img src="../../assets/Images/7387663.png" alt="logo" width="100px">
-                </div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    จำนวนสินค้าคงเหลือ
-                </div>
-            </div>
-            
-        </a>
-        <a href="/report_sell" class="box-select-menu" style="display:flex;align-items: center;justify-content: center;">
-            <div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    <img src="../../assets/Images/2930617.png" alt="logo" width="100px">
-                </div>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                    รายงานยอดขาย
-                </div>
-            </div>
-            </a>
-    </div>
-</body>
+                <h3 *ngFor="let order of orDerl; let i = index">{{ order}} รายการ</h3>
+            </p-card>
+        </div>
+        <div style="margin: 10px;">
+            <p-card header="จำนวนใบสั่งซื้อที่รอตรวจรับ" [style]="{ width: '360px' }">
+                <i class=" pi pi-sign-in" style="font-size: 2.5rem;color: #DFA003;"></i>
+                <h3 *ngFor="let order2 of wait; let i = index">{{ order2}} รายการ</h3>
+            </p-card>
+        </div>
+        <div style="margin: 10px;">
+            <p-card header="จำนวนใบสั่งซื้อที่ตรวจรับแล้ว" [style]="{ width: '360px' }">
+                <i class=" pi pi-sign-in" style="font-size: 2.5rem;color: green;"></i>
+                <h3 *ngFor="let order3 of comp; let i = index">{{ order3}} รายการ</h3>
+            </p-card>
+        </div>
+        <div style="margin: 10px;">
+            <p-card header="จำนวนผู้ใช้งานระบบ" [style]="{ width: '360px' }">
+                <i class=" pi pi-user" style="font-size: 2.5rem;color: green;"></i>
+                <h3 *ngFor="let user of user; let i = index">{{ user}} รายการ</h3>
+            </p-card>
+        </div>
+       
+</div>

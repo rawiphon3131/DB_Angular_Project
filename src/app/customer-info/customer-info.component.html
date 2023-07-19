@@ -1,4 +1,4 @@
-<app-nav-bar></app-nav-bar>
+<app-nav-bar></app-nav-bar> <p-toast></p-toast>
 <p-panel header="รายชื่อลูกค้า">
     <p-button (click)="showDialog2()" icon="pi pi-user" styleClass="p-button-info"
         label="เพิ่มรายชื่อลูกค้า">+</p-button>
@@ -71,7 +71,7 @@
                     <td style="text-align: center;">{{cus.cus_credit}}</td>
                     <td style="text-align: center;">{{cus.cus_numphone}}</td>
                     <td style="text-align: center;">
-                        <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm"></p-button>
+                        <p-button label="แก้ไข" styleClass="p-button-rounded p-button-warning p-button-sm" (click)="editCusdetail(cus.cus_id)"></p-button>
                         &nbsp;
                         <p-button label="ลบ" styleClass="p-button-rounded p-button-danger p-button-sm"></p-button>
                       </td>

@@ -1,0 +1,16 @@
+<p-panel> <p-toast></p-toast>
+    <div *ngFor="let cus of cusDetail" style="display: flex;justify-content: center;align-items: center;">
+        <div style="margin: 5px;">
+            <input type="text" pInputText [(ngModel)]="cus_name" placeholder="{{cus.cus_name}}" />
+        </div>
+        <div style="margin: 5px;">
+            <input type="text" pInputText [(ngModel)]="cus_numtel" placeholder="{{cus.cus_numtel}}" />
+        </div>
+        <div style="margin: 5px;">
+            <input type="text" pInputText [(ngModel)]="cus_address" placeholder="{{cus.cus_adddress}}" />
+        </div>
+    </div>
+    <div style="display: flex;justify-content: right;align-items: center;" *ngFor="let cus of cusDetail">
+        <p-button label="ยืนยันการแก้ไข" styleClass="p-button-rounded p-button-warning" (click)="editCus(cus.cus_name_id)"></p-button>
+    </div>
+</p-panel>

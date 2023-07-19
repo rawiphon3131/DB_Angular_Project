@@ -1,4 +1,137 @@
-<app-nav-bar></app-nav-bar>
+<app-nav-bar></app-nav-bar> <p-toast></p-toast>
 <p-panel header="เพิ่มรายการขาย">
-    
+    <p-button (click)="showDialog()" styleClass="p-button-rounded">
+        <span>เพิ่มคำสั่งซื้อ+</span>
+    </p-button>
+    <p-dialog header="Header" [(visible)]="visible" [style]="{ width: '70vw'}" [draggable]="false" [resizable]="false"
+        [maximizable]="true">
+        <ng-template pTemplate="header">
+            <span class="text-xl font-bold">เพิ่มคำสั่งซื้อ</span>
+        </ng-template>
+        <table style="width: 100%;text-align: left;">
+            <tr>
+            </tr>
+            <tr>
+                <td>
+                    รายชื่อลูกค้า
+                </td>
+                <td>
+                    <section>
+                        <select [(ngModel)]="selectedOption" [ngModelOptions]="{ standalone: true }"
+                            class="form-control" (change)="updateCustomerAddress()" icon="pi-angle-down">
+                            <option value="">โปรดเลือก...</option>
+                            <option *ngFor="let option of customer" [value]="option.cus_id">
+                                {{ option.cus_name
+                                }}</option>
+                        </select>
+                    </section>
+                </td>
+                <td *ngIf="selectedOption">
+                    เครดิตคงเหลือ
+                </td>
+                <td *ngIf="selectedOption">
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm" [value]="getCustomerCredit(selectedOption)" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td *ngIf="selectedOption">
+                    ที่อยู่
+                </td>
+                <td *ngIf="selectedOption">
+                    <textarea class="form-control" [value]="getCustomerAddress(selectedOption)" readonly></textarea>
+                </td>
+                <td *ngIf="selectedOption">
+                    เบอร์โทร
+                </td>
+                <td *ngIf="selectedOption">
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm" [value]="getCustomerNumphone(selectedOption)" readonly>
+                </td>
+                <td *ngIf="selectedOption">ประเภทจ่าย</td>
+                <td *ngIf="selectedOption">
+                    <p-dropdown [(ngModel)]="type_sell" name="type_sell" placeholder="โปรดเลือก..."
+                        [options]="typeSellOptions"></p-dropdown>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;text-align: left;">
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary" (click)="openDialog()"
+                        *ngIf="selectedOption">เพิ่มสินค้าลงตะกร้า</button>
+                </td>
+            </tr>
+            <p-table [value]="selectedProducts">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ชื่อสินค้า</th>
+                        <th>ขนาด</th>
+                        <th>ราคาขาย</th>
+                        <th>จำนวน</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.prd_name }}</td>
+                        <td>{{ product.size_name }}</td>
+                        <td>{{ product.prd_sell }}</td>
+                        <td>{{ product.inputValue }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td>ราคารวมทั้งหมด: {{ calculateTotalSum() }} บาท</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+
+        </table>
+        <ng-template pTemplate="footer">
+            <p-confirmPopup></p-confirmPopup>
+            <p-button (click)="openAddPrdtoOrder($event)" icon="pi pi-check" label="ยืนยันการสั่งซื้อ"></p-button>
+        </ng-template>
+    </p-dialog>
+</p-panel>
+<p-panel header="ค้นหาคำสั่งซื้อ">
+    <input type="text" pInputText placeholder="ค้นหาคำสั่งซื้อ" [(ngModel)]="orderNumberFilter">
+</p-panel>
+<p-panel>
+    <p-table [value]="filterOrders()" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th scope="col" style="text-align: center;">Order ID</th>
+                <th scope="col" style="text-align: center;">ชื่อผู้สั่งซื้อ</th>
+                <th scope="col" style="text-align: center;">เจ้าหน้าที่</th>
+                <th scope="col" style="text-align: center;">ประเภทจ่าย</th>
+                <th scope="col" style="text-align: center;">วันที่</th>
+                <th scope="col" style="text-align: center;">ACTION</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order let-i="rowIndex">
+            <tr>
+                <td style="text-align: center;">{{ order.order_id }}</td>
+                <td style="text-align: center;">{{ order.cus_name }}</td>
+                <td style="text-align: center;">{{ order.user_name }}</td>
+                <td style="text-align: center;"
+                    [ngClass]="{ 'green-message': order.order_type_name === 'จ่ายสด', 'red-text': order.order_type_name === 'เครดิต' }">
+                    {{ order.order_type_name }}</td>
+                <td style="text-align: center;">{{ order.order_date }}</td>
+                <td>
+                    <div style="display: flex;justify-content: center;">
+                        <div style="margin: 1px;">
+                            <p-button label="รายละเอียด" icon="pi pi-book" styleClass="p-button-sm p-button-success"
+                                (click)="showInfo(order.order_id, order.cus_name)"></p-button>
+                        </div>
+                        <div style="margin: 1px;">
+                            <p-button label="ออกใบเสร็จPDF" icon="pi pi-file-pdf"
+                                styleClass="p-button-sm p-button-primary"
+                                (click)="generateInvoice(order.order_id)"></p-button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </p-panel>

@@ -8,7 +8,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { ProductPopupComponent } from '../product-popup/product-popup.component';
 import { DetailsDialogComponent } from '../details-dialog/details-dialog.component';
-import { PopupPickinComponent } from '../popup-pickin/popup-pickin.component';
+
 
 
 

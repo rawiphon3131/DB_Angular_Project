@@ -19,53 +19,6 @@
                                 [draggable]="false" [resizable]="false" [maximizable]="true">
                                 <ng-template pTemplate="header">
                                     <span class="text-xl font-bold">เพิ่มคำสั่งซื้อ</span>
-                                    <p-button (click)="showDialog2()" icon="pi pi-user" styleClass="p-button-info"
-                                        label="เพิ่มรายชื่อลูกค้า">+</p-button>
-                                    <p-dialog header="Header" [(visible)]="visible2" [style]="{ width: '50vw' }"
-                                        [draggable]="false" [resizable]="false">
-                                        <ng-template pTemplate="header">
-                                            <span class="text-xl font-bold">เพิ่มรายชื่อลูกค้าใหม่</span>
-                                        </ng-template>
-                                        <table>
-                                            <tr>
-                                                <td style="text-align: right;">
-                                                    ชื่อ-สกุล:
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <input type="text" pInputText [(ngModel)]="name_cus_new"
-                                                        name="name_cus_new" placeholder="ชื่อ-สกุล">
-                                                </td>
-                                                <td style="text-align: right;">
-                                                    เบอร์โทร:
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <input pInputText pKeyFilter="int" placeholder="เบอร์โทร"
-                                                        [(ngModel)]="phone_cus_new" name="name_cus_new" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: right;">
-                                                    ที่อยู่:
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <textarea  pInputTextarea  [(ngModel)]="address_cus_new"
-                                                        name="name_cus_new" placeholder="ที่อยู่"></textarea>
-                                                </td>
-                                                <td style="text-align: right;">
-                                                    เครดิตเริ่มต้น
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <input pInputText pKeyFilter="int" placeholder="เครดิตเริ่มต้น"
-                                                    [(ngModel)]="credit_new" name="credit_new" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <ng-template pTemplate="footer">
-                                            <p-confirmPopup></p-confirmPopup>
-                                            <p-button (click)="send_data_succ($event)" icon="pi pi-check"
-                                                label="บันทึก"></p-button>
-                                        </ng-template>
-                                    </p-dialog>
                                 </ng-template>
                                 <table style="width: 100%;text-align: left;">
                                     <tr>

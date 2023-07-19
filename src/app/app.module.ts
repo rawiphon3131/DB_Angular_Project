@@ -28,6 +28,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PanelModule } from 'primeng/panel';
+import { StyleClassModule } from 'primeng/styleclass';
+import { MenuModule } from 'primeng/menu';
 
 
 import { AuthGuard } from './auth.guard';
@@ -60,6 +62,7 @@ import { InFosizeComponent } from './in-fosize/in-fosize.component';
 import { HistoryOfpickinComponent } from './history-ofpickin/history-ofpickin.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { AddNewsellComponent } from './add-newsell/add-newsell.component';
+import { EditCusinfoComponent } from './edit-cusinfo/edit-cusinfo.component';
 
 
 
@@ -117,6 +120,7 @@ const routes: Routes = [
     HistoryOfpickinComponent,
     CustomerInfoComponent,
     AddNewsellComponent,
+    EditCusinfoComponent,
     
   ],
   imports: [
@@ -146,6 +150,8 @@ const routes: Routes = [
     CardModule,
     FieldsetModule,
     PanelModule,
+    StyleClassModule,
+    MenuModule,
   ],
   exports: [RouterModule],
   providers: [AuthGuard],

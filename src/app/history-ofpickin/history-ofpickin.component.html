@@ -1,26 +1,27 @@
 <app-nav-bar></app-nav-bar>
-SELECT ใหม่ด้วย
-<p-table [value]="products" [rows]="7" [paginator]="true">
-    <ng-template pTemplate="header">
-        <tr>
-            <th scope="col" style="text-align: center;">ลำดับที่</th>
-            <th scope="col" style="text-align: center;">รหัสสินค้า</th>
-            <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
-            <th scope="col" style="text-align: center;">ผู้รับเข้า</th>
-            <th scope="col" style="text-align: center;">รับมาจาก</th>
-            <th scope="col" style="text-align: center;">จำนวน/ชิ้น</th>
-            <th scope="col" style="text-align: center;">วันที่</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product let-i="rowIndex">
-        <tr>
-            <td style="text-align: center;">{{ i + 1 }}</td>
-            <td style="text-align: center;">{{ product.prd_name_id }}</td>
-            <td style="text-align: center;">{{ product.prd_name }}</td>
-            <td style="text-align: center;">{{ product.userPi }}</td>
-            <td style="text-align: center;">{{ product.prdin_mk }}</td>
-            <td style="text-align: center;">{{ product.prdin_values }}</td>
-            <td style="text-align: center;">{{ product.prdin_date }}</td>
-        </tr>
-    </ng-template>
-</p-table>
+<p-panel header="ประวัติการรับเข้าสินค้า">
+    <p-table [value]="products" [rows]="7" [paginator]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th scope="col" style="text-align: center;">ลำดับที่</th>
+                <th scope="col" style="text-align: center;">รหัสสินค้า</th>
+                <th scope="col" style="text-align: center;">ชื่อสินค้า</th>
+                <th scope="col" style="text-align: center;">ผู้รับเข้า</th>
+                <th scope="col" style="text-align: center;">รับมาจาก</th>
+                <th scope="col" style="text-align: center;">จำนวน/ชิ้น</th>
+                <th scope="col" style="text-align: center;">วันที่</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-i="rowIndex">
+            <tr>
+                <td style="text-align: center;">{{ i + 1 }}</td>
+                <td style="text-align: center;">{{ product.prd_name_id }}</td>
+                <td style="text-align: center;">{{ product.prd_name }}</td>
+                <td style="text-align: center;">{{ product.userPi }}</td>
+                <td style="text-align: center;">{{ product.prdin_mk }}</td>
+                <td style="text-align: center;">{{ product.prdin_values }}</td>
+                <td style="text-align: center;">{{ product.prdin_date }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>

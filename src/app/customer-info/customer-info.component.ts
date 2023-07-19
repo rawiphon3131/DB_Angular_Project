@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
+import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
+import { EditCusinfoComponent } from '../edit-cusinfo/edit-cusinfo.component';
 
 @Component({
   selector: 'app-customer-info',
   templateUrl: './customer-info.component.html',
   styleUrls: ['./customer-info.component.css'],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService,DynamicDialogRef,DynamicDialogConfig,DialogService]
 })
 export class CustomerInfoComponent implements OnInit {
   visible2: boolean = false;
@@ -16,13 +18,13 @@ export class CustomerInfoComponent implements OnInit {
   phone_cus_new: string = '';
   cusList: any;
   orderNumberFilter!: string;
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient) {
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private dialogService: DialogService, public dynamicDialogRef: DynamicDialogRef, public dynamicDialogConfig: DynamicDialogConfig) {
 
   }
   filterOrders(): any[] {
     if (this.orderNumberFilter) {
       return this.cusList.filter((cus: { cus_name: string; }) =>
-      cus.cus_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
+        cus.cus_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
       );
     } else {
       return this.cusList;
@@ -32,6 +34,20 @@ export class CustomerInfoComponent implements OnInit {
     this.loadCus();
 
   }
+  editCusdetail(cus_id: number) {
+    console.log(cus_id);
+    const data = { cus_id: cus_id};
+    this.http.post('http://localhost/backend/select_cus_foredit.php', data).subscribe(
+      (response) => {
+        console.log(response);
+        const cusDetail = Array.isArray(response) ? response : [response];
+        const ref = this.dialogService.open(EditCusinfoComponent, {
+          header: 'แก้ไขรายละเอียดลูกค้า',
+          width: '70%',
+          data: {cusDetail }
+      });
+  })
+}
   showDialog2() {
     this.visible2 = true;
   }
