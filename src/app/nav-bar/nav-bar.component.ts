@@ -121,7 +121,8 @@ export class NavBarComponent implements OnInit {
           items: [
               {
                   label: 'สรุปยอดขาย',
-                  icon: 'pi pi-fw pi-print'
+                  icon: 'pi pi-fw pi-print',
+                  command:()=>this.navReport(),
               },
               {
                   label: 'สรุปยอดค้างชำระ',
@@ -135,6 +136,9 @@ export class NavBarComponent implements OnInit {
           command: () => this.logout(),
       }
   ];
+  }
+  navReport(){
+    this.router.navigate(['report_sell']);
   }
   navCtmif(){
     this.router.navigate(['ctmif']);

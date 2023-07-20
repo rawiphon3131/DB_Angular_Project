@@ -11,14 +11,22 @@ import { HttpClient } from '@angular/common/http';
 export class ReportSellComponent {
   currentDate: string;
   dataReport:any[];
-
+  orderNumberFilter!: string;
   constructor(private exportService: ExportService,private http:HttpClient) {
     const date = new Date();
     this.currentDate = this.formatDate(date);
     this.featDatareport()
     this.dataReport = [];
   }
-
+  filterOrders(): any[] {
+    if (this.orderNumberFilter) {
+      return this.dataReport.filter((Report: { prd_name: string; }) =>
+      Report.prd_name.toLowerCase().includes(this.orderNumberFilter.toLowerCase())
+      );
+    } else {
+      return this.dataReport;
+    }
+  }
   exportDataToExcel(): void {
     const fileName = `trading_summary_${this.currentDate}`;
     const data: ColumName[] = this.dataReport.map((Report, index) => ({
